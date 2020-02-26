@@ -25,7 +25,23 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+}
 
+
+def MAVEN_LOCAL_PATH = uri('../../local_repo')
+def ARTIFACT_ID = 'davinci'
+def VERSION_NAME = '0.0.1'
+def GROUP_ID = 'osp.leobert.android'
+
+ext {
+    bintrayName = ARTIFACT_ID
+    artifact = ARTIFACT_ID
+    libraryName = ARTIFACT_ID
+    libraryDescription = 'An Android library to help create background drawable and ColorStateList without xml'
+    libraryVersion = VERSION_NAME
+    licenseName = 'MIT'
+    licenseUrl = 'https://github.com/leobert-lan/DaVinCi/blob/master/LICENSE'
+    allLicenses = ["MIT"]
 }
 
 dependencies {
@@ -37,3 +53,6 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 }
+
+apply from: '../bintray_upload.gradle'
+apply from: '../maven_upload.gradle'
