@@ -1,0 +1,2 @@
+include ':app', ':davinci'
+rootProject.name='SimpleTest'
