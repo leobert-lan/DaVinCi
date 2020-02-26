@@ -12,7 +12,7 @@ import androidx.annotation.ColorInt
 import androidx.annotation.Px
 import java.util.*
 
-/**
+/*
  * <p><b>Package:</b> com.example.simpletest.background </p>
  * <p><b>Classname:</b> Expression </p>
  * Created by leobert on 2020-02-23.

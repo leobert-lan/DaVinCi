@@ -54,5 +54,17 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 }
 
+//task javadoc(type: Javadoc) {
+//    options{
+//        encoding("utf-8")
+//        links "http://docs.oracle.com/javase/7/docs/api"
+//    }
+//    exclude("**/DaVinCiCore.kt","**/DaVinCiException.kt")
+//    source = android.sourceSets.main.java.srcDirs
+//    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+//    destinationDir = file("../javadoc/")
+//    failOnError false
+//}
+
 apply from: '../bintray_upload.gradle'
 apply from: '../maven_upload.gradle'

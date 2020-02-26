@@ -13,13 +13,9 @@ import androidx.databinding.BindingAdapter
 import osp.leobert.android.davinci.DaVinCiExpression.Companion.sLogTag
 import java.util.*
 
-/**
- * <p><b>Package:</b> com.example.simpletest.background </p>
+/*
  * <p><b>Classname:</b> DaVinCi </p>
  * Created by leobert on 2020-02-22.
- */
-
-/**
  *自high 功能，语法解析，目前语法校验还不严格，没有按照严谨的文法约束以及校验
  * */
 fun View.daVinCi(str: String) {
@@ -158,7 +154,7 @@ class DaVinCi(text: String?, val view: View) {
     private val map: MutableMap<String, Any> = HashMap()
 
 
-    /**
+    /*
      * 解析文本
      */
     operator fun next(): String? {
@@ -170,7 +166,7 @@ class DaVinCi(text: String?, val view: View) {
         return currentToken
     }
 
-    /**
+    /*
      * 判断命令是否正确
      */
     fun equalsWithCommand(command: String?): Boolean {
@@ -178,7 +174,7 @@ class DaVinCi(text: String?, val view: View) {
     }
 
 
-    /**
+    /*
      * 获得节点的内容
      */
     fun getTokenContent(text: String?): String? {
@@ -219,7 +215,7 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
     //一定会植入，手动创建的不解析
     abstract fun injectThenParse(daVinCi: DaVinCi?)
 
-    /**
+    /*
      * 执行方法
      */
     abstract fun interpret()
