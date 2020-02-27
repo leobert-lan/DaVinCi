@@ -35,9 +35,10 @@ fun View.daVinCi(str: String) {
     requireAll = false
 )
 fun View.daVinCi(
-    normal: DaVinCiExpression?,
-    pressed: DaVinCiExpression?, unpressed: DaVinCiExpression?,
-    checkable: DaVinCiExpression?, uncheckable: DaVinCiExpression?, checked: DaVinCiExpression?, unchecked: DaVinCiExpression?
+    normal: DaVinCiExpression? = null,
+    pressed: DaVinCiExpression? = null, unpressed: DaVinCiExpression? = null,
+    checkable: DaVinCiExpression? = null, uncheckable: DaVinCiExpression? = null,
+    checked: DaVinCiExpression? = null, unchecked: DaVinCiExpression? = null
 ) {
     val daVinCi = DaVinCi(null, this)
     //用于多次构建
@@ -456,6 +457,51 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
             } else expressions!!
         }
 
+        fun type(str: String): Shape {
+            ShapeType(manual = true).apply {
+                this.text = str
+                exps().append(this)
+            }
+            return this
+        }
+
+        fun rectAngle(): Shape {
+            ShapeType(manual = true).apply {
+                this.text = ShapeType.Rectangle
+                parseFromText = false
+                exps().append(this)
+            }
+            return this
+        }
+
+        fun oval(): Shape {
+            ShapeType(manual = true).apply {
+                this.text = ShapeType.Oval
+                parseFromText = false
+                exps().append(this)
+            }
+            return this
+        }
+
+        fun ring(): Shape {
+            ShapeType(manual = true).apply {
+                this.text = ShapeType.Ring
+                parseFromText = false
+                exps().append(this)
+            }
+            return this
+        }
+
+        fun line(): Shape {
+            ShapeType(manual = true).apply {
+                this.text = ShapeType.Line
+                parseFromText = false
+                exps().append(this)
+            }
+            return this
+        }
+
+
         fun corner(@Px r: Int): Shape {
             Corners(manual = true).apply {
                 this.conners = arrayListOf(r, r, r, r)
@@ -487,6 +533,16 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
         fun solid(str: String): Shape {
             Solid(manual = true).apply {
                 text = str
+                exps().append(this)
+            }
+            return this
+        }
+
+        fun solid(@ColorInt color: Int): Shape {
+            Solid(manual = true).apply {
+                text = "#" + String.format("%8x", color)
+                this.colorInt = color
+                parseFromText = false
                 exps().append(this)
             }
             return this
@@ -760,7 +816,7 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
     class Solid(daVinCi: DaVinCi? = null, manual: Boolean = false) :
         CommandExpression(daVinCi, manual) {
         @ColorInt
-        private var colorInt: Int? = null //这是解析出来的，不要乱赋值
+        internal var colorInt: Int? = null //这是解析出来的，不要乱赋值
 
         companion object {
             const val tag = "solid:["

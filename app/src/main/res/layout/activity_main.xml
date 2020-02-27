@@ -24,9 +24,26 @@
             android:orientation="vertical"
             android:padding="10dp">
 
-            <!--            daVinCi_bg="@{DaVinCiExpression.shape().corner(60).solid(`@i2`).stroke(`4dp`,`@i2`)}"-->
-            <Button
+            <TextView
                 android:id="@+id/test"
+                daVinCi_bg="@{DaVinCiExpression.shape().corner(60).solid(`@i2`).stroke(`4dp`,`@i2`)}"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/test"
+                android:gravity="center"
+                android:text="@string/app_name">
+
+                <tag
+                    android:id="@id/i1"
+                    android:value="@color/colorPrimaryDark" />
+
+                <tag
+                    android:id="@id/i2"
+                    android:value="@color/colorAccent" />
+            </TextView>
+
+            <Button
                 daVinCi_bg_pressed="@{DaVinCiExpression.shape().corner(`10dp,15dp,20dp,30dp`).stroke(`4dp`,`@i2`).gradient(`#26262a`,`#ff0699`,0)}"
                 daVinCi_bg_unpressed="@{DaVinCiExpression.shape().corner(60).solid(`@i1`).stroke(`4dp`,`@i2`)}"
                 android:layout_width="match_parent"
