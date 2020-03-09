@@ -109,6 +109,10 @@
                 android:text="check状态">
 
                 <tag
+                    android:id="@id/log_tag"
+                    android:value="测试log tag" />
+
+                <tag
                     android:id="@id/i1"
                     android:value="@color/colorPrimaryDark" />
 

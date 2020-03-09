@@ -1,2 +1,3 @@
 <resources>
+    <item name="log_tag" type="id"/>
 </resources>

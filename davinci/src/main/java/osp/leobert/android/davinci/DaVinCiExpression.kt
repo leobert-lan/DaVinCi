@@ -19,7 +19,7 @@ import java.util.*
  *自high 功能，语法解析，目前语法校验还不严格，没有按照严谨的文法约束以及校验
  * */
 fun View.daVinCi(str: String) {
-    Log.d(sLogTag, "daVinCi:$str")
+    if (DaVinCi.enableDebugLog) Log.d(sLogTag, "${this.logTag()} daVinCi:$str")
     val daVinCi = DaVinCi(str, this)
 
     val expressions: DaVinCiExpression = DaVinCiExpression.Shape()
@@ -27,6 +27,10 @@ fun View.daVinCi(str: String) {
     expressions.injectThenParse(daVinCi)
     expressions.interpret()
     ViewCompat.setBackground(this, daVinCi.core.build())
+}
+
+private fun View.logTag(): String {
+    return this.getTag(R.id.log_tag)?.run { "{${toString()}}:" } ?: this.toString()
 }
 
 @BindingAdapter(
@@ -48,62 +52,44 @@ fun View.daVinCi(
         daVinCi.apply {
             currentToken = normal.startTag()
         }
-        Log.d(sLogTag, "daVinCi normal:$normal")
+        if (DaVinCi.enableDebugLog) Log.d(sLogTag, "${this.logTag()} daVinCi normal:$normal")
 
         normal.injectThenParse(daVinCi)
         normal.interpret()
     }
 
-    //    private var pressedDrawable: Drawable? = null
     pressed?.let {
-        daVinCiLoop.apply {
-            currentToken = pressed.startTag()
-        }
-        Log.d(sLogTag, "daVinCi pressed:$pressed")
-
-        pressed.injectThenParse(daVinCiLoop)
-        pressed.interpret()
+        simplify(daVinCiLoop, it, "pressed", this)
         daVinCi.core.setPressedDrawable(daVinCiLoop.core.build())
         daVinCiLoop.core.clear()
     }
 
-    //    private var unPressedDrawable: Drawable? = null
     unpressed?.let {
-        daVinCiLoop.apply {
-            currentToken = unpressed.startTag()
-        }
-        Log.d(sLogTag, "daVinCi unpressed:$unpressed")
-
-        unpressed.injectThenParse(daVinCiLoop)
-        unpressed.interpret()
+        simplify(daVinCiLoop, it, "unpressed", this)
         daVinCi.core.setUnPressedDrawable(daVinCiLoop.core.build())
         daVinCiLoop.core.clear()
     }
 
-    //    private var checkableDrawable: Drawable? = null
     checkable?.let {
-        simplify(daVinCiLoop, it, "checkable")
+        simplify(daVinCiLoop, it, "checkable", this)
         daVinCi.core.setCheckableDrawable(daVinCiLoop.core.build())
         daVinCiLoop.core.clear()
     }
 
-    //    private var unCheckableDrawable: Drawable? = null
     uncheckable?.let {
-        simplify(daVinCiLoop, it, "uncheckable")
+        simplify(daVinCiLoop, it, "uncheckable", this)
         daVinCi.core.setUnCheckableDrawable(daVinCiLoop.core.build())
         daVinCiLoop.core.clear()
     }
 
-    //    private var checkedDrawable: Drawable? = null
     checked?.let {
-        simplify(daVinCiLoop, it, "checked")
+        simplify(daVinCiLoop, it, "checked", this)
         daVinCi.core.setCheckedDrawable(daVinCiLoop.core.build())
         daVinCiLoop.core.clear()
     }
 
-    //    private var unCheckedDrawable: Drawable? = null
     unchecked?.let {
-        simplify(daVinCiLoop, it, "unchecked")
+        simplify(daVinCiLoop, it, "unchecked", this)
         daVinCi.core.setUnCheckedDrawable(daVinCiLoop.core.build())
         daVinCiLoop.core.clear()
     }
@@ -124,12 +110,18 @@ fun View.daVinCi(
     ViewCompat.setBackground(this, daVinCi.core.build())
 }
 
-private fun simplify(daVinCiLoop: DaVinCi, exp: DaVinCiExpression?, state: String) {
+private fun simplify(
+    daVinCiLoop: DaVinCi,
+    exp: DaVinCiExpression?,
+    state: String,
+    view: View
+) {
     exp?.let {
         daVinCiLoop.apply {
             currentToken = exp.startTag()
         }
-        Log.d(sLogTag, "daVinCi $state:$exp")
+
+        if (DaVinCi.enableDebugLog) Log.d(sLogTag, "${view.logTag()} daVinCi $state:$exp")
 
         exp.injectThenParse(daVinCiLoop)
         exp.interpret()
@@ -139,6 +131,10 @@ private fun simplify(daVinCiLoop: DaVinCi, exp: DaVinCiExpression?, state: Strin
 //region DaVinCi
 @Suppress("unused")
 class DaVinCi(text: String?, val view: View) {
+    companion object {
+        var enableDebugLog = true
+    }
+
     val context: Context = view.context
 
     val core: DaVinCiCore by lazy {
@@ -322,11 +318,11 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
                 val resources = context.resources
                 val id = resources.getIdentifier(resName, "color", context.packageName)
                 return if (id == 0) {
-                    Log.d(sLogTag, "no color resource named $resName")
+                    if (DaVinCi.enableDebugLog) Log.d(sLogTag, "no color resource named $resName")
                     null
                 } else ContextCompat.getColor(context, id)
             } catch (e: Exception) {
-                Log.e(sLogTag, "parse color exception", e)
+                if (DaVinCi.enableDebugLog) Log.e(sLogTag, "parse color exception", e)
                 return null
             }
         }
@@ -408,14 +404,14 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
                             val expressions: DaVinCiExpression = CommandExpression(it)
                             list.add(expressions)
                         } catch (e: Exception) {
-                            Log.e(sLogTag, "语法解析有误", e)
+                            if (DaVinCi.enableDebugLog) Log.e(sLogTag, "语法解析有误", e)
                             break
                         }
                     }
                     i++
                 }
                 if (i == 100) {
-                    Log.e(sLogTag, "语法解析有误，进入死循环，强制跳出")
+                    if (DaVinCi.enableDebugLog) Log.e(sLogTag, "语法解析有误，进入死循环，强制跳出")
                 }
             }
         }
@@ -443,7 +439,8 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
     //endregion
 
     //region Shape
-    class Shape internal constructor(private val manual: Boolean = false) : DaVinCiExpression(null) {
+    class Shape internal constructor(private val manual: Boolean = false) :
+        DaVinCiExpression(null) {
 
         private var expressions: ListExpression? = null
         override fun startTag(): String = tag
@@ -572,14 +569,20 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
             return this
         }
 
-        fun gradient(type: String = Gradient.TYPE_LINEAR, @ColorInt startColor: Int, @ColorInt endColor: Int, angle: Int = 0): Shape {
+        fun gradient(
+            type: String = Gradient.TYPE_LINEAR, @ColorInt startColor: Int, @ColorInt endColor: Int,
+            angle: Int = 0
+        ): Shape {
             return gradient(type, startColor, null, endColor, 0f, 0f, angle)
         }
 
         //        @JvmOverloads 不适合使用kotlin的重载
         fun gradient(
             type: String = Gradient.TYPE_LINEAR, @ColorInt startColor: Int,
-            @ColorInt centerColor: Int?, @ColorInt endColor: Int, centerX: Float, centerY: Float, angle: Int = 0
+            @ColorInt centerColor: Int?, @ColorInt endColor: Int,
+            centerX: Float,
+            centerY: Float,
+            angle: Int = 0
         ): Shape {
             Gradient(manual = true).apply {
                 this.type = type
@@ -602,7 +605,12 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
             return gradient(Gradient.TYPE_LINEAR, startColor, null, endColor, 0f, 0f, angle)
         }
 
-        fun gradient(type: String = Gradient.TYPE_LINEAR, startColor: String, endColor: String, angle: Int = 0): Shape {
+        fun gradient(
+            type: String = Gradient.TYPE_LINEAR,
+            startColor: String,
+            endColor: String,
+            angle: Int = 0
+        ): Shape {
             return gradient(type, startColor, null, endColor, 0f, 0f, angle)
         }
 
@@ -641,7 +649,10 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
                         this.interpret()
                     }
                 } else if (!it.equalsWithCommand(tag)) {
-                    Log.e(sLogTag, "The $tag is Excepted For Start When Not Manual!")
+                    if (DaVinCi.enableDebugLog) Log.e(
+                        sLogTag,
+                        "The $tag is Excepted For Start When Not Manual!"
+                    )
                 } else {
                     //解析型
                     it.next()
@@ -690,7 +701,7 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
                     if (daVinCi != null)
                         parseRadius(daVinCi)
                     else
-                        Log.e(
+                        if (DaVinCi.enableDebugLog) Log.e(
                             sLogTag,
                             "daVinCi is null cannot parse corner,in manual,parse from text,maybe on init"
                         )
@@ -702,7 +713,10 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
             if (daVinCi != null)
                 parseRadius(daVinCi)
             else
-                Log.e(sLogTag, "daVinCi is null cannot parse corner,from text:$parseFromText")
+                if (DaVinCi.enableDebugLog) Log.e(
+                    sLogTag,
+                    "daVinCi is null cannot parse corner,from text:$parseFromText"
+                )
         }
 
         override fun interpret() {
@@ -734,7 +748,7 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
                         conners = tmp.map { e -> toPx(e, daVinCi.context) ?: 0 }
                     }
                     else -> {
-                        Log.e(
+                        if (DaVinCi.enableDebugLog) Log.e(
                             sLogTag,
                             "error $text for corners, only support single or four element separated by ${","},e.g.: ${"1"},${"2dp"},${"1,2dp,3,4"}"
                         )
@@ -976,11 +990,12 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
                         }
                         e.startsWith(prop_gradient_radius) -> {
                             if (daVinCi != null)
-                                gradientRadius = toPx(e.replace(prop_gradient_radius, ""), daVinCi.context)
+                                gradientRadius =
+                                    toPx(e.replace(prop_gradient_radius, ""), daVinCi.context)
                         }
 
                         else -> {
-                            Log.d(sLogTag, "Gradient暂未支持解析:$e")
+                            if (DaVinCi.enableDebugLog) Log.d(sLogTag, "Gradient暂未支持解析:$e")
                         }
                     }
                 }
