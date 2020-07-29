@@ -975,7 +975,7 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
                         }
 
                         e.startsWith(prop_angle) -> {
-                            angle = parseInt(e.replace(prop_type, ""), 0) ?: 0
+                            angle = parseInt(e.replace(prop_angle, ""), 0) ?: 0
                         }
 
                         e.startsWith(prop_center_x) -> {
