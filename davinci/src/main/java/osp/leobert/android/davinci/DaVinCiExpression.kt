@@ -1,5 +1,6 @@
 package osp.leobert.android.davinci
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
 import android.util.Log
@@ -144,6 +145,7 @@ class DaVinCi(text: String?, val view: View) {
     // 待解析的文本内容
     // 使用空格分隔待解析文本内容
     private val stringTokenizer: StringTokenizer = StringTokenizer(text ?: "")
+
     // 当前命令
     var currentToken: String? = null
 
@@ -201,8 +203,14 @@ class DaVinCi(text: String?, val view: View) {
 @Suppress("WeakerAccess", "unused")
 sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
 
+    protected fun <T> log(str: String, any: T?): T? {
+        if (DaVinCi.enableDebugLog) Log.d(sLogTag, "${javaClass.simpleName}:$str")
+        return any
+    }
+
     // 节点名称
     protected var tokenName: String? = null
+
     // 文本内容
     protected var text: String? = null
 
@@ -282,6 +290,14 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
                     }
                 }
             }
+        }
+
+        protected fun parseState(text: String?): State? {
+            if (text.isNullOrEmpty()) return null
+            val t = text.toUpperCase(Locale.ENGLISH)
+            val ret = State.valueOf(t)
+
+            return ret
         }
 
         protected fun parseInt(text: String?, default: Int?): Int? {
@@ -882,7 +898,7 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
     //    android:gradientRadius="float"  //渐变的半径，只有当渐变类型为radial时才能使用
     //    android:useLevel=["true" | "false"] />  //使用LevelListDrawable时就要设置为true。设为false时才有渐变效果
 
-    class Gradient(daVinCi: DaVinCi? = null, manual: Boolean = false) :
+    class Gradient constructor(daVinCi: DaVinCi? = null, manual: Boolean = false) :
         CommandExpression(daVinCi, manual) {
 
         override fun startTag(): String = tag
@@ -1324,4 +1340,217 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
         }
     }
     //endregion
+
+    //region Color State List
+    class ColorStateList internal constructor(private val manual: Boolean = false) :
+        DaVinCiExpression(null) {
+
+        private var expressions: ListExpression? = null
+        override fun startTag(): String = tag
+
+
+        private fun exps(): ListExpression {
+            return if (expressions == null) {
+                val a = ListExpression(daVinCi, manual)
+                expressions = a
+                a
+            } else expressions!!
+        }
+
+
+        companion object {
+            const val tag = "csl:["
+        }
+
+
+
+        override fun injectThenParse(daVinCi: DaVinCi?) {
+            this.daVinCi = daVinCi
+            if (manual) return
+            daVinCi?.next()
+        }
+
+        override fun interpret() {
+            daVinCi?.let {
+                if (manual) {
+                    this.expressions = exps().apply {
+                        this.injectThenParse(it)
+                        this.interpret()
+                    }
+                } else if (!it.equalsWithCommand(tag)) {
+                    if (DaVinCi.enableDebugLog) Log.e(
+                        sLogTag,
+                        "The $tag is Excepted For Start When Not Manual!"
+                    )
+                } else {
+                    //解析型
+                    it.next()
+                    this.expressions = exps().apply {
+                        this.injectThenParse(it)
+                        this.interpret()
+                    }
+                }
+            }
+        }
+
+        override fun toString(): String {
+            return "$tag $expressions $END"
+        }
+    }
+    //endregion
+
+    //region StateColor
+    class StateColor(daVinCi: DaVinCi? = null, manual: Boolean = false) :
+        CommandExpression(daVinCi, manual) {
+        @ColorInt
+        var colorInt: Int? = null //这是解析出来的，不要乱赋值
+
+
+        var state: State? = null
+
+        companion object {
+            const val tag = "sc:["
+
+            const val prop_state = "state:"
+
+            const val prop_color = "color:"
+        }
+
+        init {
+            injectThenParse(daVinCi)
+        }
+
+        override fun injectThenParse(daVinCi: DaVinCi?) {
+            this.daVinCi = daVinCi
+            if (manual) {
+                if (parseFromText)
+                    parse(daVinCi)
+                return
+            }
+            asPrimitiveParse(tag, daVinCi)
+            parse(daVinCi)
+        }
+
+        private fun parse(daVinCi: DaVinCi?) {
+            text?.let {
+                colorInt = null
+                state = null
+
+                it.split(";").forEach { e ->
+                    when {
+                        e.startsWith(prop_color) -> {
+                            if (daVinCi != null)
+                                colorInt = parseColor(e.replace(prop_color, ""))
+                        }
+                        e.startsWith(prop_state) -> {
+                            if (daVinCi != null)
+                                state = parseState(e.replace(prop_state, ""))
+                        }
+                        else -> {
+                            log("暂未支持解析:$e", null)
+                        }
+                    }
+                }
+
+                state ?: log<State>("state 不能为空", null)
+                colorInt ?: log<Int>("color 不能为空", null)
+            }
+        }
+
+        override fun interpret() {
+            val state = state ?: log<State>("state 不能为空", null) ?: return
+            val colorInt = colorInt ?: log<Int>("color 不能为空", null) ?: return
+
+            if (tag == tokenName || manual) {
+                daVinCi?.let {
+                    state.adapt(it.core, colorInt)
+                }
+            }
+        }
+
+        override fun toString(): String {
+            return if (parseFromText)
+                "$tag $text $END"
+            else ("$tag " +
+                    state.run { ";$prop_state$this" } +
+                    colorInt.run { ";$prop_color$this" } +
+                    " $END").replaceFirst(";", "")
+        }
+    }
+    //endregion
+
+    internal interface StateColorAdapter {
+        fun adapt(core: DaVinCiCore, colorInt: Int)
+    }
+
+    enum class State : StateColorAdapter {
+        STATE_CHECKABLE_TRUE {
+            override fun adapt(core: DaVinCiCore, colorInt: Int) {
+                core.setCheckableTextColor(colorInt)
+            }
+        },
+        STATE_CHECKABLE_FALSE {
+            override fun adapt(core: DaVinCiCore, colorInt: Int) {
+                core.setUnCheckableTextColor(colorInt)
+            }
+        },
+
+        STATE_CHECKED_TRUE {
+            override fun adapt(core: DaVinCiCore, colorInt: Int) {
+                core.setCheckedTextColor(colorInt)
+            }
+
+        },
+        STATE_CHECKED_FALSE {
+            override fun adapt(core: DaVinCiCore, colorInt: Int) {
+                core.setUnCheckedTextColor(colorInt)
+            }
+        },
+
+        STATE_ENABLE_TRUE {
+            override fun adapt(core: DaVinCiCore, colorInt: Int) {
+                core.setEnabledTextColor(colorInt)
+            }
+
+        },
+        STATE_ENABLE_FALSE {
+            override fun adapt(core: DaVinCiCore, colorInt: Int) {
+                core.setUnEnabledTextColor(colorInt)
+            }
+        },
+
+        STATE_SELECTED_TRUE {
+            override fun adapt(core: DaVinCiCore, colorInt: Int) {
+                core.setSelectedTextColor(colorInt)
+            }
+        },
+        STATE_SELECTED_FALSE {
+            override fun adapt(core: DaVinCiCore, colorInt: Int) {
+                core.setUnSelectedTextColor(colorInt)
+            }
+        },
+
+        STATE_PRESSED_TRUE {
+            override fun adapt(core: DaVinCiCore, colorInt: Int) {
+                core.setPressedTextColor(colorInt)
+            }
+
+        },
+        STATE_PRESSED_FALSE {
+            override fun adapt(core: DaVinCiCore, colorInt: Int) {
+                core.setUnPressedTextColor(colorInt)
+            }
+        },
+
+        STATE_FOCUSED_TRUE {
+            override fun adapt(core: DaVinCiCore, colorInt: Int) {
+                core.setFocusedTextColor(colorInt)
+            }
+        },
+        STATE_FOCUSED_FALSE {
+            override fun adapt(core: DaVinCiCore, colorInt: Int) {
+                core.setUnFocusedTextColor(colorInt)
+            }
+        };
+    }
 }
