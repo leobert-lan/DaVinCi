@@ -656,14 +656,17 @@ class DaVinCiCore {
         } else {
             drawable = gradientDrawable
         }
-        return if (rippleEnable && rippleColor != null) {
+
+        val rippleColor = rippleColor?:return drawable ?: stateListDrawable
+
+        return if (rippleEnable) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 val contentDrawable = stateListDrawable ?: drawable
-                RippleDrawable(ColorStateList.valueOf(rippleColor!!), contentDrawable, contentDrawable)
+                RippleDrawable(ColorStateList.valueOf(rippleColor), contentDrawable, contentDrawable)
             } else {
                 val resultDrawable = StateListDrawable()
                 val unPressDrawable = gradientDrawable
-                unPressDrawable.setColor(rippleColor!!)
+                unPressDrawable.setColor(rippleColor)
                 resultDrawable.addState(intArrayOf(-android.R.attr.state_pressed), drawable)
                 resultDrawable.addState(intArrayOf(android.R.attr.state_pressed), unPressDrawable)
                 resultDrawable
@@ -684,65 +687,79 @@ class DaVinCiCore {
             val states = arrayOfNulls<IntArray>(textColorCount)
             val colors = IntArray(textColorCount)
             var index = 0
-            if (checkableTextColor != null) {
+
+            checkableTextColor?.let {
                 states[index] = intArrayOf(android.R.attr.state_checkable)
-                colors[index] = checkableTextColor!!
+                colors[index] = it
                 index++
             }
-            if (unCheckableTextColor != null) {
+
+            unCheckableTextColor?.let {
                 states[index] = intArrayOf(-android.R.attr.state_checkable)
-                colors[index] = unCheckableTextColor!!
+                colors[index] = it
                 index++
             }
-            if (checkedTextColor != null) {
+
+            checkedTextColor?.let {
                 states[index] = intArrayOf(android.R.attr.state_checked)
-                colors[index] = checkedTextColor!!
+                colors[index] = it
                 index++
             }
-            if (unCheckedTextColor != null) {
+
+            unCheckedTextColor?.let {
                 states[index] = intArrayOf(-android.R.attr.state_checked)
-                colors[index] = unCheckedTextColor!!
+                colors[index] = it
                 index++
             }
-            if (enabledTextColor != null) {
+
+            enabledTextColor?.let {
                 states[index] = intArrayOf(android.R.attr.state_enabled)
-                colors[index] = enabledTextColor!!
+                colors[index] = it
                 index++
             }
-            if (unEnabledTextColor != null) {
+
+            unEnabledTextColor?.let {
                 states[index] = intArrayOf(-android.R.attr.state_enabled)
-                colors[index] = unEnabledTextColor!!
+                colors[index] = it
                 index++
             }
-            if (selectedTextColor != null) {
+
+            selectedTextColor?.let {
                 states[index] = intArrayOf(android.R.attr.state_selected)
-                colors[index] = selectedTextColor!!
+                colors[index] = it
                 index++
             }
-            if (unSelectedTextColor != null) {
+
+            unSelectedTextColor?.let {
                 states[index] = intArrayOf(-android.R.attr.state_selected)
-                colors[index] = unSelectedTextColor!!
+                colors[index] = it
                 index++
             }
-            if (pressedTextColor != null) {
+
+            pressedTextColor?.let {
                 states[index] = intArrayOf(android.R.attr.state_pressed)
-                colors[index] = pressedTextColor!!
+                colors[index] = it
                 index++
             }
-            if (unPressedTextColor != null) {
+
+            unPressedTextColor?.let {
                 states[index] = intArrayOf(-android.R.attr.state_pressed)
-                colors[index] = unPressedTextColor!!
+                colors[index] = it
                 index++
             }
-            if (focusedTextColor != null) {
+
+            focusedTextColor?.let {
                 states[index] = intArrayOf(android.R.attr.state_focused)
-                colors[index] = focusedTextColor!!
+                colors[index] = it
                 index++
             }
-            if (unFocusedTextColor != null) {
+
+            unFocusedTextColor?.let {
                 states[index] = intArrayOf(-android.R.attr.state_focused)
-                colors[index] = unFocusedTextColor!!
+                colors[index] = it
+                //no necessary to increase index if no more to be add
             }
+
             return ColorStateList(states, colors)
         }
 
