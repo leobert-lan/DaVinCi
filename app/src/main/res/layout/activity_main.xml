@@ -81,6 +81,7 @@
             </TextView>
 
             <CheckBox
+                android:id="@+id/cb1"
                 daVinCi_bg="@{DaVinCiExpression.shape().corner(60).solid(`@i2`).stroke(`4dp`,`@i2`)}"
                 daVinCi_bg_pressed="@{DaVinCiExpression.shape().corner(`10dp,15dp,20dp,30dp`).stroke(`4dp`,`@i2`).gradient(`#26262a`,`#ff0699`,0)}"
                 android:layout_width="match_parent"

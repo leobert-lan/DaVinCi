@@ -5,9 +5,11 @@ import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import osp.leobert.android.davinci.daVinCi
 import com.example.simpletest.databinding.ActivityMainBinding
 import osp.leobert.android.davinci.DaVinCiExpression
+import osp.leobert.android.davinci.State
+import osp.leobert.android.davinci.daVinCi
+import osp.leobert.android.davinci.daVinCiColor
 
 class MainActivity : AppCompatActivity() {
 
@@ -29,6 +31,27 @@ class MainActivity : AppCompatActivity() {
         binding.executePendingBindings()
         Log.e("lmsg", "3")
 
+        DaVinCiExpression.stateColor().apply(
+            state = State.STATE_PRESSED_TRUE, color = Color.parseColor("#e5332c")
+        ).apply(
+            state = State.STATE_PRESSED_FALSE, color = Color.parseColor("#667700")
+        ).let {
+            binding.test.daVinCiColor(it)
+        }
+
+        DaVinCiExpression.stateColor().apply(
+            state = State.STATE_PRESSED_TRUE, color = Color.parseColor("#00aa00")
+        ).apply(
+            state = State.STATE_PRESSED_FALSE, color = Color.parseColor("#667700")
+        ).apply(
+            state = State.STATE_CHECKED_TRUE.name, color = "#ff0000"
+        ).apply(
+            state = State.STATE_CHECKED_FALSE, color = "#000000"
+        )
+            .let {
+                binding.cb1.daVinCiColor(it)
+            }
+
 
         binding.test.getTag(R.id.i1).let {
             Log.e("lmsg", (it ?: "null").toString())
@@ -39,7 +62,7 @@ class MainActivity : AppCompatActivity() {
                 normal = DaVinCiExpression.shape().oval()
                     .corner("40dp") //这个就没啥用了
                     .solid(resources.getColor(R.color.colorPrimaryDark))
-                    .stroke(12,Color.parseColor("#26262a"))
+                    .stroke(12, Color.parseColor("#26262a"))
             )
         }
 
