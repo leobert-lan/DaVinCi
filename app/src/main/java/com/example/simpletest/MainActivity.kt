@@ -70,5 +70,10 @@ class MainActivity : AppCompatActivity() {
         binding.test2.setOnClickListener {
             it.daVinCi("shape:[ gradient:[ type:linear;startColor:#ff3c08;endColor:#353538 ]; st:[ Oval ]; corners:[ 40dp ]; stroke:[ width:4dp;color:rc/colorAccent ] ]")
         }
+
+        binding.tvTestFactory.setOnTouchListener { v, event ->
+            v.isEnabled = !v.isEnabled
+            true
+        }
     }
 }
