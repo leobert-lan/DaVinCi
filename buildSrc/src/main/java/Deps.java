@@ -7,7 +7,7 @@ import java.util.List;
  * <p><b>Classname:</b> Dependencies </p>
  * Created by leobert on 2021/6/15.
  */
-interface Dependencies {
+interface Deps {
     String guava = "com.google.guava:guava:30.1.1-jre";
 
     interface AutoService {
