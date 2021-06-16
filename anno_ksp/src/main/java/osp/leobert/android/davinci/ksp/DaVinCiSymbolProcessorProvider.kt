@@ -37,8 +37,8 @@ private class DaVinCiSymbolProcessor(
      */
     private val providers: Multimap<String, Pair<String, KSFile>> = HashMultimap.create()
 
-    private val verify = environment.options["autoserviceKsp.verify"]?.toBoolean() == true
-    private val verbose = environment.options["autoserviceKsp.verbose"]?.toBoolean() == true
+    //    private val verify = environment.options["autoserviceKsp.verify"]?.toBoolean() == true
+    private val verbose = environment.options["daVinCi.verbose"]?.toBoolean() == true
 
     companion object {
         val DAVINCI_STYLE_NAME = requireNotNull(DaVinCiStyle::class.qualifiedName)
@@ -46,8 +46,14 @@ private class DaVinCiSymbolProcessor(
     }
 
     override fun process(resolver: Resolver): List<KSAnnotated> {
-        logger.info("hello,this is DaVinCiSymbolProcessor")
+        log("hello, this is DaVinCiSymbolProcessor")
         return emptyList()
+    }
+
+    private fun log(message: String) {
+        if (verbose) {
+            logger.warn("[DaVinCi-ksp]:$message")
+        }
     }
 
 }

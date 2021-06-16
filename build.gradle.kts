@@ -5,7 +5,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 buildscript {
     dependencies {
         classpath(kotlin("gradle-plugin", version = Dependencies.Kotlin.version))
-        classpath("com.android.tools.build:gradle:4.0.1")
+        classpath("com.android.tools.build:gradle:4.1.1")
         classpath("io.github.leobert-lan:easy-publish:1.1.1")
     }
 }

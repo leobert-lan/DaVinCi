@@ -1,22 +1,26 @@
 plugins {
     id("com.android.application")
-    id("com.google.devtools.ksp") version Dependencies.Kotlin.Ksp.version
-    kotlin("jvm")
-    kotlin("kapt")
+    id("com.google.devtools.ksp") //version Dependencies.Kotlin.Ksp.version
     id("kotlin-android")
+//    kotlin("jvm")
+    kotlin("kapt")
 }
 
 android {
-    compileSdkVersion(29)
-    buildToolsVersion("29.0.2")
+//configure<com.android.build.gradle.internal.dsl.BaseAppModuleExtension> {
+    compileSdkVersion(30)
+    buildToolsVersion("30.0.3")
 
     defaultConfig {
         applicationId = "com.example.simpletest"
         minSdkVersion(26)
-        targetSdkVersion(29)
+        targetSdkVersion(30)
         versionCode = 1
         versionName = "1.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+    }
+    buildFeatures {
+        this.dataBinding = true
     }
 
     buildTypes {
@@ -28,29 +32,10 @@ android {
     }
 }
 
-//android {
-//
-//    dataBinding {
-//        enabled = true
-//    }
-//
-//    compileSdkVersion 29
-//    buildToolsVersion "29.0.2"
-//    defaultConfig {
-//        applicationId "com.example.simpletest"
-//        minSdkVersion 26
-//        targetSdkVersion 29
-//        versionCode 1
-//        versionName "1.0"
-//        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-//    }
-//    buildTypes {
-//        release {
-//            minifyEnabled false
-//            proguardFiles getDefaultProguardFile ('proguard-android-optimize.txt'), 'proguard-rules.pro'
-//        }
-//    }
-//}
+ksp {
+//    arg("autoserviceKsp.verify", "true")
+    arg("daVinCi.verbose", "true")
+}
 
 dependencies {
     implementation("androidx.constraintlayout:constraintlayout:1.1.3")
@@ -67,5 +52,8 @@ dependencies {
     androidTestImplementation("androidx.test.ext:junit:1.1.2")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.3.0")
 
-//    ksp project(':anno_ksp')
+    ksp(project(":anno_ksp"))
+    implementation(project(":annotation"))
+
+//    ksp("dev.zacsweers.autoservice:auto-service-ksp:0.5.2")
 }
