@@ -35,6 +35,8 @@ android {
 ksp {
 //    arg("autoserviceKsp.verify", "true")
     arg("daVinCi.verbose", "true")
+    arg("daVinCi.pkg", "com.examole.simpletest")
+    arg("daVinCi.module", "App")
 }
 
 dependencies {
@@ -45,7 +47,7 @@ dependencies {
 
 
     implementation("org.jetbrains.kotlin:kotlin-stdlib:${Dependencies.Kotlin.version}")
-    implementation("androidx.appcompat:appcompat:1.2.0")
+    implementation("androidx.appcompat:appcompat:1.3.0")
     implementation("androidx.core:core-ktx:1.3.2")
 
     testImplementation("junit:junit:4.13.2")

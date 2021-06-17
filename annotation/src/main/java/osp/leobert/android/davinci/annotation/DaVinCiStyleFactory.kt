@@ -7,4 +7,5 @@ package osp.leobert.android.davinci.annotation
  * <p><b>Description:</b> notate osp.leobert.android.davinci.StyleRegistry.Style.Factory </p>
  * Created by leobert on 2021/6/15.
  */
-public annotation class DaVinCiStyleFactory(val styleName: String, val parent: String = "")
+@Target(AnnotationTarget.CLASS)
+public annotation class DaVinCiStyleFactory(val styleName: String)
