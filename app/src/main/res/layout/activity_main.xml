@@ -10,7 +10,7 @@
 
         <import type="osp.leobert.android.davinci.DaVinCiExpression" />
 
-        <import type="com.example.simpletest.tmp.Styles" />
+<!--                <import type="com.example.simpletest." />-->
 
     </data>
 
@@ -130,10 +130,10 @@
             </CheckBox>
 
             <!--            btn_style.main-->
-            <!--                daVinCiBgStyle="@{`btn_style.main`}"-->
+            <!--                daVinCiBgStyle="@{AppDaVinCiStyles.btn_style_main}"-->
             <TextView
                 android:id="@+id/tv_test_factory"
-                daVinCiBgStyle="@{Styles.Text_Btn_test}"
+                daVinCiBgStyle="@{`btn_style.main`}"
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
                 android:layout_marginTop="10dp"

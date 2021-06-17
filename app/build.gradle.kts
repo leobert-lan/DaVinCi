@@ -10,6 +10,10 @@ android {
 //configure<com.android.build.gradle.internal.dsl.BaseAppModuleExtension> {
     compileSdkVersion(30)
     buildToolsVersion("30.0.3")
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
 
     defaultConfig {
         applicationId = "com.example.simpletest"
@@ -25,9 +29,25 @@ android {
 
     buildTypes {
         getByName("release") {
+            sourceSets {
+                getByName("main") {
+                    java.srcDir(File("build/generated/ksp/release/kotlin"))
+                }
+            }
             isMinifyEnabled = false
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro")
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
+        }
+
+        getByName("debug").apply {
+
+            sourceSets {
+                getByName("main") {
+                    java.srcDir(File("build/generated/ksp/debug/kotlin"))
+                }
+            }
         }
     }
 }

@@ -3,6 +3,7 @@ package com.example.simpletest
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.example.simpletest.databinding.ActivityMainBinding
@@ -57,14 +58,16 @@ class MainActivity : AppCompatActivity() {
             Log.e("lmsg", (it ?: "null").toString())
         }
 
-        binding.test.setOnClickListener {
+
+        binding.test.setOnClickListener(View.OnClickListener {
             it.daVinCi(
                 normal = DaVinCiExpression.shape().oval()
                     .corner("40dp") //这个就没啥用了
                     .solid(resources.getColor(R.color.colorPrimaryDark))
                     .stroke(12, Color.parseColor("#26262a"))
             )
-        }
+
+        })
 
         //这种不推荐使用啊，考虑语法解析一方面是考虑方便打印，另一方面是考虑到以后替换xml内的方案时，可以有后手
         binding.test2.setOnClickListener {

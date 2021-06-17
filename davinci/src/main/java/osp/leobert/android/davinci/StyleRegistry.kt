@@ -85,7 +85,7 @@ object StyleRegistry {
         }
     }
 
-    class Style(val name: String) {
+    open class Style(val name: String) {
         private val statedExpressions: MutableMap<State, DaVinCiExpression> = mutableMapOf()
 
         fun register(state: State, expression: DaVinCiExpression): Style = this.apply {
