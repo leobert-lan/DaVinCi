@@ -3,6 +3,7 @@ package com.example.simpletest.factories
 import osp.leobert.android.davinci.DaVinCiExpression
 import osp.leobert.android.davinci.State
 import osp.leobert.android.davinci.StyleRegistry
+import osp.leobert.android.davinci.annotation.DaVinCiStyleFactory
 
 /**
  * <p><b>Package:</b> com.example.simpletest.factories </p>
@@ -10,6 +11,7 @@ import osp.leobert.android.davinci.StyleRegistry
  * <p><b>Classname:</b> DemoStyleFactory </p>
  * Created by leobert on 2021/6/2.
  */
+@DaVinCiStyleFactory(styleName = "btn_style.main")
 class DemoStyleFactory : StyleRegistry.Style.Factory() {
     override val styleName: String = "btn_style.main"
 

@@ -1,0 +1,31 @@
+apply plugin: 'java-library'
+apply plugin: 'kotlin'
+apply plugin: 'kotlin-kapt'
+
+
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+
+    implementation Deps.autoService.annotations
+    implementation Deps.guava
+    implementation project(':annotation')
+
+    kapt Deps.autoService.compiler
+
+    compileOnly Deps.kotlin.ksp.api
+    implementation Deps.kotlinPoet.kotlinPoet
+
+    testImplementation Deps.kotlin.ksp.api
+    testImplementation Deps.testing.truth
+    testImplementation Deps.testing.junit
+
+    // TODO re-enable with new release
+//    testImplementation Dependencies.kotlin.ksp.ksp
+//    testImplementation Dependencies.testing.compileTesting
+//    testImplementation Dependencies.kotlin.compilerEmbeddable
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+}

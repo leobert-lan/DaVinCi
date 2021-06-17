@@ -10,6 +10,8 @@
 
         <import type="osp.leobert.android.davinci.DaVinCiExpression" />
 
+        <import type="com.example.simpletest.tmp.Styles" />
+
     </data>
 
     <androidx.core.widget.NestedScrollView
@@ -48,8 +50,8 @@
                 daVinCi_bg_unpressed="@{DaVinCiExpression.shape().corner(60).solid(`@i1`).stroke(`4dp`,`@i2`)}"
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
-                android:gravity="center"
                 android:layout_marginTop="10dp"
+                android:gravity="center"
                 android:text="Hello World!">
 
                 <tag
@@ -127,16 +129,16 @@
                     android:value="@string/app_name" />
             </CheckBox>
 
-<!--            btn_style.main-->
-
+            <!--            btn_style.main-->
+            <!--                daVinCiBgStyle="@{`btn_style.main`}"-->
             <TextView
                 android:id="@+id/tv_test_factory"
-                daVinCiBgStyle="@{`btn_style.main`}"
+                daVinCiBgStyle="@{Styles.Text_Btn_test}"
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
+                android:layout_marginTop="10dp"
                 android:gravity="center"
-                android:text="点击切换enable，style-factory使用"
-                android:layout_marginTop="10dp"/>
+                android:text="点击切换enable，style-factory使用" />
 
         </LinearLayout>
 
