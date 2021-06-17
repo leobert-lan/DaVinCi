@@ -14,3 +14,4 @@
 .cxx
 /buildSrc/build/
 /.idea/
+/gradle/wrapper/
