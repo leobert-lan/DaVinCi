@@ -21,18 +21,6 @@ private class DaVinCiSymbolProcessor(
     private val codeGenerator = environment.codeGenerator
     private val logger = environment.logger
 
-//    /**
-//     * Maps the class names of service provider interfaces to the
-//     * class names of the concrete classes which implement them plus their KSFile (for incremental
-//     * processing).
-//     *
-//     * For example,
-//     * ```
-//     * "com.google.apphosting.LocalRpcService" -> "com.google.apphosting.datastore.LocalDatastoreService"
-//     * ```
-//     */
-//    private val providers: Multimap<String, Pair<String, KSFile>> = HashMultimap.create()
-
     private val styleProviders: MutableMap<String, MetaInfo> = hashMapOf()
 
     private val styleFactoryProviders: MutableMap<String, MetaInfo> = hashMapOf()
