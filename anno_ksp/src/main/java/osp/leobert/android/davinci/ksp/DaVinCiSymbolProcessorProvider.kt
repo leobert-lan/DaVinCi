@@ -21,6 +21,7 @@ private class DaVinCiSymbolProcessor(
     private val codeGenerator = environment.codeGenerator
     private val logger = environment.logger
 
+
     private val styleProviders: MutableMap<String, MetaInfo> = hashMapOf()
 
     private val styleFactoryProviders: MutableMap<String, MetaInfo> = hashMapOf()
@@ -222,10 +223,6 @@ private class DaVinCiSymbolProcessor(
             }
             .build()
         val fileSpec = FileSpec.get(packageName ?: "", daVinCiStylesSpec)
-
-//        styleProviders.clear()
-//        styleFactoryProviders.clear()
-
 
         val dependencies = Dependencies(true)
         thread(true) {
