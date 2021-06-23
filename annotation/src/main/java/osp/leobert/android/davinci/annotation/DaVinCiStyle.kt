@@ -8,4 +8,5 @@ package osp.leobert.android.davinci.annotation
  * Created by leobert on 2021/6/15.
  */
 @Target(AnnotationTarget.CLASS)
+@Retention(AnnotationRetention.SOURCE)
 public annotation class DaVinCiStyle(val styleName: String)
