@@ -6,7 +6,7 @@ buildscript {
     dependencies {
         classpath(kotlin("gradle-plugin", version = Dependencies.Kotlin.version))
         classpath("com.android.tools.build:gradle:4.1.1")
-        classpath("io.github.leobert-lan:easy-publish:1.1.1")
+        classpath("io.github.leobert-lan:easy-publish:1.2.0")
     }
 }
 
@@ -14,7 +14,7 @@ plugins {
     id("com.google.devtools.ksp") version Dependencies.Kotlin.Ksp.version apply false
     kotlin("jvm") version Dependencies.Kotlin.version apply false
     id("org.jetbrains.dokka") version Dependencies.Kotlin.dokkaVersion  apply false
-    id("com.vanniktech.maven.publish") version "0.15.1" apply false
+//    id("com.vanniktech.maven.publish") version "0.15.1" apply false
 }
 
 subprojects {
