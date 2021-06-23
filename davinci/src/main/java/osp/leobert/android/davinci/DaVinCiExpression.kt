@@ -107,7 +107,7 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
 
         protected fun parseState(text: String?): State? {
             if (text.isNullOrEmpty()) return null
-            val t = text.toUpperCase(Locale.ENGLISH)
+            val t = text.uppercase(Locale.ENGLISH)
 
             return State.valueOf(t)
         }

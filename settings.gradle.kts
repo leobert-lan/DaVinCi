@@ -11,3 +11,4 @@ include(":davinci")
 include(":annotation")
 include(":anno_ksp")
 
+include(":annotation-java")

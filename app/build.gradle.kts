@@ -2,7 +2,6 @@ plugins {
     id("com.android.application")
     id("com.google.devtools.ksp") //version Dependencies.Kotlin.Ksp.version
     id("kotlin-android")
-//    kotlin("jvm")
     kotlin("kapt")
 }
 
@@ -53,7 +52,6 @@ android {
 }
 
 ksp {
-//    arg("autoserviceKsp.verify", "true")
     arg("daVinCi.verbose", "true")
     arg("daVinCi.pkg", "com.examole.simpletest")
     arg("daVinCi.module", "App")
@@ -75,7 +73,8 @@ dependencies {
     androidTestImplementation("androidx.test.espresso:espresso-core:3.3.0")
 
     ksp(project(":anno_ksp"))
-    implementation(project(":annotation"))
-
-//    ksp("dev.zacsweers.autoservice:auto-service-ksp:0.5.2")
+    //kotlin注解
+//    implementation(project(":annotation"))
+    //java注解
+    implementation(project(":annotation-java"))
 }
