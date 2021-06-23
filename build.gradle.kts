@@ -3,6 +3,7 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinProjectExtension
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 buildscript {
+    val kotlin_version by extra("1.5.10")
     dependencies {
         classpath(kotlin("gradle-plugin", version = Dependencies.Kotlin.version))
         classpath("com.android.tools.build:gradle:4.1.1")

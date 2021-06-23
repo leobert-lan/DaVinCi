@@ -73,6 +73,7 @@ dependencies {
     androidTestImplementation("androidx.test.espresso:espresso-core:3.3.0")
 
     ksp(project(":anno_ksp"))
+
     //kotlin注解
 //    implementation(project(":annotation"))
     //java注解
