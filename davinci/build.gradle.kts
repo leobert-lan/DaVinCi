@@ -34,7 +34,7 @@ android {
 
 dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib:${Dependencies.Kotlin.version}")
-    implementation("androidx.appcompat:appcompat:1.2.0")
+    implementation("androidx.appcompat:appcompat:1.3.0")
     implementation("androidx.core:core-ktx:1.3.2")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.2")
@@ -42,8 +42,6 @@ dependencies {
 }
 
 
-//todo change to use https://github.com/vanniktech/gradle-maven-publish-plugin
-////osp.leobert.maven.publish.bean.
 EasyPublish {
     sourceSet = android.sourceSets.named("main").get().java.srcDirs
     docClassPathAppend = project.files(android.bootClasspath.joinToString(
