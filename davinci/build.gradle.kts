@@ -2,6 +2,7 @@ plugins {
     id("com.android.library")
     id("kotlin-android")
     id("kotlin-kapt")
+    id("osp.leobert.maven.publish")
 }
 
 
@@ -42,43 +43,39 @@ dependencies {
 
 
 //todo change to use https://github.com/vanniktech/gradle-maven-publish-plugin
-////osp.leobert.maven.publish.bean.EasyPublish {
-//configure<EasyPublish> {
-//    sourceSet = android.sourceSets.named("main").get().java.srcDirs
-//    docClassPathAppend = project.files(android.bootClasspath.joinToString(
-//        separator = File.pathSeparator
-//    ) {
-//        it.name
-//    }).asPath
-//
-//    docExcludes = arrayListOf("osp/leobert/android/davinci/*")
-//
-//    Tmp().apply {
-//        value = "build/outputs/aar/davinci-release.aar"
-//    }.let {
-//        if (!artifactsAppend.contains(it))
-//            artifactsAppend.add(it)
-//    }
-//
-//    description =
-//        "An Android library to help create background drawable and ColorStateList without xml"
-//    Developer().apply {
-//        this.id = "leobert"
-//        this.name = "leobert"
-//        this.email = "leobert.l@hotmail.com"
-//    }.let { developer ->
-//        if (!mDevelopers.contains(developer)) mDevelopers.add(developer)
-//    }
-//
-//
-//    groupId = "io.github.leobert-lan"
-//    artifactId = "davinci"
-//    version = "0.0.3-beta"
-//    packaging = "aar"
-//    siteUrl = "https://github.com/leobert-lan/DaVinCi"
-//    gitUrl = "https://github.com/leobert-lan/DaVinCi.git"
-//    licenseName = "MIT"
-//    licenseUrl = "https://github.com/leobert-lan/DaVinCi/blob/master/LICENSE"
-//
-//    mavenRepoUrl = "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
-//}
+////osp.leobert.maven.publish.bean.
+EasyPublish {
+    sourceSet = android.sourceSets.named("main").get().java.srcDirs
+    docClassPathAppend = project.files(android.bootClasspath.joinToString(
+        separator = File.pathSeparator
+    ) {
+        it.name
+    }).asPath
+
+    docExcludes = arrayListOf("osp/leobert/android/davinci/*")
+
+    artifact {
+        value = "build/outputs/aar/davinci-release.aar"
+    }
+
+    description =
+        "An Android library to help create background drawable and ColorStateList without xml"
+
+    developer {
+
+        this.id = "leobert"
+        this.name = "leobert"
+        this.email = "leobert.l@hotmail.com"
+    }
+
+    groupId = "io.github.leobert-lan"
+    artifactId = "davinci"
+    version = "0.0.3-beta"
+    packaging = "aar"
+    siteUrl = "https://github.com/leobert-lan/DaVinCi"
+    gitUrl = "https://github.com/leobert-lan/DaVinCi.git"
+    licenseName = "MIT"
+    licenseUrl = "https://github.com/leobert-lan/DaVinCi/blob/master/LICENSE"
+
+    mavenRepoUrl = "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
+}
