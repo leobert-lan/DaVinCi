@@ -65,8 +65,6 @@ ksp {
 dependencies {
     implementation("androidx.constraintlayout:constraintlayout:1.1.3")
 
-    implementation(project(":davinci"))
-//    implementation 'osp.leobert.android:davinci:0.0.1'
 
 
     implementation("org.jetbrains.kotlin:kotlin-stdlib:${Dependencies.Kotlin.version}")
@@ -77,10 +75,16 @@ dependencies {
     androidTestImplementation("androidx.test.ext:junit:1.1.2")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.3.0")
 
-    ksp(project(":anno_ksp"))
 
+
+    implementation(Dependencies.DaVinVi.annotation)
+    ksp(Dependencies.DaVinVi.ksp)
+    implementation(Dependencies.DaVinVi.api)
+    
+//    implementation(project(":davinci"))
+//    ksp(project(":anno_ksp"))
     //kotlin注解
 //    implementation(project(":annotation"))
     //java注解
-    implementation(project(":annotation-java"))
+//    implementation(project(":annotation-java"))
 }
