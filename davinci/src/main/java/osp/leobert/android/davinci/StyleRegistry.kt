@@ -1,5 +1,6 @@
 package osp.leobert.android.davinci
 
+import android.annotation.SuppressLint
 import android.util.Log
 import androidx.core.view.ViewCompat
 
@@ -121,6 +122,7 @@ object StyleRegistry {
             return result
         }
 
+        @SuppressLint("all")
         fun applyTo(daVinCi: DaVinCi) {
             val daVinCiLoop = DaVinCi(null, daVinCi.view)
             statedExpressions.entries.forEach {

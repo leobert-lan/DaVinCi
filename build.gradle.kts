@@ -24,6 +24,7 @@ plugins {
 
 subprojects {
     repositories {
+        mavenLocal()
         mavenCentral()
         google()
         // Required for Dokka

@@ -22,15 +22,16 @@ dependencies {
   testImplementation(Dependencies.Testing.compileTesting)
   testImplementation(Dependencies.Kotlin.compilerEmbeddable)
 
+  implementation(Dependencies.DaVinVi.annotation)
+
 //  todo use stable version when release
-  implementation(project(":annotation"))
+//  implementation(project(":annotation"))
 
 }
 
 
 EasyPublish {
   sourceSet = sourceSets.main.get().java.srcDirs
-  notStandardJavaComponent = false
 
   docExcludes = arrayListOf("osp/leobert/android/davinci/*")
 
