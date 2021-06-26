@@ -12,3 +12,4 @@ include(":annotation")
 include(":anno_ksp")
 
 include(":annotation-java")
+include(":davinci_styles_viewer")

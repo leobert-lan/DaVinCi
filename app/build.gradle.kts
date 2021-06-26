@@ -21,6 +21,7 @@ android {
         versionCode = 1
         versionName = "1.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        flavorDimensions.add("versionCode")
     }
     buildFeatures {
         this.dataBinding = true
@@ -46,6 +47,10 @@ android {
                 getByName("main") {
                     java.srcDir(File("build/generated/ksp/debug/kotlin"))
                 }
+            }
+
+            dependencies {
+//                ksp(project(":anno_ksp"))
             }
         }
     }
@@ -73,6 +78,7 @@ dependencies {
     androidTestImplementation("androidx.test.espresso:espresso-core:3.3.0")
 
     ksp(project(":anno_ksp"))
+
     //kotlin注解
 //    implementation(project(":annotation"))
     //java注解

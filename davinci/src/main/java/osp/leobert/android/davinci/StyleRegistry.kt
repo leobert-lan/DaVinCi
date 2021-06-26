@@ -15,6 +15,12 @@ object StyleRegistry {
 
     private val lazyFactoryOfStyles: MutableMap<String, Style.Factory> = mutableMapOf()
 
+    fun allStyleNames(): List<String> {
+        return styles.keys.toCollection(linkedSetOf()).apply {
+            addAll(lazyFactoryOfStyles.keys)
+        }.sorted()
+    }
+
     fun register(style: Style) {
         if (DaVinCi.enableDebugLog)
             Log.d(DaVinCiExpression.sLogTag, "StyleRegistry register style:${style}")
