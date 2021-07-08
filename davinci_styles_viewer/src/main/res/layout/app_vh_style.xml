@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<layout>
+
+    <data>
+
+        <variable
+            name="vo"
+            type="osp.leobert.android.davinci.viewer.widget.StyleVO2" />
+
+        <variable
+            name="itemInteract"
+            type="osp.leobert.android.davinci.viewer.widget.StyleItemInteract" />
+
+        <variable
+            name="vh"
+            type="osp.leobert.androidkt.pandora.ui.DataBindingViewHolder" />
+    </data>
+
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <!-- android:onClick="@{(view)->itemInteract.foo(vh.getAdapterPosition(),vo)}"-->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Style" />
+    </FrameLayout>
+</layout>

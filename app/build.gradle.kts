@@ -51,6 +51,7 @@ android {
 
             dependencies {
 //                ksp(project(":anno_ksp"))
+                implementation(project(":davinci_styles_viewer"))
             }
         }
     }
