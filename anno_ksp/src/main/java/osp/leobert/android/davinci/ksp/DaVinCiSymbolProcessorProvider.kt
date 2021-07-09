@@ -6,7 +6,12 @@ import com.google.devtools.ksp.symbol.*
 import com.squareup.kotlinpoet.*
 import osp.leobert.android.davinci.annotation.DaVinCiStyle
 import osp.leobert.android.davinci.annotation.DaVinCiStyleFactory
+import java.io.OutputStream
 import kotlin.concurrent.thread
+
+public fun OutputStream.appendText(str: String) {
+    this.write(str.toByteArray())
+}
 
 @AutoService(SymbolProcessorProvider::class)
 public class DaVinCiSymbolProcessorProvider : SymbolProcessorProvider {
@@ -66,7 +71,7 @@ private class DaVinCiSymbolProcessor(
             handleDaVinCiStyleFactory(resolver = resolver, notationType = it)
         }
 
-        generateAndClearConfigFiles()
+//        generateAndClearConfigFiles()
 
 
         return emptyList()
@@ -225,23 +230,33 @@ private class DaVinCiSymbolProcessor(
         val fileSpec = FileSpec.get(packageName ?: "", daVinCiStylesSpec)
 
         val dependencies = Dependencies(true)
-        thread(true) {
-            synchronized(codeGenerator) {
 
-                codeGenerator.createNewFile(
-                    dependencies = dependencies,
-                    packageName = packageName ?: "",
-                    fileName = "${moduleName ?: ""}DaVinCiStyles",
-                    extensionName = "kt"
-                ).bufferedWriter().use { writer ->
-                    try {
-                        fileSpec.writeTo(writer)
-                    } catch (e: Exception) {
-                        logE(e.message ?: "", null)
-                    } finally {
+//        val target = StringBuilder()
+//        fileSpec.writeTo(target)
+//        logE(target.toString(),null)
+
+        val file = codeGenerator.createNewFile(
+            dependencies = dependencies,
+            packageName = packageName ?: "",
+            fileName = "${moduleName ?: ""}DaVinCiStyles",
+            extensionName = "kt"
+        )
+
+        thread(true) {
+
+            codeGenerator.createNewFile(
+                dependencies = dependencies,
+                packageName = packageName ?: "",
+                fileName = "${moduleName ?: ""}DaVinCiStyles",
+                extensionName = "kt"
+            ).bufferedWriter().use { writer ->
+                try {
+                    fileSpec.writeTo(writer)
+                } catch (e: Exception) {
+                    logE(e.message ?: "", null)
+                } finally {
 //                        writer.flush()
 //                        writer.close()
-                    }
                 }
             }
         }
