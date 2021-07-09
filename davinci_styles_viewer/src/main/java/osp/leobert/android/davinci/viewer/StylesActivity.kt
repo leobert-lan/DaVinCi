@@ -6,6 +6,7 @@ import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import osp.leobert.android.davinci.StyleRegistry
+import osp.leobert.android.davinci.annotation.PreviewConfigRegistry
 import osp.leobert.android.davinci.viewer.widget.StyleVHCreator
 import osp.leobert.android.davinci.viewer.widget.StyleVO2
 import osp.leobert.android.pandora.Logger
@@ -44,7 +45,7 @@ class StylesActivity : AppCompatActivity() {
                 "${this.size} Bg-style detected",
                 Toast.LENGTH_SHORT).show()
         }.map {
-            StyleVO2.Impl(it)
+            StyleVO2.Impl(it, PreviewConfigRegistry.find(it))
         }.let {
             dataSet.setData(it)
         }

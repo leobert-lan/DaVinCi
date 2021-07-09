@@ -39,6 +39,17 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+
+//            dependencies {
+//                ksp(project(":anno_ksp"))
+//            }
+
+            ksp {
+                arg("daVinCi.verbose", "true")
+                arg("daVinCi.pkg", "com.examole.simpletest")
+                arg("daVinCi.module", "App")
+                arg("daVinCi.preview", "false")
+            }
         }
 
         getByName("debug").apply {
@@ -49,19 +60,22 @@ android {
                 }
             }
 
-            dependencies {
-//                ksp(project(":anno_ksp"))
-                implementation(project(":davinci_styles_viewer"))
+            ksp {
+                arg("daVinCi.verbose", "true")
+                arg("daVinCi.pkg", "com.examole.simpletest")
+                arg("daVinCi.module", "App")
+                arg("daVinCi.preview", "true")
             }
         }
     }
 }
 
-ksp {
-    arg("daVinCi.verbose", "true")
-    arg("daVinCi.pkg", "com.examole.simpletest")
-    arg("daVinCi.module", "App")
-}
+//ksp {
+//    arg("daVinCi.verbose", "true")
+//    arg("daVinCi.pkg", "com.examole.simpletest")
+//    arg("daVinCi.module", "App")
+//    arg("daVinCi.preview", "true")
+//}
 
 dependencies {
     implementation("androidx.constraintlayout:constraintlayout:1.1.3")
@@ -79,9 +93,10 @@ dependencies {
     androidTestImplementation("androidx.test.espresso:espresso-core:3.3.0")
 
     ksp(project(":anno_ksp"))
+    debugImplementation(project(":davinci_styles_viewer"))
 
-    //kotlin注解
-//    implementation(project(":annotation"))
+//    kotlin注解
+    implementation(project(":annotation"))
     //java注解
-    implementation(project(":annotation-java"))
+//    implementation(project(":annotation-java")) 仅用于测试兼容性，
 }

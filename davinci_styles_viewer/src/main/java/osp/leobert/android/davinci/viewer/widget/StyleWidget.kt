@@ -1,20 +1,29 @@
 package osp.leobert.android.davinci.viewer.widget
 
-import android.util.Log
+import android.graphics.Color
+import android.util.DisplayMetrics
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
-import osp.leobert.android.davinci.viewer.databinding.AppVhStyleBinding
-import osp.leobert.android.davinci.viewer.R
-import java.util.*
-
-import androidx.databinding.Observable
+import android.view.Window
 import androidx.databinding.BaseObservable
-import osp.leobert.android.davinci.StyleRegistry
+import androidx.databinding.DataBindingUtil
+import androidx.databinding.Observable
+import osp.leobert.android.davinci.annotation.PreviewConfig
+import osp.leobert.android.davinci.annotation.StyleViewer
 import osp.leobert.android.davinci.daVinCiBgStyle
-
+import osp.leobert.android.davinci.viewer.R
+import osp.leobert.android.davinci.viewer.databinding.AppVhStyleBinding
 import osp.leobert.androidkt.pandora.rv.*
 import osp.leobert.androidkt.pandora.ui.DataBindingViewHolder
+import java.util.*
+
+private val Int.dp: Int
+    get() = this.toPx()
+
+private fun Int.toPx(): Int {
+    return (this * DisplayMetrics.DENSITY_DEVICE_STABLE + 0.5f).toInt()
+}
 
 interface StyleVO2 : DataSet.Data, DataSet.ReactiveData<StyleVO2> {
 
@@ -24,8 +33,13 @@ interface StyleVO2 : DataSet.Data, DataSet.ReactiveData<StyleVO2> {
 
     var sampleEnabled: Boolean
 
+    val width: Int
+    val height: Int
+    val background: String
+    val type: Int
 
-    class Impl(override val name: String) : StyleVO2 {
+
+    class Impl(override val name: String, val config: PreviewConfig?) : StyleVO2 {
         private val viewHolders by lazy { ReactiveViewHolders<StyleVO2>() }
 
         override var sampleChecked: Boolean = false
@@ -33,11 +47,20 @@ interface StyleVO2 : DataSet.Data, DataSet.ReactiveData<StyleVO2> {
                 field = value
                 viewHolders.notifyPropChanged(this, 1)
             }
+
         override var sampleEnabled: Boolean = true
             set(value) {
                 field = value
                 viewHolders.notifyPropChanged(this, 2)
             }
+
+        override val width: Int = config?.width ?: ViewGroup.LayoutParams.MATCH_PARENT
+
+        override val height: Int = config?.height ?: 48.dp
+
+        override val background: String = config?.background ?: "#ffffff"
+
+        override val type: Int = config?.type ?: StyleViewer.FLAG_BG or StyleViewer.FLAG_CSL
 
         override fun bindReactiveVh(viewHolder: IReactiveViewHolder<StyleVO2>) {
             viewHolders.add(viewHolder)
@@ -64,6 +87,20 @@ class StyleVH(val binding: AppVhStyleBinding) :
 
         binding.sample.isEnabled = data.sampleEnabled
         binding.sample.isChecked = data.sampleChecked
+        binding.sample.text = if (data.type.and(StyleViewer.FLAG_CSL) == StyleViewer.FLAG_CSL) {
+            "Sample Area"
+        } else {
+            ""
+        }
+
+
+        binding.sample.layoutParams.let {
+            it.width = data.width
+            it.height = data.height
+        }
+
+        binding.flSample.setCardBackgroundColor(Color.parseColor(data.background))
+
 
         binding.executePendingBindings()
     }

@@ -31,6 +31,7 @@ dependencies {
     implementation("com.google.android.material:material:1.2.1")
 //    implementation("androidx.constraintlayout:constraintlayout:2.0.1")
     compileOnly(project(":davinci"))
+    compileOnly(project(":annotation"))
 //    implementation 'osp.leobert.android:davinci:0.0.1'
 
 

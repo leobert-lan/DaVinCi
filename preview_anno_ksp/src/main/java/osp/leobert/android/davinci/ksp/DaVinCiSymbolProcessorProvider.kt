@@ -239,8 +239,8 @@ private class DaVinCiSymbolProcessor(
                     } catch (e: Exception) {
                         logE(e.message ?: "", null)
                     } finally {
-//                        writer.flush()
-//                        writer.close()
+                        writer.flush()
+                        writer.close()
                     }
                 }
             }

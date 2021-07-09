@@ -1,9 +1,11 @@
 package com.example.simpletest.factories
 
+import android.view.ViewGroup
 import osp.leobert.android.davinci.DaVinCiExpression
 import osp.leobert.android.davinci.State
 import osp.leobert.android.davinci.StyleRegistry
 import osp.leobert.android.davinci.annotation.DaVinCiStyle
+import osp.leobert.android.davinci.annotation.StyleViewer
 
 /**
  * <p><b>Package:</b> com.example.simpletest.factories </p>
@@ -13,6 +15,8 @@ import osp.leobert.android.davinci.annotation.DaVinCiStyle
  * Created by leobert on 2021/6/17.
  */
 @DaVinCiStyle(styleName = "btn_style.main")
+@StyleViewer(height = 40, width = ViewGroup.LayoutParams.MATCH_PARENT,
+    type = StyleViewer.FLAG_CSL or StyleViewer.FLAG_BG, background = "#ffffff")
 class DemoStyle : StyleRegistry.Style("btn_style.main") {
     init {
         this.register(
@@ -35,6 +39,8 @@ class DemoStyle : StyleRegistry.Style("btn_style.main") {
 }
 
 @DaVinCiStyle(styleName = "btn_style.test")
+@StyleViewer(height = 48, width = 150,
+    type = StyleViewer.FLAG_CSL or StyleViewer.FLAG_BG, background = "#ffffff")
 class DemoStyle2 : StyleRegistry.Style("btn_style.test") {
     init {
         this.register(
