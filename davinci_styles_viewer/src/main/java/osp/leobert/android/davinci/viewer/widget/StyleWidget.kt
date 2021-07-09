@@ -3,9 +3,7 @@ package osp.leobert.android.davinci.viewer.widget
 import android.graphics.Color
 import android.util.DisplayMetrics
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.view.Window
 import androidx.databinding.BaseObservable
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.Observable
@@ -22,7 +20,7 @@ private val Int.dp: Int
     get() = this.toPx()
 
 private fun Int.toPx(): Int {
-    return (this * DisplayMetrics.DENSITY_DEVICE_STABLE + 0.5f).toInt()
+    return (this * DisplayMetrics.DENSITY_DEVICE_STABLE / DisplayMetrics.DENSITY_MEDIUM + 0.5f).toInt()
 }
 
 interface StyleVO2 : DataSet.Data, DataSet.ReactiveData<StyleVO2> {

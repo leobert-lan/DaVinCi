@@ -81,7 +81,7 @@ public class DaVinCiPreviewSymbolProcessor(
             factoryNotated = factoryNotated)
 
 
-        generateAndClearConfigFiles(configsProviders = configsProviders)
+//        generateAndClearConfigFiles(configsProviders = configsProviders)
 
 
         return emptyList()

@@ -44,12 +44,12 @@ android {
 //                ksp(project(":anno_ksp"))
 //            }
 
-            ksp {
-                arg("daVinCi.verbose", "true")
-                arg("daVinCi.pkg", "com.examole.simpletest")
-                arg("daVinCi.module", "App")
-                arg("daVinCi.preview", "false")
-            }
+//            ksp {
+//                arg("daVinCi.verbose", "true")
+//                arg("daVinCi.pkg", "com.examole.simpletest")
+//                arg("daVinCi.module", "App")
+//                arg("daVinCi.preview", "false")
+//            }
         }
 
         getByName("debug").apply {
