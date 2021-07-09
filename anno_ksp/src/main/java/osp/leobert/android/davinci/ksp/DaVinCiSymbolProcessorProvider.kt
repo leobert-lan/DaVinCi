@@ -74,7 +74,7 @@ private class DaVinCiSymbolProcessor(
 
     private fun log(message: String) {
         if (verbose) {
-            logger.info("[DaVinCi-ksp]:$message")
+            logger.warn("[DaVinCi-ksp]:$message")
         }
     }
 
@@ -173,6 +173,7 @@ private class DaVinCiSymbolProcessor(
 
 
     private fun generateAndClearConfigFiles() {
+        log("generate register styles logic")
 
         val properties = HashSet<MetaInfo>().apply {
             addAll(styleProviders.values)
@@ -227,6 +228,7 @@ private class DaVinCiSymbolProcessor(
         val dependencies = Dependencies(true)
         thread(true) {
             synchronized(codeGenerator) {
+                log(fileSpec.toString())
 
                 codeGenerator.createNewFile(
                     dependencies = dependencies,

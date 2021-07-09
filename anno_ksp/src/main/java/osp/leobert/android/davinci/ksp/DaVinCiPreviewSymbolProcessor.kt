@@ -81,7 +81,7 @@ public class DaVinCiPreviewSymbolProcessor(
             factoryNotated = factoryNotated)
 
 
-//        generateAndClearConfigFiles(configsProviders = configsProviders)
+        generateAndClearConfigFiles(configsProviders = configsProviders)
 
 
         return emptyList()
@@ -89,7 +89,7 @@ public class DaVinCiPreviewSymbolProcessor(
 
     private fun log(message: String) {
         if (verbose) {
-            logger.info("[DaVinCi-ksp]:$message")
+            logger.warn("[DaVinCi-ksp]:$message")
         }
     }
 
@@ -216,9 +216,9 @@ public class DaVinCiPreviewSymbolProcessor(
         val dependencies = Dependencies(true)
         val fileSpec = FileSpec.get(packageName ?: "", daVinCiStylesSpec)
 
-        log(fileSpec.toString())
         thread(true) {
             synchronized(codeGenerator) {
+                log(fileSpec.toString())
 
 
                 codeGenerator.createNewFile(

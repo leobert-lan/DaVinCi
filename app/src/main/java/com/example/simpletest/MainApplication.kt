@@ -1,7 +1,7 @@
 package com.example.simpletest
 
 import android.app.Application
-//import com.examole.simpletest.AppDaVinCiStylePreviewInjector
+import com.examole.simpletest.AppDaVinCiStylePreviewInjector
 import com.examole.simpletest.AppDaVinCiStyles
 
 /**
@@ -15,7 +15,9 @@ class MainApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         AppDaVinCiStyles.register()
-//        AppDaVinCiStylePreviewInjector.register()
+        AppDaVinCiStylePreviewInjector.register()
+
+
 //        StyleRegistry.registerFactory(DemoStyleFactory())
     }
 }

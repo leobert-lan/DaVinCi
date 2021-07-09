@@ -52,9 +52,9 @@ interface StyleVO2 : DataSet.Data, DataSet.ReactiveData<StyleVO2> {
                 viewHolders.notifyPropChanged(this, 2)
             }
 
-        override val width: Int = config?.width ?: ViewGroup.LayoutParams.MATCH_PARENT
+        override val width: Int = config?.width?.takeIf { it>0 }?.dp ?: ViewGroup.LayoutParams.MATCH_PARENT
 
-        override val height: Int = config?.height ?: 48.dp
+        override val height: Int = config?.height?.takeIf { it>0 }?.dp ?: 48.dp
 
         override val background: String = config?.background ?: "#ffffff"
 
