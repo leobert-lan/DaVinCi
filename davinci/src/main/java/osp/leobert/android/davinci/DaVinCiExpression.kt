@@ -1,5 +1,6 @@
 package osp.leobert.android.davinci
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
 import android.util.Log
@@ -107,7 +108,7 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
 
         protected fun parseState(text: String?): State? {
             if (text.isNullOrEmpty()) return null
-            val t = text.uppercase(Locale.ENGLISH)
+            val t = text.toUpperCase(Locale.ENGLISH)
 
             return State.valueOf(t)
         }
@@ -207,6 +208,7 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
             list.add(exp)
         }
 
+        @SuppressLint("all")
         override fun injectThenParse(daVinCi: DaVinCi?) {
             this.daVinCi = daVinCi
             if (manual) {
@@ -245,6 +247,7 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
             }
         }
 
+        @SuppressLint("all")
         override fun interpret() { // 循环list列表中每一个表达式 解释执行
             list.forEach { it.interpret() }
         }
@@ -1208,7 +1211,12 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
                 this.state = state
                 this.colorInt = color
 
-                text = "${StatedColor.prop_state}${state.name};${StatedColor.prop_color}#${String.format("%8x", color)}"
+                text = "${StatedColor.prop_state}${state.name};${StatedColor.prop_color}#${
+                    String.format(
+                        "%8x",
+                        color
+                    )
+                }"
                 exps().append(this)
             }
 

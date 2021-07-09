@@ -1,5 +1,6 @@
 package osp.leobert.android.davinci
 
+import android.annotation.SuppressLint
 import android.util.Log
 import androidx.core.view.ViewCompat
 
@@ -14,6 +15,12 @@ object StyleRegistry {
     private val styles: MutableMap<String, Style> = mutableMapOf()
 
     private val lazyFactoryOfStyles: MutableMap<String, Style.Factory> = mutableMapOf()
+
+    fun allStyleNames(): List<String> {
+        return styles.keys.toCollection(linkedSetOf()).apply {
+            addAll(lazyFactoryOfStyles.keys)
+        }.sorted()
+    }
 
     fun register(style: Style) {
         if (DaVinCi.enableDebugLog)
@@ -115,6 +122,7 @@ object StyleRegistry {
             return result
         }
 
+        @SuppressLint("all")
         fun applyTo(daVinCi: DaVinCi) {
             val daVinCiLoop = DaVinCi(null, daVinCi.view)
             statedExpressions.entries.forEach {
