@@ -9,13 +9,34 @@ import java.util.*
 
 import androidx.databinding.Observable
 import androidx.databinding.BaseObservable
+import osp.leobert.android.davinci.StyleRegistry
+import osp.leobert.android.davinci.daVinCiBgStyle
 
 import osp.leobert.androidkt.pandora.rv.*
 import osp.leobert.androidkt.pandora.ui.DataBindingViewHolder
 
 interface StyleVO2 : DataSet.Data, DataSet.ReactiveData<StyleVO2> {
-    class Impl : StyleVO2 {
+
+    val name: String
+
+    var sampleChecked: Boolean
+
+    var sampleEnabled: Boolean
+
+
+    class Impl(override val name: String) : StyleVO2 {
         private val viewHolders by lazy { ReactiveViewHolders<StyleVO2>() }
+
+        override var sampleChecked: Boolean = false
+            set(value) {
+                field = value
+                viewHolders.notifyPropChanged(this, 1)
+            }
+        override var sampleEnabled: Boolean = true
+            set(value) {
+                field = value
+                viewHolders.notifyPropChanged(this, 2)
+            }
 
         override fun bindReactiveVh(viewHolder: IReactiveViewHolder<StyleVO2>) {
             viewHolders.add(viewHolder)
@@ -36,8 +57,13 @@ class StyleVH(val binding: AppVhStyleBinding) :
     override fun setData(data: StyleVO2) {
         super.setData(data)
         mData = data
-        binding.vh = this
         binding.vo = data
+
+        binding.sample.isEnabled = data.sampleEnabled
+        binding.sample.isChecked = data.sampleChecked
+
+        binding.sample.daVinCiBgStyle(data.name)
+
         binding.executePendingBindings()
     }
 
@@ -48,7 +74,11 @@ class StyleVH(val binding: AppVhStyleBinding) :
     }
 
     override fun onPropertyChanged(sender: Observable?, data: StyleVO2, propertyId: Int) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        when (propertyId) {
+            1 -> binding.sample.isEnabled = data.sampleEnabled
+            2 -> binding.sample.isChecked = data.sampleChecked
+            else -> setData(data)
+        }
     }
 
     override val observable: BaseObservable = BaseObservable().apply {

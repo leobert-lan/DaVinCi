@@ -14,17 +14,71 @@
         <variable
             name="vh"
             type="osp.leobert.androidkt.pandora.ui.DataBindingViewHolder" />
+
+        <import type="osp.leobert.android.davinci.DaVinCiExpression" />
     </data>
 
-    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
+        daVinCi_bg="@{DaVinCiExpression.shape().rectAngle().corner(`6dp`).solid(`#dfdfdf`)}"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="3dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginBottom="3dp"
+        android:orientation="vertical"
+        android:padding="10dp">
 
         <!-- android:onClick="@{(view)->itemInteract.foo(vh.getAdapterPosition(),vo)}"-->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Style" />
-    </FrameLayout>
+            android:text="@{vo.name}"
+            android:textColor="#26262a"
+            android:textStyle="bold" />
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/fl_sample"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            app:cardBackgroundColor="#ffffff"
+            app:cardCornerRadius="3dp"
+            app:cardElevation="0dp">
+
+            <androidx.appcompat.widget.AppCompatCheckedTextView
+                android:id="@+id/sample"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_margin="5dp"
+                android:gravity="center_vertical"
+                android:paddingStart="10dp"
+                android:text="SAMPLE AREA" />
+        </androidx.cardview.widget.CardView>
+
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp">
+
+            <CheckBox
+                android:id="@+id/cb_enable"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="@={vo.sampleEnabled}"
+                android:text="Enable" />
+
+            <CheckBox
+                android:id="@+id/cb_checked"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="100dp"
+                android:checked="@={vo.sampleChecked}"
+                android:text="Checked" />
+        </FrameLayout>
+
+
+    </LinearLayout>
 </layout>

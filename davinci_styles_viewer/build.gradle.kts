@@ -42,7 +42,7 @@ dependencies {
     androidTestImplementation("androidx.test.espresso:espresso-core:3.3.0")
 
     implementation("io.github.leobert-lan:pandora:0.0.8")
-    implementation("io.github.leobert-lan:pandorarv:0.1.0")
+//    implementation("io.github.leobert-lan:pandorarv:0.1.0")
     implementation("io.github.leobert-lan:pandorarv_kt:0.0.4")
     implementation("androidx.recyclerview:recyclerview:1.1.0")
 
