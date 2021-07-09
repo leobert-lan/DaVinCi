@@ -2,6 +2,7 @@ package osp.leobert.android.davinci.viewer
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import osp.leobert.android.davinci.StyleRegistry
@@ -38,7 +39,11 @@ class StylesActivity : AppCompatActivity() {
     }
 
     private fun loadAllStyles() {
-        StyleRegistry.allStyleNames().map {
+        StyleRegistry.allStyleNames().apply {
+            Toast.makeText(this@StylesActivity,
+                "${this.size} Bg-style detected",
+                Toast.LENGTH_SHORT).show()
+        }.map {
             StyleVO2.Impl(it)
         }.let {
             dataSet.setData(it)

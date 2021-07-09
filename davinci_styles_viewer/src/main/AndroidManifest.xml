@@ -5,6 +5,8 @@
     <application>
         <activity android:name=".StylesActivity"
             android:icon="@drawable/ic_launcher"
+            android:launchMode="singleTask"
+            android:taskAffinity="davinci.viewer"
             android:label="DaVinCi-Styles">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

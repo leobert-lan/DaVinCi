@@ -22,6 +22,14 @@ class DemoStyle : StyleRegistry.Style("btn_style.main") {
             state = State.STATE_ENABLE_TRUE,
             expression = DaVinCiExpression.shape().rectAngle().corner("10dp")
                 .gradient("#ff3c08", "#ff653c", 0)
+        ).registerCsl(
+            exp = DaVinCiExpression.stateColor().apply(
+                state = State.STATE_ENABLE_FALSE,
+                color = "#ffffff"
+            ).apply(
+                state = State.STATE_ENABLE_TRUE,
+                color = "#333333"
+            )
         )
     }
 }

@@ -13,5 +13,11 @@ package osp.leobert.android.davinci.annotation
 public annotation class StyleViewer(
     val height: Int = 40,
     val width: Int = 100,
-    val background: String = "#00000000",
-)
+    val background: String = "#ffffff",
+    val type: Int = FLAG_BG or FLAG_CSL,
+) {
+    public companion object {
+        public const val FLAG_BG: Int = 1 shl 0
+        public const val FLAG_CSL: Int = 1 shl 1
+    }
+}

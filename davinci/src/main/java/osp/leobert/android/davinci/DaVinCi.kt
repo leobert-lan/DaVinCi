@@ -2,13 +2,19 @@ package osp.leobert.android.davinci
 
 import android.content.Context
 import android.view.View
+import android.widget.TextView
 import java.util.*
 
-//region DaVinCi
 @Suppress("unused")
 class DaVinCi(text: String?, val view: View) {
     companion object {
         var enableDebugLog = true
+
+        private inline fun <reified R> Any?.takeIfInstance(): R? {
+            if (this is R) return this
+            return null
+        }
+
     }
 
     val context: Context = view.context
@@ -27,6 +33,24 @@ class DaVinCi(text: String?, val view: View) {
     // 用来存储动态变化信息内容
     private val map: MutableMap<String, Any> = HashMap()
 
+    // TODO: 2021/7/9 add api
+//    fun applyBg(exp:DaVinCiExpression) {
+//
+//    }
+
+    fun applyCsl(exp: DaVinCiExpression.ColorStateList) {
+        // TODO: 2021/7/9 add applier and replace
+
+        view.takeIfInstance<TextView>()?.setTextColor(
+            exp.run {
+                core.clear()
+                exp.injectThenParse(this@DaVinCi)
+                exp.interpret()
+
+                core.buildTextColor()
+            }
+        )?.also { core.clear() }
+    }
 
     /*
      * 解析文本

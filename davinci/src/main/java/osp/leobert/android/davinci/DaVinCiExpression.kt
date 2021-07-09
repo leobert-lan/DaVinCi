@@ -38,10 +38,19 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
 
     companion object {
         @JvmStatic
-        fun shape(): Shape = Shape(true)
+        fun shape(): Shape = Shape(manual = true)
 
         @JvmStatic
         fun stateColor(): ColorStateList = ColorStateList(manual = true)
+
+        @JvmStatic
+        fun shapeAndStateColor(
+            shape: Shape,
+            stateColor:ColorStateList
+        ):DaVinCiExpression = ListExpression(manual = true).apply {
+            append(shape)
+            append(stateColor)
+        }
 
 
         const val sLogTag = "DaVinCi"
@@ -537,7 +546,7 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
                     if (daVinCi != null)
                         parseRadius(daVinCi)
                     else
-                        if (DaVinCi.enableDebugLog) Log.e(
+                        if (DaVinCi.enableDebugLog) Log.v(
                             sLogTag,
                             "daVinCi is null cannot parse corner,in manual,parse from text,maybe on init"
                         )

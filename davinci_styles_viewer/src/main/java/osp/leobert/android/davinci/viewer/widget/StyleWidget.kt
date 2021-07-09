@@ -1,5 +1,6 @@
 package osp.leobert.android.davinci.viewer.widget
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
@@ -59,10 +60,10 @@ class StyleVH(val binding: AppVhStyleBinding) :
         mData = data
         binding.vo = data
 
+        binding.sample.daVinCiBgStyle(data.name)
+
         binding.sample.isEnabled = data.sampleEnabled
         binding.sample.isChecked = data.sampleChecked
-
-        binding.sample.daVinCiBgStyle(data.name)
 
         binding.executePendingBindings()
     }
@@ -75,10 +76,14 @@ class StyleVH(val binding: AppVhStyleBinding) :
 
     override fun onPropertyChanged(sender: Observable?, data: StyleVO2, propertyId: Int) {
         when (propertyId) {
-            1 -> binding.sample.isEnabled = data.sampleEnabled
-            2 -> binding.sample.isChecked = data.sampleChecked
-            else -> setData(data)
+            1 -> binding.sample.isChecked = data.sampleChecked
+            2 -> binding.sample.isEnabled = data.sampleEnabled
+            else -> {
+                setData(data)
+                return
+            }
         }
+        binding.executePendingBindings()
     }
 
     override val observable: BaseObservable = BaseObservable().apply {

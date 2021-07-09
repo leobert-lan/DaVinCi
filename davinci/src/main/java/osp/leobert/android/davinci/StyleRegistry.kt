@@ -94,13 +94,30 @@ object StyleRegistry {
     open class Style(val name: String) {
         private val statedExpressions: MutableMap<State, DaVinCiExpression> = mutableMapOf()
 
+        //考虑到两者的特性，将其分开
+        private var statedColorExp: DaVinCiExpression.ColorStateList? = null
+
         fun register(state: State, expression: DaVinCiExpression): Style = this.apply {
             statedExpressions[state] = expression
         }
 
+        fun registerCsl(exp: DaVinCiExpression.ColorStateList): Style {
+            statedColorExp = exp
+            return this
+        }
 
-        override fun toString(): String {
-            return "Style(name='$name', statedExpressions=$statedExpressions)"
+        fun applyTo(daVinCi: DaVinCi) {
+            val daVinCiLoop = DaVinCi(null, daVinCi.view)
+            statedExpressions.entries.forEach {
+                it.key.adapt(daVinCi, daVinCiLoop, it.value)
+            }
+            ViewCompat.setBackground(daVinCi.view, daVinCi.core.build())
+            daVinCi.core.clear()
+
+            statedColorExp?.let {
+                daVinCi.applyCsl(it)
+            }
+
         }
 
         override fun equals(other: Any?): Boolean {
@@ -111,6 +128,7 @@ object StyleRegistry {
 
             if (name != other.name) return false
             if (statedExpressions != other.statedExpressions) return false
+            if (statedColorExp != other.statedColorExp) return false
 
             return true
         }
@@ -118,16 +136,12 @@ object StyleRegistry {
         override fun hashCode(): Int {
             var result = name.hashCode()
             result = 31 * result + statedExpressions.hashCode()
+            result = 31 * result + (statedColorExp?.hashCode() ?: 0)
             return result
         }
 
-        fun applyTo(daVinCi: DaVinCi) {
-            val daVinCiLoop = DaVinCi(null, daVinCi.view)
-            statedExpressions.entries.forEach {
-                it.key.adapt(daVinCi, daVinCiLoop, it.value)
-            }
-            ViewCompat.setBackground(daVinCi.view, daVinCi.core.build())
-            daVinCi.core.clear()
+        override fun toString(): String {
+            return "Style(name='$name', statedExpressions=$statedExpressions, statedColorExp=$statedColorExp)"
         }
 
 

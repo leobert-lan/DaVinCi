@@ -46,6 +46,7 @@ fun TextView.daVinCiColor(str: String) {
     }
 }
 
+@BindingAdapter("daVinCiTextColor")
 fun TextView.daVinCiColor(expressions: DaVinCiExpression.ColorStateList) {
     if (DaVinCi.enableDebugLog) Log.d(
         DaVinCiExpression.sLogTag,
