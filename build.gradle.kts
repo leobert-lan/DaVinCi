@@ -7,7 +7,11 @@ buildscript {
     dependencies {
         classpath(kotlin("gradle-plugin", version = Dependencies.Kotlin.version))
         classpath("com.android.tools.build:gradle:4.1.1")
-        classpath("io.github.leobert-lan:easy-publish:1.1.1")
+        classpath("io.github.leobert-lan:easy-publish:1.2.1")
+    }
+    repositories {
+        mavenLocal()
+        mavenCentral()
     }
 }
 

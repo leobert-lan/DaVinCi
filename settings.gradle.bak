@@ -1,3 +1,0 @@
-include ':app', ':davinci'
-include ':annotation'
-include ':anno_ksp'
