@@ -176,9 +176,4 @@ public class StylePreviewProcessor : AbstractProcessor() {
 
     override fun getSupportedSourceVersion(): SourceVersion = SourceVersion.latestSupported()
 
-    private fun generateConstOfStyleName(styleName: String): String =
-        styleName.split(".").joinToString("_").apply {
-            log("create style const: $this from $styleName")
-        }
-
 }
