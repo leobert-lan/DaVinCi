@@ -11,6 +11,7 @@ import com.google.devtools.ksp.symbol.KSType
 import com.squareup.kotlinpoet.*
 import osp.leobert.android.davinci.annotation.DaVinCiStyle
 import osp.leobert.android.davinci.annotation.DaVinCiStyleFactory
+import osp.leobert.android.davinci.meta.NodeWrapper
 import osp.leobert.android.davinci.meta.StyleMetaInfo
 import kotlin.concurrent.thread
 
@@ -117,7 +118,7 @@ internal class DaVinCiSymbolProcessor(
                 styleProviders[constName] = StyleMetaInfo.Style(
                     constName = constName,
                     styleName = styleName,
-                    clzNode = style
+                    clzNode = NodeWrapper.KtNodeWrapper(style)
                 )
 
                 /*end @forEach*/
@@ -159,7 +160,7 @@ internal class DaVinCiSymbolProcessor(
                 styleFactoryProviders[constName] = StyleMetaInfo.Factory(
                     constName = constName,
                     styleName = styleName,
-                    clzNode = style
+                    clzNode = NodeWrapper.KtNodeWrapper(style)
                 )
 
                 /*end @forEach*/

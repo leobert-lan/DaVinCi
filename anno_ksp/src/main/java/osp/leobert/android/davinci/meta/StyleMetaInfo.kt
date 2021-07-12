@@ -6,7 +6,7 @@ import com.squareup.kotlinpoet.*
 public sealed class StyleMetaInfo(
     public val constName: String,
     public val styleName: String,
-    public val clzNode: KSClassDeclaration,
+    public val clzNode: NodeWrapper,
 ) {
 
     public fun propertySpec(): PropertySpec {
@@ -44,13 +44,13 @@ public sealed class StyleMetaInfo(
     public abstract fun registerBlock(): String
 
     public class Style(
-        constName: String, styleName: String, clzNode: KSClassDeclaration,
+        constName: String, styleName: String, clzNode: NodeWrapper,
     ) : StyleMetaInfo(
         constName, styleName,
         clzNode
     ) {
         override fun registerBlock(): String {
-            val name = clzNode.qualifiedName?.asString()
+            val name = clzNode.nodeName()
 
             return if (name == null) {
                 "//could not find name for:$clzNode\r\n"
@@ -62,13 +62,13 @@ public sealed class StyleMetaInfo(
     }
 
     public class Factory(
-        constName: String, styleName: String, clzNode: KSClassDeclaration,
+        constName: String, styleName: String, clzNode: NodeWrapper,
     ) : StyleMetaInfo(
         constName, styleName,
         clzNode
     ) {
         override fun registerBlock(): String {
-            val name = clzNode.qualifiedName?.asString()
+            val name = clzNode.nodeName()
             return if (name == null) {
                 "//could not find name for:$clzNode\r\n"
             } else {

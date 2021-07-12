@@ -40,16 +40,14 @@ android {
                 "proguard-rules.pro"
             )
 
-//            dependencies {
-//                ksp(project(":anno_ksp"))
-//            }
-
-//            ksp {
-//                arg("daVinCi.verbose", "true")
-//                arg("daVinCi.pkg", "com.examole.simpletest")
-//                arg("daVinCi.module", "App")
-//                arg("daVinCi.preview", "false")
-//            }
+            kapt {
+                this.arguments {
+                    this.arg("daVinCi.verbose", "true")
+                    this.arg("daVinCi.pkg", "com.examole.simpletest")
+                    this.arg("daVinCi.module", "App")
+                    this.arg("daVinCi.preview", "false")
+                }
+            }
         }
 
         getByName("debug").apply {
@@ -60,22 +58,24 @@ android {
                 }
             }
 
-            ksp {
-                arg("daVinCi.verbose", "true")
-                arg("daVinCi.pkg", "com.examole.simpletest")
-                arg("daVinCi.module", "App")
-                arg("daVinCi.preview", "true")
+            kapt {
+                this.arguments {
+                    this.arg("daVinCi.verbose", "true")
+                    this.arg("daVinCi.pkg", "com.examole.simpletest")
+                    this.arg("daVinCi.module", "App")
+                    this.arg("daVinCi.preview", "true")
+                }
             }
         }
     }
 }
 
-//ksp {
-//    arg("daVinCi.verbose", "true")
-//    arg("daVinCi.pkg", "com.examole.simpletest")
-//    arg("daVinCi.module", "App")
-//    arg("daVinCi.preview", "true")
-//}
+ksp {
+    arg("daVinCi.verbose", "true")
+    arg("daVinCi.pkg", "com.examole.simpletest")
+    arg("daVinCi.module", "App")
+    arg("daVinCi.preview", "true")
+}
 
 dependencies {
     implementation("androidx.constraintlayout:constraintlayout:1.1.3")
@@ -92,7 +92,9 @@ dependencies {
     androidTestImplementation("androidx.test.ext:junit:1.1.2")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.3.0")
 
-    ksp(project(":anno_ksp"))
+//    ksp(project(":anno_ksp")) //偶现问题：堆栈死循环、桩代码无内容等
+    kapt(project(":anno_ksp"))
+
     debugImplementation(project(":davinci_styles_viewer"))
 
 //    kotlin注解

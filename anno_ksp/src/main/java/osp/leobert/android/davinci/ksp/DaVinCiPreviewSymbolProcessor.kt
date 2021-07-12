@@ -164,8 +164,8 @@ public class DaVinCiPreviewSymbolProcessor(
 
                 configsProviders[styleName] = PreviewConfigMetaInfo(
                     styleName = styleName,
-                    clzNode = style,
-                    width = width, height = height, background = background, type = type
+                    width = width,
+                    height = height, background = background, type = type
                 )
 
                 /*end @forEach*/
