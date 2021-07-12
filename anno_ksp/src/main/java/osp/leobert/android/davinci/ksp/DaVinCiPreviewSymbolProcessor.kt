@@ -12,6 +12,7 @@ import com.squareup.kotlinpoet.*
 import osp.leobert.android.davinci.annotation.DaVinCiStyle
 import osp.leobert.android.davinci.annotation.DaVinCiStyleFactory
 import osp.leobert.android.davinci.annotation.StyleViewer
+import osp.leobert.android.davinci.meta.PreviewConfigMetaInfo
 import kotlin.concurrent.thread
 
 /**
@@ -67,7 +68,7 @@ public class DaVinCiPreviewSymbolProcessor(
             return emptyList()
         }
 
-        val configsProviders: MutableMap<String, StyleMetaInfo> = hashMapOf()
+        val configsProviders: MutableMap<String, PreviewConfigMetaInfo> = hashMapOf()
 
         handleDaVinCiStyleViewer(
             configsProviders = configsProviders,
@@ -94,7 +95,7 @@ public class DaVinCiPreviewSymbolProcessor(
     }
 
     private fun handleDaVinCiStyleViewer(
-        configsProviders: MutableMap<String, StyleMetaInfo>,
+        configsProviders: MutableMap<String, PreviewConfigMetaInfo>,
         resolver: Resolver,
         notationType: KSType,
         styleNotated: KSType?,
@@ -161,7 +162,7 @@ public class DaVinCiPreviewSymbolProcessor(
                     return@forEach
                 }
 
-                configsProviders[styleName] = StyleMetaInfo(
+                configsProviders[styleName] = PreviewConfigMetaInfo(
                     styleName = styleName,
                     clzNode = style,
                     width = width, height = height, background = background, type = type
@@ -171,7 +172,7 @@ public class DaVinCiPreviewSymbolProcessor(
             }
     }
 
-    private fun generateAndClearConfigFiles(configsProviders: MutableMap<String, StyleMetaInfo>) {
+    private fun generateAndClearConfigFiles(configsProviders: MutableMap<String, PreviewConfigMetaInfo>) {
 
         val daVinCiStylesSpec =
             TypeSpec.objectBuilder("${moduleName ?: ""}DaVinCiStylePreviewInjector")

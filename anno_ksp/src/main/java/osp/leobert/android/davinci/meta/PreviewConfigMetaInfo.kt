@@ -1,8 +1,8 @@
-package osp.leobert.android.davinci.ksp
+package osp.leobert.android.davinci.meta
 
 import com.google.devtools.ksp.symbol.KSClassDeclaration
 
-public class StyleMetaInfo(
+public class PreviewConfigMetaInfo(
     public val styleName: String,
     public val clzNode: KSClassDeclaration,
     public val width: Int,
