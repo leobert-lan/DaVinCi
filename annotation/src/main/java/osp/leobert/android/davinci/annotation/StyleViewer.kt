@@ -11,8 +11,8 @@ package osp.leobert.android.davinci.annotation
 @Target(AnnotationTarget.CLASS)
 @Retention(AnnotationRetention.SOURCE)
 public annotation class StyleViewer(
-    val height: Int = 40,
-    val width: Int = 100,
+    val height: Int = 48,
+    val width: Int = -1 /*android.view.ViewGroup.LayoutParams.MATCH_PARENT = -1*/,
     val background: String = "#ffffff",
     val type: Int = FLAG_BG or FLAG_CSL,
 ) {

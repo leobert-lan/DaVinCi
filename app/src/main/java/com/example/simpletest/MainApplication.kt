@@ -1,8 +1,8 @@
 package com.example.simpletest
 
 import android.app.Application
-import com.examole.simpletest.AppDaVinCiStylePreviewInjector
-import com.examole.simpletest.AppDaVinCiStyles
+import com.example.simpletest.AppDaVinCiStylePreviewInjector
+import com.example.simpletest.AppDaVinCiStyles
 
 /**
  * <p><b>Package:</b> com.example.simpletest </p>

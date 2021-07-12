@@ -35,6 +35,7 @@ android {
                 }
             }
             isMinifyEnabled = false
+
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -43,7 +44,7 @@ android {
             kapt {
                 this.arguments {
                     this.arg("daVinCi.verbose", "true")
-                    this.arg("daVinCi.pkg", "com.examole.simpletest")
+                    this.arg("daVinCi.pkg", "com.example.simpletest")
                     this.arg("daVinCi.module", "App")
                     this.arg("daVinCi.preview", "false")
                 }
@@ -61,7 +62,7 @@ android {
             kapt {
                 this.arguments {
                     this.arg("daVinCi.verbose", "true")
-                    this.arg("daVinCi.pkg", "com.examole.simpletest")
+                    this.arg("daVinCi.pkg", "com.example.simpletest")
                     this.arg("daVinCi.module", "App")
                     this.arg("daVinCi.preview", "true")
                 }

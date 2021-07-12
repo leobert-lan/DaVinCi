@@ -55,12 +55,12 @@ public class StyleProcessor : AbstractProcessor() {
 
     private fun log(message: String) {
         if (verbose) {
-            messager.printMessage(Diagnostic.Kind.WARNING, "[DaVinCi-apt]:$message\n")
+            messager.printMessage(Diagnostic.Kind.NOTE, "[DaVinCi-apt]:$message\r\n")
         }
     }
 
     private fun logE(message: String, node: Element?) {
-        messager.printMessage(Diagnostic.Kind.ERROR, "[DaVinCi-apt]:$message\n", node)
+        messager.printMessage(Diagnostic.Kind.ERROR, "[DaVinCi-apt]:$message\r\n", node)
     }
 
     override fun init(processingEnv: ProcessingEnvironment?) {
