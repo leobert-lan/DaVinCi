@@ -91,12 +91,13 @@ dependencies {
     androidTestImplementation("androidx.test.ext:junit:1.1.2")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.3.0")
 
-    debugImplementation(project(":davinci_styles_viewer"))
+//    debugImplementation(project(":davinci_styles_viewer"))
+    debugImplementation(Dependencies.DaVinCi.viewer)
 
-    implementation(Dependencies.DaVinVi.annotation)
+    implementation(Dependencies.DaVinCi.annotation)
 //    ksp(Dependencies.DaVinVi.ksp)
-    kapt(Dependencies.DaVinVi.ksp)
-    implementation(Dependencies.DaVinVi.api)
+    kapt(Dependencies.DaVinCi.ksp)
+    implementation(Dependencies.DaVinCi.api)
 
 //    implementation(project(":davinci"))
 //    ksp(project(":anno_ksp"))

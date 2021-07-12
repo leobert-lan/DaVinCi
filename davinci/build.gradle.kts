@@ -68,7 +68,7 @@ EasyPublish {
 
     groupId = "io.github.leobert-lan"
     artifactId = "davinci"
-    version = "0.0.4"
+    version = "0.0.5"
     packaging = "aar"
     siteUrl = "https://github.com/leobert-lan/DaVinCi"
     gitUrl = "https://github.com/leobert-lan/DaVinCi.git"

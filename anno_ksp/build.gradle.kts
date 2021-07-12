@@ -16,13 +16,11 @@ dependencies {
   testImplementation(Dependencies.Testing.truth)
   testImplementation(Dependencies.Testing.junit)
 
-  // TODO re-enable with new release
-//  testImplementation(Dependencies.Testing.kspCompileTesting)
   testImplementation(Dependencies.Kotlin.Ksp.ksp)
   testImplementation(Dependencies.Testing.compileTesting)
   testImplementation(Dependencies.Kotlin.compilerEmbeddable)
 
-  implementation(Dependencies.DaVinVi.annotation)
+  implementation(Dependencies.DaVinCi.annotation)
 
 //  todo use stable version when release
 //  implementation(project(":annotation"))
@@ -51,7 +49,7 @@ EasyPublish {
 
   groupId = "io.github.leobert-lan"
   artifactId = "davinci-anno-ksp"
-  version = "0.0.1"
+  version = "0.0.2"
   packaging = "jar"
   siteUrl = "https://github.com/leobert-lan/DaVinCi"
   gitUrl = "https://github.com/leobert-lan/DaVinCi.git"

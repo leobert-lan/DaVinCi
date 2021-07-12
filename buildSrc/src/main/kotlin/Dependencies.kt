@@ -23,10 +23,11 @@ object Dependencies {
         }
     }
 
-    object DaVinVi {
-        const val annotation = "io.github.leobert-lan:davinci-anno:0.0.1"
-        const val ksp = "io.github.leobert-lan:davinci-anno-ksp:0.0.1"
-        const val api = "io.github.leobert-lan:davinci:0.0.4"
+    object DaVinCi {
+        const val annotation = "io.github.leobert-lan:davinci-anno:0.0.2"
+        const val ksp = "io.github.leobert-lan:davinci-anno-ksp:0.0.2"
+        const val api = "io.github.leobert-lan:davinci:0.0.5"
+        const val viewer = "io.github.leobert-lan:davinci-style-viewer:0.0.1"
     }
 
     object KotlinPoet {
