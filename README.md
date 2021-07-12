@@ -27,7 +27,11 @@ allprojects {
 and dependency in module's build.gradle:
 
 ```
-implementation 'osp.leobert.android:davinci:{version}'
+implementation "io.github.leobert-lan:davinci-anno:0.0.2" //注解
+kapt or ksp "io.github.leobert-lan:davinci-anno-ksp:0.0.2" //注解处理器，支持kapt或者ksp
+implementation "io.github.leobert-lan:davinci:0.0.5" //核心库
+debugImplementation "io.github.leobert-lan:davinci-style-viewer:0.0.1" //预览
+
 ```
 
 current version is 0.0.1, an alpha version, much more testing and apis is needing
