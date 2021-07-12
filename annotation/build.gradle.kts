@@ -15,7 +15,7 @@ dependencies {
 
 EasyPublish {
     sourceSet = sourceSets.main.get().java.srcDirs
-    notStandardJavaComponent = false
+//    notStandardJavaComponent = false
 
     docExcludes = arrayListOf("osp/leobert/android/davinci/*")
 
