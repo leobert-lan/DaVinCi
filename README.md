@@ -1,25 +1,32 @@
-# DaVinCi （达·芬奇）
-An Android library to help create background drawable and ColorStateList without xml, writen in kotlin, support Java/Koltin code invoking or using in layout-xml with DataBinding
+## 是什么？
+在Android上取代xml方式定义 Shape/GradientDrawable 以及 ColorStateList的方案。
 
-用于便捷的创建背景drawable以及ColorStateList，再也不用创建XML了！！！可以在Java或者kotlin代码中调用，也可以在布局文件中使用（需要使用DataBinding）
+* 支持在 Java/Kotlin 业务代码 中使用
+* 配合 DataBinding 可以在 XML布局文件 中使用
 
-## Why named DaVinCi
+## 哪些情况下需要它
+
+> * 觉得xml太啰嗦
+> * 命名困难，资源管理困难
+> * 项目样式非常多但复用度不高
+> * UI做不到对样式规范化管理
+> * 切换一个文件打断思路的成本太高
+
+
+## 为什么叫 DaVinCi
+最开始用于解决 Shape/GradientDrawable，而几何类绘制是毕加索最擅长的，然而这个名字早已被使用，梵高又太抽象了，索性就叫达芬奇了，
+毕竟我也很讨厌命名。
+
 Picasso has been used, Van Gogh's paints is too abstract, thus da VinCi ran into my mind.
 
-## How to use
+## 如何使用
 
-###  import library
-
-Considering it may not be released to JCenter, declare the repo in root build.gradle
+目前已迁移发布到MavenCentral
 
 ```
 allprojects {
     repositories {
-        google()
-        jcenter()
-        maven {
-            url 'https://dl.bintray.com/leobert-lan-oss/maven/'
-        }
+        mavenCentral()
     }
 }
 ```
@@ -34,174 +41,15 @@ debugImplementation "io.github.leobert-lan:davinci-style-viewer:0.0.1" //预览
 
 ```
 
-current version is 0.0.1, an alpha version, much more testing and apis is needing
+## 具体使用方式
 
-### use in Java/Kotlin code
+详见：[leobert.github.io/DaVinCi](https://leobert-lan.github.io/repo/DaVinCi.html)
 
-```
-binding.test.setOnClickListener {
-    it.daVinCi(
-        normal = DaVinCiExpression.shape().oval()
-            .corner("40dp") //这个就没啥用了
-            .solid(resources.getColor(R.color.colorPrimaryDark))
-            .stroke(12,Color.parseColor("#26262a"))
-    )
-}
-```
-
-or another crazy way:
-
-```
-//这种不推荐使用啊，考虑语法解析一方面是考虑方便打印，另一方面是考虑到以后替换xml内的方案时，可以有后手
-binding.test2.setOnClickListener {
-    it.daVinCi("shape:[ gradient:[ type:linear;startColor:#ff3c08;endColor:#353538 ]; st:[ Oval ]; corners:[ 40dp ]; stroke:[ width:4dp;color:rc/colorAccent ] ]")
-}
-```
+或参考项目Demo
 
 
-###  used in xml with DataBinding
+## 几篇相关拙作：
 
-```
-<?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+* 实现原理解析，详见拙作：[好玩系列：拥有它，XML文件少一半--更方便的处理View背景](https://leobert-lan.github.io/Android/Drawable/post_4.html)
+* 关于注解处理器（ksp实现）以及实现的核心目标，详见拙作： [好玩系列 | 拥抱Kotlin Symbol Processing(KSP),项目实战](https://leobert-lan.github.io/Android/KSP/post_24.html)
 
-    <data>
-
-        <variable
-            name="a"
-            type="String" />
-
-        <import type="osp.leobert.android.davinci.DaVinCiExpression" />
-
-    </data>
-
-    <androidx.core.widget.NestedScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".MainActivity">
-
-        <LinearLayout
-            daVinCi_bg="@{DaVinCiExpression.shape().solid(`#eaeaea`)}"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="10dp">
-
-            <TextView
-                android:id="@+id/test"
-                daVinCi_bg="@{DaVinCiExpression.shape().corner(60).solid(`@i2`).stroke(`4dp`,`@i2`)}"
-                android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/test"
-                android:gravity="center"
-                android:text="@string/app_name">
-
-                <tag
-                    android:id="@id/i1"
-                    android:value="@color/colorPrimaryDark" />
-
-                <tag
-                    android:id="@id/i2"
-                    android:value="@color/colorAccent" />
-            </TextView>
-
-            <Button
-                daVinCi_bg_pressed="@{DaVinCiExpression.shape().corner(`10dp,15dp,20dp,30dp`).stroke(`4dp`,`@i2`).gradient(`#26262a`,`#ff0699`,0)}"
-                daVinCi_bg_unpressed="@{DaVinCiExpression.shape().corner(60).solid(`@i1`).stroke(`4dp`,`@i2`)}"
-                android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:gravity="center"
-                android:text="Hello World!">
-
-                <tag
-                    android:id="@id/i1"
-                    android:value="@color/colorPrimaryDark" />
-
-                <tag
-                    android:id="@id/i2"
-                    android:value="@color/colorAccent" />
-            </Button>
-
-            <TextView
-                android:id="@+id/test2"
-                daVinCi_bg="@{DaVinCiExpression.shape().corner(`10dp,15dp,20dp,30dp`).stroke(`4dp`,`@i2`).gradient(`#26262a`,`#ff0699`,0)}"
-                android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/test"
-                android:gravity="center"
-                android:text="@string/app_name">
-
-                <tag
-                    android:id="@id/i1"
-                    android:value="@color/colorPrimaryDark" />
-
-                <tag
-                    android:id="@id/i2"
-                    android:value="@color/colorAccent" />
-            </TextView>
-
-            <CheckBox
-                daVinCi_bg="@{DaVinCiExpression.shape().corner(60).solid(`@i2`).stroke(`4dp`,`@i2`)}"
-                daVinCi_bg_pressed="@{DaVinCiExpression.shape().corner(`10dp,15dp,20dp,30dp`).stroke(`4dp`,`@i2`).gradient(`#26262a`,`#ff0699`,0)}"
-                android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/test"
-                android:gravity="center"
-                android:text="错误示范：daVinCi_bg只能单独使用，一旦有其他的，就需要使用相应的成对的">
-
-                <tag
-                    android:id="@id/i1"
-                    android:value="@color/colorPrimaryDark" />
-
-                <tag
-                    android:id="@id/i2"
-                    android:value="@color/colorAccent" />
-            </CheckBox>
-
-            <CheckBox
-                daVinCi_bg_checked="@{DaVinCiExpression.shape().corner(60).solid(`@i2`).stroke(`4dp`,`@i2`)}"
-                daVinCi_bg_unchecked="@{DaVinCiExpression.shape().corner(`10dp,15dp,20dp,30dp`).stroke(`4dp`,`@i2`).gradient(`#26262a`,`#ff0699`,0)}"
-                android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/test"
-                android:gravity="center"
-                android:text="check状态">
-
-                <tag
-                    android:id="@id/i1"
-                    android:value="@color/colorPrimaryDark" />
-
-                <tag
-                    android:id="@id/i2"
-                    android:value="@color/colorAccent" />
-
-                <tag
-                    android:id="@id/i3"
-                    android:value="@string/app_name" />
-            </CheckBox>
-
-        </LinearLayout>
-
-    </androidx.core.widget.NestedScrollView>
-
-</layout>
-```
-discovery it in the demo!
-
-Considering we may use "resource cleaner", we can use tag to keep the  
- reference of resource and use tagid to access the resource,especially colors, avoid using static string like:"rc/colorPrimaryDark"
-
-考虑到我们会使用资源清理功能，如果使用了"rc/colorPrimaryDark"这种字符串代表颜色资源，可能会被清理掉，
-我们可以tag方式去处理，可以保持引用，避免清理，使用"@id/i1"这种形式去访问资源。
-
-不过是否会受到混淆和压缩的影响有待验证，
-
----
-
-##  APIs:
-todo

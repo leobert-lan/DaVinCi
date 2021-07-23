@@ -549,7 +549,6 @@ class DaVinCiCore {
 
     fun setUnFocusedDrawable(unFocusedDrawable: Drawable?): DaVinCiCore {
         hasSelectDrawable = true
-        hasSelectDrawable = true
         this.unFocusedDrawable = unFocusedDrawable
         return this
     }
