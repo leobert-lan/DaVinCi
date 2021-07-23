@@ -47,8 +47,8 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
         @JvmStatic
         fun shapeAndStateColor(
             shape: Shape,
-            stateColor:ColorStateList
-        ):DaVinCiExpression = ListExpression(manual = true).apply {
+            stateColor: ColorStateList,
+        ): DaVinCiExpression = ListExpression(manual = true).apply {
             append(shape)
             append(stateColor)
         }
@@ -419,7 +419,7 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
 
         fun gradient(
             type: String = Gradient.TYPE_LINEAR, @ColorInt startColor: Int, @ColorInt endColor: Int,
-            angle: Int = 0
+            angle: Int = 0,
         ): Shape {
             return gradient(type, startColor, null, endColor, 0f, 0f, angle)
         }
@@ -430,7 +430,7 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
             @ColorInt centerColor: Int?, @ColorInt endColor: Int,
             centerX: Float,
             centerY: Float,
-            angle: Int = 0
+            angle: Int = 0,
         ): Shape {
             Gradient(manual = true).apply {
                 this.type = type
@@ -457,14 +457,14 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
             type: String = Gradient.TYPE_LINEAR,
             startColor: String,
             endColor: String,
-            angle: Int = 0
+            angle: Int = 0,
         ): Shape {
             return gradient(type, startColor, null, endColor, 0f, 0f, angle)
         }
 
         fun gradient(
             type: String = Gradient.TYPE_LINEAR, startColor: String,
-            centerColor: String?, endColor: String, centerX: Float, centerY: Float, angle: Int
+            centerColor: String?, endColor: String, centerX: Float, centerY: Float, angle: Int,
         ): Shape {
             Gradient(manual = true).apply {
                 text = type.run { "${Gradient.prop_type}$this" } +
@@ -1174,6 +1174,7 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
     //endregion
 
     //region Color State List
+    // TODO: 2021/7/21 每一个item的state不只是一个
     class ColorStateList internal constructor(private val manual: Boolean = false) :
         DaVinCiExpression(null) {
 

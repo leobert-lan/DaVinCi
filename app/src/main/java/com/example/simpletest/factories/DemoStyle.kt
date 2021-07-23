@@ -20,6 +20,11 @@ import osp.leobert.android.davinci.annotation.StyleViewer
 class DemoStyle : StyleRegistry.Style("btn_style.main") {
     init {
         this.register(
+            state = State.STATE_CHECKED_FALSE,
+            expression = DaVinCiExpression.shape().stroke("1", "#ff653c").corner("2dp")
+        ).register(State.STATE_CHECKED_TRUE,
+            DaVinCiExpression.shape().solid("#ff653c").corner("2dp,2dp,0,0")
+        ).register(
             state = State.STATE_ENABLE_FALSE,
             expression = DaVinCiExpression.shape().rectAngle().solid("#80ff3c08").corner("10dp")
         ).register(
