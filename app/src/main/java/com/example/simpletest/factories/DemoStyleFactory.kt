@@ -11,9 +11,9 @@ import osp.leobert.android.davinci.annotation.DaVinCiStyleFactory
  * <p><b>Classname:</b> DemoStyleFactory </p>
  * Created by leobert on 2021/6/2.
  */
-@DaVinCiStyleFactory(styleName = "btn_style.main")
+@DaVinCiStyleFactory(styleName = "btn_style.sub")
 class DemoStyleFactory : StyleRegistry.Style.Factory() {
-    override val styleName: String = "btn_style.main"
+    override val styleName: String = "btn_style.sub"
 
     override fun apply(style: StyleRegistry.Style) {
         style.register(
