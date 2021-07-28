@@ -1175,7 +1175,7 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
 
     //region Color State List
     class ColorStateList internal constructor(private val manual: Boolean = false) :
-        DaVinCiExpression(null) {
+        DaVinCiExpression(null)/*,Statable<ColorStateList>*/ {
 
         private var expressions: ListExpression? = null
         override fun startTag(): String = tag
@@ -1188,8 +1188,32 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
 
         companion object {
             const val tag = "csl:["
+            const val separator = ","
+
         }
 
+       /* fun color(color: String):Statable<ColorStateList> {
+
+            return this
+        }
+
+        override fun states(vararg states: State): ColorStateList {
+            TODO("Not yet implemented")
+        }
+
+        override fun states(vararg states: String): ColorStateList {
+            states.joinToString(separator)
+
+            StatedColor(
+                manual = true
+            ).apply {
+                text = "${StatedColor.prop_state}${state.name};${StatedColor.prop_color}$color"
+                exps().append(this)
+            }
+            return this
+        }*/
+
+        @Deprecated("表意不准确")
         fun apply(state: State, color: String): ColorStateList {
             StatedColor(
                 manual = true
@@ -1201,6 +1225,7 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
             return this
         }
 
+        @Deprecated("表意不准确")
         fun apply(state: String, color: String): ColorStateList {
             StatedColor(
                 manual = true
@@ -1212,6 +1237,7 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
             return this
         }
 
+        @Deprecated("表意不准确")
         fun apply(state: State, @ColorInt color: Int): ColorStateList {
             StatedColor(
                 manual = true

@@ -14,8 +14,6 @@ import androidx.databinding.BindingAdapter
  */
 
 /*
- * <p><b>Classname:</b> DaVinCi </p>
- * Created by leobert on 2020-02-22.
  *自high 功能，语法解析，目前语法校验还不严格，没有按照严谨的文法约束以及校验
  * */
 fun View.daVinCi(str: String) {
@@ -73,6 +71,10 @@ fun View.daVinCiBgStyle(styleName: String) {
     }
 }
 
+@Deprecated(
+    "nobody want to read the log",
+    ReplaceWith("")
+)
 internal fun View.logTag(): String {
     return this.getTag(R.id.log_tag)?.run { "{${toString()}}:" } ?: this.toString()
 }
@@ -106,37 +108,37 @@ fun View.daVinCi(
     }
 
     pressed?.let {
-        simplify(daVinCiLoop, it, "pressed", this)
+        simplify(daVinCiLoop, it, "pressed")
         daVinCi.core.setPressedDrawable(daVinCiLoop.core.build())
         daVinCiLoop.core.clear()
     }
 
     unpressed?.let {
-        simplify(daVinCiLoop, it, "unpressed", this)
+        simplify(daVinCiLoop, it, "unpressed")
         daVinCi.core.setUnPressedDrawable(daVinCiLoop.core.build())
         daVinCiLoop.core.clear()
     }
 
     checkable?.let {
-        simplify(daVinCiLoop, it, "checkable", this)
+        simplify(daVinCiLoop, it, "checkable")
         daVinCi.core.setCheckableDrawable(daVinCiLoop.core.build())
         daVinCiLoop.core.clear()
     }
 
     uncheckable?.let {
-        simplify(daVinCiLoop, it, "uncheckable", this)
+        simplify(daVinCiLoop, it, "uncheckable")
         daVinCi.core.setUnCheckableDrawable(daVinCiLoop.core.build())
         daVinCiLoop.core.clear()
     }
 
     checked?.let {
-        simplify(daVinCiLoop, it, "checked", this)
+        simplify(daVinCiLoop, it, "checked")
         daVinCi.core.setCheckedDrawable(daVinCiLoop.core.build())
         daVinCiLoop.core.clear()
     }
 
     unchecked?.let {
-        simplify(daVinCiLoop, it, "unchecked", this)
+        simplify(daVinCiLoop, it, "unchecked")
         daVinCi.core.setUnCheckedDrawable(daVinCiLoop.core.build())
         daVinCiLoop.core.clear()
     }
@@ -160,18 +162,14 @@ fun View.daVinCi(
 internal fun simplify(
     daVinCiLoop: DaVinCi,
     exp: DaVinCiExpression?,
-    state: String,
-    view: View
+    state: String
 ) {
     exp?.let {
         daVinCiLoop.apply {
             currentToken = exp.startTag()
         }
 
-        if (DaVinCi.enableDebugLog) Log.d(
-            DaVinCiExpression.sLogTag,
-            "${view.logTag()} daVinCi $state:$exp"
-        )
+        if (DaVinCi.enableDebugLog) Log.d(DaVinCiExpression.sLogTag, "daVinCi $state:$exp")
 
         exp.injectThenParse(daVinCiLoop)
         exp.interpret()

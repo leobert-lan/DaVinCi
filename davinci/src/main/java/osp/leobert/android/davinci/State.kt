@@ -14,7 +14,7 @@ enum class State : StateColorAdapter, StateDrawableAdapter {
         ) {
             daVinCiTemporal.core.clear()
             simplify(
-                daVinCiLoop = daVinCiTemporal, exp = expression, state = this.name, view = daVinCi.view
+                daVinCiLoop = daVinCiTemporal, exp = expression, state = this.name
             )
             daVinCi.core.setCheckableDrawable(daVinCiTemporal.core.build())
             daVinCiTemporal.core.clear()
@@ -33,7 +33,7 @@ enum class State : StateColorAdapter, StateDrawableAdapter {
         ) {
             daVinCiTemporal.core.clear()
             simplify(
-                daVinCiLoop = daVinCiTemporal, exp = expression, state = this.name, view = daVinCi.view
+                daVinCiLoop = daVinCiTemporal, exp = expression, state = this.name
             )
             daVinCi.core.setUnCheckableDrawable(daVinCiTemporal.core.build())
             daVinCiTemporal.core.clear()
@@ -52,7 +52,7 @@ enum class State : StateColorAdapter, StateDrawableAdapter {
         ) {
             daVinCiTemporal.core.clear()
             simplify(
-                daVinCiLoop = daVinCiTemporal, exp = expression, state = this.name, view = daVinCi.view
+                daVinCiLoop = daVinCiTemporal, exp = expression, state = this.name
             )
             daVinCi.core.setCheckedDrawable(daVinCiTemporal.core.build())
             daVinCiTemporal.core.clear()
@@ -71,7 +71,7 @@ enum class State : StateColorAdapter, StateDrawableAdapter {
         ) {
             daVinCiTemporal.core.clear()
             simplify(
-                daVinCiLoop = daVinCiTemporal, exp = expression, state = this.name, view = daVinCi.view
+                daVinCiLoop = daVinCiTemporal, exp = expression, state = this.name
             )
             daVinCi.core.setUnCheckedDrawable(daVinCiTemporal.core.build())
             daVinCiTemporal.core.clear()
@@ -90,7 +90,7 @@ enum class State : StateColorAdapter, StateDrawableAdapter {
         ) {
             daVinCiTemporal.core.clear()
             simplify(
-                daVinCiLoop = daVinCiTemporal, exp = expression, state = this.name, view = daVinCi.view
+                daVinCiLoop = daVinCiTemporal, exp = expression, state = this.name
             )
             daVinCi.core.setEnabledDrawable(daVinCiTemporal.core.build())
             daVinCiTemporal.core.clear()
@@ -108,7 +108,7 @@ enum class State : StateColorAdapter, StateDrawableAdapter {
         ) {
             daVinCiTemporal.core.clear()
             simplify(
-                daVinCiLoop = daVinCiTemporal, exp = expression, state = this.name, view = daVinCi.view
+                daVinCiLoop = daVinCiTemporal, exp = expression, state = this.name
             )
             daVinCi.core.setUnEnabledDrawable(daVinCiTemporal.core.build())
             daVinCiTemporal.core.clear()
@@ -127,7 +127,7 @@ enum class State : StateColorAdapter, StateDrawableAdapter {
         ) {
             daVinCiTemporal.core.clear()
             simplify(
-                daVinCiLoop = daVinCiTemporal, exp = expression, state = this.name, view = daVinCi.view
+                daVinCiLoop = daVinCiTemporal, exp = expression, state = this.name
             )
             daVinCi.core.setSelectedDrawable(daVinCiTemporal.core.build())
             daVinCiTemporal.core.clear()
@@ -145,7 +145,7 @@ enum class State : StateColorAdapter, StateDrawableAdapter {
         ) {
             daVinCiTemporal.core.clear()
             simplify(
-                daVinCiLoop = daVinCiTemporal, exp = expression, state = this.name, view = daVinCi.view
+                daVinCiLoop = daVinCiTemporal, exp = expression, state = this.name
             )
             daVinCi.core.setUnSelectedDrawable(daVinCiTemporal.core.build())
             daVinCiTemporal.core.clear()
@@ -164,7 +164,7 @@ enum class State : StateColorAdapter, StateDrawableAdapter {
         ) {
             daVinCiTemporal.core.clear()
             simplify(
-                daVinCiLoop = daVinCiTemporal, exp = expression, state = this.name, view = daVinCi.view
+                daVinCiLoop = daVinCiTemporal, exp = expression, state = this.name
             )
             daVinCi.core.setPressedDrawable(daVinCiTemporal.core.build())
             daVinCiTemporal.core.clear()
@@ -182,7 +182,7 @@ enum class State : StateColorAdapter, StateDrawableAdapter {
         ) {
             daVinCiTemporal.core.clear()
             simplify(
-                daVinCiLoop = daVinCiTemporal, exp = expression, state = this.name, view = daVinCi.view
+                daVinCiLoop = daVinCiTemporal, exp = expression, state = this.name
             )
             daVinCi.core.setUnPressedDrawable(daVinCiTemporal.core.build())
             daVinCiTemporal.core.clear()
@@ -201,7 +201,7 @@ enum class State : StateColorAdapter, StateDrawableAdapter {
         ) {
             daVinCiTemporal.core.clear()
             simplify(
-                daVinCiLoop = daVinCiTemporal, exp = expression, state = this.name, view = daVinCi.view
+                daVinCiLoop = daVinCiTemporal, exp = expression, state = this.name
             )
             daVinCi.core.setFocusedDrawable(daVinCiTemporal.core.build())
             daVinCiTemporal.core.clear()
@@ -220,7 +220,7 @@ enum class State : StateColorAdapter, StateDrawableAdapter {
         ) {
             daVinCiTemporal.core.clear()
             simplify(
-                daVinCiLoop = daVinCiTemporal, exp = expression, state = this.name, view = daVinCi.view
+                daVinCiLoop = daVinCiTemporal, exp = expression, state = this.name
             )
             daVinCi.core.setUnFocusedDrawable(daVinCiTemporal.core.build())
             daVinCiTemporal.core.clear()
