@@ -8,7 +8,6 @@ import android.graphics.drawable.GradientDrawable
 import android.graphics.drawable.RippleDrawable
 import android.graphics.drawable.StateListDrawable
 import android.os.Build
-import android.util.Log
 import androidx.annotation.ColorInt
 import androidx.annotation.Px
 import java.util.*
@@ -196,42 +195,6 @@ class DaVinCiCore {
     //endregion
 
 
-    @ColorInt
-    private var checkableTextColor: Int? = null
-
-    @ColorInt
-    private var checkedTextColor: Int? = null
-
-    @ColorInt
-    private var enabledTextColor: Int? = null
-
-    @ColorInt
-    private var selectedTextColor: Int? = null
-
-    @ColorInt
-    private var pressedTextColor: Int? = null
-
-    @ColorInt
-    private var focusedTextColor: Int? = null
-
-    @ColorInt
-    private var unCheckableTextColor: Int? = null
-
-    @ColorInt
-    private var unCheckedTextColor: Int? = null
-
-    @ColorInt
-    private var unEnabledTextColor: Int? = null
-
-    @ColorInt
-    private var unSelectedTextColor: Int? = null
-
-    @ColorInt
-    private var unPressedTextColor: Int? = null
-
-    @ColorInt
-    private var unFocusedTextColor: Int? = null
-
     private val csl: MutableList<StateItem.ColorItem> = arrayListOf()
 
     private var textColorCount = 0
@@ -314,20 +277,6 @@ class DaVinCiCore {
         unFocusedDrawable = null
         unFocusedHovered = null
         unFocusedActivated = null
-
-        checkableTextColor = null
-        checkedTextColor = null
-        enabledTextColor = null
-        selectedTextColor = null
-        pressedTextColor = null
-        focusedTextColor = null
-        unCheckableTextColor = null
-        unCheckedTextColor = null
-        unEnabledTextColor = null
-        unSelectedTextColor = null
-        unPressedTextColor = null
-        unFocusedTextColor = null
-        textColorCount = 0
 
         csl.clear()
 
@@ -618,78 +567,6 @@ class DaVinCiCore {
         return this
     }
 
-    fun setCheckableTextColor(checkableTextColor: Int): DaVinCiCore {
-        this.checkableTextColor = checkableTextColor
-        textColorCount++
-        return this
-    }
-
-    fun setCheckedTextColor(checkedTextColor: Int): DaVinCiCore {
-        this.checkedTextColor = checkedTextColor
-        textColorCount++
-        return this
-    }
-
-    fun setEnabledTextColor(enabledTextColor: Int): DaVinCiCore {
-        this.enabledTextColor = enabledTextColor
-        textColorCount++
-        return this
-    }
-
-    fun setSelectedTextColor(selectedTextColor: Int): DaVinCiCore {
-        this.selectedTextColor = selectedTextColor
-        textColorCount++
-        return this
-    }
-
-    fun setPressedTextColor(pressedTextColor: Int): DaVinCiCore {
-        this.pressedTextColor = pressedTextColor
-        textColorCount++
-        return this
-    }
-
-    fun setFocusedTextColor(focusedTextColor: Int): DaVinCiCore {
-        this.focusedTextColor = focusedTextColor
-        textColorCount++
-        return this
-    }
-
-    fun setUnCheckableTextColor(unCheckableTextColor: Int): DaVinCiCore {
-        this.unCheckableTextColor = unCheckableTextColor
-        textColorCount++
-        return this
-    }
-
-    fun setUnCheckedTextColor(unCheckedTextColor: Int): DaVinCiCore {
-        this.unCheckedTextColor = unCheckedTextColor
-        textColorCount++
-        return this
-    }
-
-    fun setUnEnabledTextColor(unEnabledTextColor: Int): DaVinCiCore {
-        this.unEnabledTextColor = unEnabledTextColor
-        textColorCount++
-        return this
-    }
-
-    fun setUnSelectedTextColor(unSelectedTextColor: Int): DaVinCiCore {
-        this.unSelectedTextColor = unSelectedTextColor
-        textColorCount++
-        return this
-    }
-
-    fun setUnPressedTextColor(unPressedTextColor: Int): DaVinCiCore {
-        this.unPressedTextColor = unPressedTextColor
-        textColorCount++
-        return this
-    }
-
-    fun setUnFocusedTextColor(unFocusedTextColor: Int): DaVinCiCore {
-        this.unFocusedTextColor = unFocusedTextColor
-        textColorCount++
-        return this
-    }
-
     fun setBaseGradientDrawable(baseGradientDrawable: GradientDrawable?): DaVinCiCore {
         this.baseGradientDrawable = baseGradientDrawable
         return this
@@ -736,95 +613,7 @@ class DaVinCiCore {
             colors[index] = colorItem.colorInt
         }
         return ColorStateList(states, colors)
-
-//
-//        return if (textColorCount > 0) {
-//            colorStateList
-//        } else {
-//            null
-//        }
     }
-
-//    private val colorStateList: ColorStateList
-//        get() {
-//            val states = arrayOfNulls<IntArray>(textColorCount)
-//            val colors = IntArray(textColorCount)
-//            var index = 0
-//
-//            checkableTextColor?.let {
-//                states[index] = intArrayOf(android.R.attr.state_checkable)
-//                colors[index] = it
-//                index++
-//            }
-//
-//            unCheckableTextColor?.let {
-//                states[index] = intArrayOf(-android.R.attr.state_checkable)
-//                colors[index] = it
-//                index++
-//            }
-//
-//            checkedTextColor?.let {
-//                states[index] = intArrayOf(android.R.attr.state_checked)
-//                colors[index] = it
-//                index++
-//            }
-//
-//            unCheckedTextColor?.let {
-//                states[index] = intArrayOf(-android.R.attr.state_checked)
-//                colors[index] = it
-//                index++
-//            }
-//
-//            enabledTextColor?.let {
-//                states[index] = intArrayOf(android.R.attr.state_enabled)
-//                colors[index] = it
-//                index++
-//            }
-//
-//            unEnabledTextColor?.let {
-//                states[index] = intArrayOf(-android.R.attr.state_enabled)
-//                colors[index] = it
-//                index++
-//            }
-//
-//            selectedTextColor?.let {
-//                states[index] = intArrayOf(android.R.attr.state_selected)
-//                colors[index] = it
-//                index++
-//            }
-//
-//            unSelectedTextColor?.let {
-//                states[index] = intArrayOf(-android.R.attr.state_selected)
-//                colors[index] = it
-//                index++
-//            }
-//
-//            pressedTextColor?.let {
-//                states[index] = intArrayOf(android.R.attr.state_pressed)
-//                colors[index] = it
-//                index++
-//            }
-//
-//            unPressedTextColor?.let {
-//                states[index] = intArrayOf(-android.R.attr.state_pressed)
-//                colors[index] = it
-//                index++
-//            }
-//
-//            focusedTextColor?.let {
-//                states[index] = intArrayOf(android.R.attr.state_focused)
-//                colors[index] = it
-//                index++
-//            }
-//
-//            unFocusedTextColor?.let {
-//                states[index] = intArrayOf(-android.R.attr.state_focused)
-//                colors[index] = it
-//                //no necessary to increase index if no more to be add
-//            }
-//
-//            return ColorStateList(states, colors)
-//        }
 
     private val stateListDrawable: StateListDrawable?
         get() {
