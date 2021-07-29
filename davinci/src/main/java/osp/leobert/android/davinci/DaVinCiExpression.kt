@@ -1262,7 +1262,6 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
         @ColorInt
         var colorInt: Int? = null //这是解析出来的，不要乱赋值
 
-
         val states: MutableList<State> by lazy { arrayListOf() }
 
         companion object {
@@ -1362,7 +1361,7 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
                     target.host = null
                     target.color = null
                     target.colorInt = null
-                    target.tag = 0
+                    target.colorTag = 0
                 }
             }
 
@@ -1387,19 +1386,20 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
             set(value) {
                 field = value
                 if (value != null)
-                    tag = 1
+                    colorTag = 1
             }
 
         var colorInt: Int? = null
             set(value) {
                 field = value
                 if (value != null)
-                    tag = 2
+                    colorTag = 2
             }
-        private var tag = 0
+
+        private var colorTag = 0
 
         private fun strColor(): String? {
-            return when (tag) {
+            return when (colorTag) {
                 1 -> color
                 2 -> String.format("%8x", colorInt)
                 else -> null
@@ -1411,12 +1411,13 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
             StatedColor(
                 manual = true
             ).apply {
-                if (tag == 2)
+                if (this@CslSyntactic.colorTag == 1)
                     this.colorInt = this@CslSyntactic.colorInt
                 this.states.addAll(states)
-                parseFromText = (tag == 2)
+                parseFromText = (this@CslSyntactic.colorTag == 1)
                 text =
-                    "${StatedColor.prop_state}${states.joinToString(StatedColor.separator)};${StatedColor.prop_color}${this@CslSyntactic.color}"
+                    "${StatedColor.prop_state}${states.joinToString(StatedColor.separator)};${StatedColor.prop_color}${this@CslSyntactic.strColor()}"
+
                 host.exps().append(this)
             }
             DPools.cslSyntacticPool.release(this)
@@ -1430,10 +1431,11 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
             StatedColor(
                 manual = true
             ).apply {
-                if (tag == 2)
+                if (this@CslSyntactic.colorTag == 2)
                     this.colorInt = this@CslSyntactic.colorInt
                 text =
-                    "${StatedColor.prop_state}${states.joinToString(StatedColor.separator)};${StatedColor.prop_color}${this@CslSyntactic.color}"
+                    "${StatedColor.prop_state}${states.joinToString(StatedColor.separator)};${StatedColor.prop_color}${this@CslSyntactic.strColor()}"
+
                 host.exps().append(this)
             }
             DPools.cslSyntacticPool.release(this)

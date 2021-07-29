@@ -37,8 +37,14 @@ sealed class StateItem<T:StateItem<T>> {
 
     protected abstract fun getT():T
 
+
+
     fun getStatesArray(): IntArray {
         return states.sortedBy { it.attr.absoluteValue }.map { it.attr }.toIntArray()
+    }
+
+    override fun toString(): String {
+        return "StateItem(states=$states)"
     }
 
 
@@ -46,12 +52,23 @@ sealed class StateItem<T:StateItem<T>> {
         override fun getT(): ColorItem {
             return this
         }
+
+        override fun toString(): String {
+            return "ColorItem(colorInt=$colorInt) ${super.toString()}"
+        }
+
+
     }
 
     class DrawableItem(val drawable: Drawable) : StateItem<DrawableItem>() {
         override fun getT(): DrawableItem {
             return this
         }
+
+        override fun toString(): String {
+            return "DrawableItem(drawable=$drawable) ${super.toString()}"
+        }
+
     }
 
 }
