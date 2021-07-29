@@ -1,6 +1,7 @@
 package osp.leobert.android.davinci
 
 import android.content.Context
+import android.util.Log
 import android.view.View
 import android.widget.TextView
 import java.util.*
@@ -41,13 +42,18 @@ class DaVinCi(text: String?, val view: View) {
     fun applyCsl(exp: DaVinCiExpression.ColorStateList) {
         // TODO: 2021/7/9 add applier and replace
 
+        if (enableDebugLog)
+            Log.d(DaVinCiExpression.sLogTag, "daVinCi csl:$exp")
+
         view.takeIfInstance<TextView>()?.setTextColor(
             exp.run {
                 core.clear()
                 exp.injectThenParse(this@DaVinCi)
                 exp.interpret()
 
-                core.buildTextColor()
+                core.buildTextColor().apply {
+                    Log.d("xxx", "csl:${this}")
+                }
             }
         )?.also { core.clear() }
     }

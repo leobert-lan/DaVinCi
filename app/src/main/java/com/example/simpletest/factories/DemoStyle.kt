@@ -32,13 +32,18 @@ class DemoStyle : StyleRegistry.Style("btn_style.main") {
             expression = DaVinCiExpression.shape().rectAngle().corner("10dp")
                 .gradient("#ff3c08", "#ff653c", 0)
         ).registerCsl(
-            exp = DaVinCiExpression.stateColor().apply(
-                state = State.STATE_ENABLE_FALSE,
-                color = "#ffffff"
-            ).apply(
-                state = State.STATE_ENABLE_TRUE,
-                color = "#333333"
-            )
+            exp = DaVinCiExpression.stateColor()
+                .color("#000000").states(State.STATE_ENABLE_TRUE, State.STATE_CHECKED_TRUE)
+                .color("#666666").states(State.STATE_ENABLE_TRUE, State.STATE_CHECKED_FALSE)
+                .color("#ffffff").states(State.STATE_ENABLE_FALSE)
+
+//                .apply(
+//                    state = State.STATE_ENABLE_FALSE,
+//                    color = "#ffffff"
+//                ).apply(
+//                    state = State.STATE_ENABLE_TRUE,
+//                    color = "#333333"
+//                )
         )
     }
 }

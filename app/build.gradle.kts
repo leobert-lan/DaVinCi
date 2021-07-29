@@ -78,6 +78,8 @@ ksp {
     arg("daVinCi.preview", "true")
 }
 
+val dev = true
+
 dependencies {
     implementation("androidx.constraintlayout:constraintlayout:1.1.3")
 
@@ -91,18 +93,20 @@ dependencies {
     androidTestImplementation("androidx.test.ext:junit:1.1.2")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.3.0")
 
+    if (dev) {
 //    debugImplementation(project(":davinci_styles_viewer"))
-    debugImplementation(Dependencies.DaVinCi.viewer)
+//    ksp(project(":anno_ksp"))
+//    implementation(project(":annotation"))
+        implementation(project(":davinci"))
+    } else {
+        implementation(Dependencies.DaVinCi.api)
+    }
 
+    debugImplementation(Dependencies.DaVinCi.viewer)
     implementation(Dependencies.DaVinCi.annotation)
 //    ksp(Dependencies.DaVinVi.ksp)
     kapt(Dependencies.DaVinCi.ksp)
-    implementation(Dependencies.DaVinCi.api)
-
-//    implementation(project(":davinci"))
-//    ksp(project(":anno_ksp"))
     //kotlin注解
-//    implementation(project(":annotation"))
     //java注解
 //    implementation(project(":annotation-java"))
 }

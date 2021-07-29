@@ -1,8 +1,8 @@
 package osp.leobert.android.davinci
 
-enum class State : StateColorAdapter, StateDrawableAdapter {
+enum class State(val attr:Int) : StateColorAdapter, StateDrawableAdapter {
 
-    STATE_CHECKABLE_TRUE {
+    STATE_CHECKABLE_TRUE(android.R.attr.state_checkable) {
         override fun adapt(core: DaVinCiCore, colorInt: Int) {
             core.setCheckableTextColor(colorInt)
         }
@@ -21,7 +21,7 @@ enum class State : StateColorAdapter, StateDrawableAdapter {
         }
     },
 
-    STATE_CHECKABLE_FALSE {
+    STATE_CHECKABLE_FALSE(-android.R.attr.state_checkable) {
         override fun adapt(core: DaVinCiCore, colorInt: Int) {
             core.setUnCheckableTextColor(colorInt)
         }
@@ -40,7 +40,7 @@ enum class State : StateColorAdapter, StateDrawableAdapter {
         }
     },
 
-    STATE_CHECKED_TRUE {
+    STATE_CHECKED_TRUE(android.R.attr.state_checked) {
         override fun adapt(core: DaVinCiCore, colorInt: Int) {
             core.setCheckedTextColor(colorInt)
         }
@@ -59,7 +59,7 @@ enum class State : StateColorAdapter, StateDrawableAdapter {
         }
     },
 
-    STATE_CHECKED_FALSE {
+    STATE_CHECKED_FALSE(-android.R.attr.state_checked) {
         override fun adapt(core: DaVinCiCore, colorInt: Int) {
             core.setUnCheckedTextColor(colorInt)
         }
@@ -78,7 +78,7 @@ enum class State : StateColorAdapter, StateDrawableAdapter {
         }
     },
 
-    STATE_ENABLE_TRUE {
+    STATE_ENABLE_TRUE(android.R.attr.state_enabled) {
         override fun adapt(core: DaVinCiCore, colorInt: Int) {
             core.setEnabledTextColor(colorInt)
         }
@@ -96,7 +96,7 @@ enum class State : StateColorAdapter, StateDrawableAdapter {
             daVinCiTemporal.core.clear()
         }
     },
-    STATE_ENABLE_FALSE {
+    STATE_ENABLE_FALSE(-android.R.attr.state_enabled) {
         override fun adapt(core: DaVinCiCore, colorInt: Int) {
             core.setUnEnabledTextColor(colorInt)
         }
@@ -115,7 +115,7 @@ enum class State : StateColorAdapter, StateDrawableAdapter {
         }
     },
 
-    STATE_SELECTED_TRUE {
+    STATE_SELECTED_TRUE(android.R.attr.state_selected) {
         override fun adapt(core: DaVinCiCore, colorInt: Int) {
             core.setSelectedTextColor(colorInt)
         }
@@ -133,7 +133,7 @@ enum class State : StateColorAdapter, StateDrawableAdapter {
             daVinCiTemporal.core.clear()
         }
     },
-    STATE_SELECTED_FALSE {
+    STATE_SELECTED_FALSE(-android.R.attr.state_selected) {
         override fun adapt(core: DaVinCiCore, colorInt: Int) {
             core.setUnSelectedTextColor(colorInt)
         }
@@ -152,7 +152,7 @@ enum class State : StateColorAdapter, StateDrawableAdapter {
         }
     },
 
-    STATE_PRESSED_TRUE {
+    STATE_PRESSED_TRUE(android.R.attr.state_pressed) {
         override fun adapt(core: DaVinCiCore, colorInt: Int) {
             core.setPressedTextColor(colorInt)
         }
@@ -170,7 +170,7 @@ enum class State : StateColorAdapter, StateDrawableAdapter {
             daVinCiTemporal.core.clear()
         }
     },
-    STATE_PRESSED_FALSE {
+    STATE_PRESSED_FALSE(-android.R.attr.state_pressed) {
         override fun adapt(core: DaVinCiCore, colorInt: Int) {
             core.setUnPressedTextColor(colorInt)
         }
@@ -189,7 +189,7 @@ enum class State : StateColorAdapter, StateDrawableAdapter {
         }
     },
 
-    STATE_FOCUSED_TRUE {
+    STATE_FOCUSED_TRUE(android.R.attr.state_focused) {
         override fun adapt(core: DaVinCiCore, colorInt: Int) {
             core.setFocusedTextColor(colorInt)
         }
@@ -208,7 +208,7 @@ enum class State : StateColorAdapter, StateDrawableAdapter {
         }
     },
 
-    STATE_FOCUSED_FALSE {
+    STATE_FOCUSED_FALSE(-android.R.attr.state_focused) {
         override fun adapt(core: DaVinCiCore, colorInt: Int) {
             core.setUnFocusedTextColor(colorInt)
         }
@@ -226,4 +226,8 @@ enum class State : StateColorAdapter, StateDrawableAdapter {
             daVinCiTemporal.core.clear()
         }
     };
+
+    override fun toString(): String {
+        return name
+    }
 }

@@ -115,11 +115,13 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
             }
         }
 
-        protected fun parseState(text: String?): State? {
+        protected fun parseStates(text: String?): List<State>? {
             if (text.isNullOrEmpty()) return null
-            val t = text.toUpperCase(Locale.ENGLISH)
 
-            return State.valueOf(t)
+            return text.toUpperCase(Locale.ENGLISH).split(ColorStateList.separator).map {
+                State.valueOf(it)
+            }
+
         }
 
         protected fun parseInt(text: String?, default: Int?): Int? {
@@ -209,7 +211,7 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
     //endregion
 
     //region ListExp 同级别多条目解析
-    protected class ListExpression(daVinCi: DaVinCi? = null, private val manual: Boolean = false) :
+    internal class ListExpression(daVinCi: DaVinCi? = null, private val manual: Boolean = false) :
         DaVinCiExpression(daVinCi) {
         private val list: ArrayList<DaVinCiExpression> = ArrayList()
 
@@ -1176,13 +1178,13 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
     //region Color State List
     // TODO: 2021/7/21 每一个item的state不只是一个
     class ColorStateList internal constructor(private val manual: Boolean = false) :
-        DaVinCiExpression(null)/*,Statable<ColorStateList>*/ {
+        DaVinCiExpression(null) {
 
         private var expressions: ListExpression? = null
         override fun startTag(): String = tag
 
 
-        private fun exps(): ListExpression = expressions ?: ListExpression(daVinCi, manual).apply {
+        internal fun exps(): ListExpression = expressions ?: ListExpression(daVinCi, manual).apply {
             expressions = this
         }
 
@@ -1193,70 +1195,29 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
 
         }
 
-       /* fun color(color: String):Statable<ColorStateList> {
-
-            return this
+        fun color(color: String): Statable<ColorStateList> {
+            return CslSyntactic.of(this, color)
         }
 
-        override fun states(vararg states: State): ColorStateList {
-            TODO("Not yet implemented")
+
+        fun color(@ColorInt color: Int): Statable<ColorStateList> {
+            return CslSyntactic.of(this, color)
         }
 
-        override fun states(vararg states: String): ColorStateList {
-            states.joinToString(separator)
 
-            StatedColor(
-                manual = true
-            ).apply {
-                text = "${StatedColor.prop_state}${state.name};${StatedColor.prop_color}$color"
-                exps().append(this)
-            }
-            return this
-        }*/
-
-        @Deprecated("表意不准确")
+        @Deprecated("表意不准确", ReplaceWith("color(color).states(state...)"))
         fun apply(state: State, color: String): ColorStateList {
-            StatedColor(
-                manual = true
-            ).apply {
-                text = "${StatedColor.prop_state}${state.name};${StatedColor.prop_color}$color"
-                exps().append(this)
-            }
-
-            return this
+            return color(color).states(state)
         }
 
-        @Deprecated("表意不准确")
+        @Deprecated("表意不准确", ReplaceWith("color(color).states(state...)"))
         fun apply(state: String, color: String): ColorStateList {
-            StatedColor(
-                manual = true
-            ).apply {
-                text = "${StatedColor.prop_state}${state};${StatedColor.prop_color}$color"
-                exps().append(this)
-            }
-
-            return this
+            return color(color).states(state)
         }
 
-        @Deprecated("表意不准确")
+        @Deprecated("表意不准确", ReplaceWith("color(color).states(state...)"))
         fun apply(state: State, @ColorInt color: Int): ColorStateList {
-            StatedColor(
-                manual = true
-            ).apply {
-                parseFromText = false
-                this.state = state
-                this.colorInt = color
-
-                text = "${StatedColor.prop_state}${state.name};${StatedColor.prop_color}#${
-                    String.format(
-                        "%8x",
-                        color
-                    )
-                }"
-                exps().append(this)
-            }
-
-            return this
+            return color(color).states(state)
         }
 
 
@@ -1302,7 +1263,7 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
         var colorInt: Int? = null //这是解析出来的，不要乱赋值
 
 
-        var state: State? = null
+        val states: MutableList<State> by lazy { arrayListOf() }
 
         companion object {
             const val tag = "sc:["
@@ -1310,6 +1271,8 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
             const val prop_state = "state:"
 
             const val prop_color = "color:"
+
+            const val separator = ","
         }
 
         init {
@@ -1328,19 +1291,22 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
         }
 
         private fun parse(daVinCi: DaVinCi?) {
-            text?.let {
+            text?.let { content ->
                 colorInt = null
-                state = null
+                states.clear()
 
-                it.split(";").forEach { e ->
+                content.split(";").forEach { e ->
                     when {
                         e.startsWith(prop_color) -> {
                             if (daVinCi != null)
                                 colorInt = parseColor(e.replace(prop_color, ""))
                         }
                         e.startsWith(prop_state) -> {
-                            if (daVinCi != null)
-                                state = parseState(e.replace(prop_state, ""))
+                            if (daVinCi != null) {
+                                parseStates(e.replace(prop_state, ""))?.let { s ->
+                                    states.addAll(s)
+                                }
+                            }
                         }
                         else -> {
                             log("暂未支持解析:$e", null)
@@ -1348,19 +1314,20 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
                     }
                 }
 
-                state ?: log<State>("state 不能为空", null)
+                states ?: log<State>("state 不能为空", null)
                 colorInt ?: log<Int>("color 不能为空", null)
             }
         }
 
         override fun interpret() {
-            val state = state ?: log<State>("state 不能为空", null) ?: return
+            val state = states ?: log<State>("state 不能为空", null) ?: return
             val colorInt = colorInt ?: log<Int>("color 不能为空", null) ?: return
 
             if (tag == tokenName || manual) {
-                daVinCi?.let {
-                    state.adapt(it.core, colorInt)
-                }
+                daVinCi?.core?.addColorItem(StateItem.of(colorInt).applyState(states))
+//                daVinCi?.let {
+//                    state.adapt(it.core, colorInt)
+//                }
             }
         }
 
@@ -1368,11 +1335,115 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
             return if (parseFromText)
                 "$tag $text $END"
             else ("$tag " +
-                    state.run { ";$prop_state$this" } +
+                    states.run { ";$prop_state$this" } +
                     colorInt.run { ";$prop_color$this" } +
                     " $END").replaceFirst(";", "")
         }
     }
+    //endregion
+
+    ///////////////////////////////////////////////////////////////////////////
+    //
+    ///////////////////////////////////////////////////////////////////////////
+
+    //region
+
+    class CslSyntactic : Statable<ColorStateList> {
+
+        companion object {
+            val factory: DPools.Factory<CslSyntactic> = object : DPools.Factory<CslSyntactic> {
+                override fun create(): CslSyntactic {
+                    return CslSyntactic()
+                }
+            }
+
+            val resetter: DPools.Resetter<CslSyntactic> = object : DPools.Resetter<CslSyntactic> {
+                override fun reset(target: CslSyntactic) {
+                    target.host = null
+                    target.color = null
+                    target.colorInt = null
+                    target.tag = 0
+                }
+            }
+
+            fun of(host: ColorStateList, color: String): CslSyntactic {
+                return requireNotNull(DPools.cslSyntacticPool.acquire()).apply {
+                    this.color = color
+                    this.host = host
+                }
+            }
+
+            fun of(host: ColorStateList, @ColorInt color: Int): CslSyntactic {
+                return requireNotNull(DPools.cslSyntacticPool.acquire()).apply {
+                    this.colorInt = color
+                    this.host = host
+                }
+            }
+        }
+
+        var host: ColorStateList? = null
+
+        var color: String? = null
+            set(value) {
+                field = value
+                if (value != null)
+                    tag = 1
+            }
+
+        var colorInt: Int? = null
+            set(value) {
+                field = value
+                if (value != null)
+                    tag = 2
+            }
+        private var tag = 0
+
+        private fun strColor(): String? {
+            return when (tag) {
+                1 -> color
+                2 -> String.format("%8x", colorInt)
+                else -> null
+            }
+        }
+
+        override fun states(vararg states: State): ColorStateList {
+            val host = requireNotNull(host)
+            StatedColor(
+                manual = true
+            ).apply {
+                if (tag == 2)
+                    this.colorInt = this@CslSyntactic.colorInt
+                this.states.addAll(states)
+                parseFromText = (tag == 2)
+                text =
+                    "${StatedColor.prop_state}${states.joinToString(StatedColor.separator)};${StatedColor.prop_color}${this@CslSyntactic.color}"
+                host.exps().append(this)
+            }
+            DPools.cslSyntacticPool.release(this)
+            return host
+
+        }
+
+        override fun states(vararg states: String): ColorStateList {
+
+            val host = requireNotNull(host)
+            StatedColor(
+                manual = true
+            ).apply {
+                if (tag == 2)
+                    this.colorInt = this@CslSyntactic.colorInt
+                text =
+                    "${StatedColor.prop_state}${states.joinToString(StatedColor.separator)};${StatedColor.prop_color}${this@CslSyntactic.color}"
+                host.exps().append(this)
+            }
+            DPools.cslSyntacticPool.release(this)
+            return host
+        }
+
+
+    }
+
+
     //endregion
 
 }
