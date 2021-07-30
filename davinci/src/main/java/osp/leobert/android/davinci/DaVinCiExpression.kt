@@ -38,6 +38,10 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
     open fun startTag(): String = ""
 
     companion object {
+
+        @JvmStatic
+        fun stateListDrawable(): StateListDrawable = StateListDrawable(manual = true)
+
         @JvmStatic
         fun shape(): Shape = Shape(manual = true)
 
@@ -68,6 +72,11 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
     @Suppress("WeakerAccess", "unused")
     open class CommandExpression(daVinCi: DaVinCi? = null, val manual: Boolean = false) :
         DaVinCiExpression(daVinCi) {
+
+        companion object {
+            const val state_separator = ","
+        }
+
         private var expressions: DaVinCiExpression? = null
 
         init {
@@ -118,7 +127,7 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
         protected fun parseStates(text: String?): List<State>? {
             if (text.isNullOrEmpty()) return null
 
-            return text.toUpperCase(Locale.ENGLISH).split(ColorStateList.separator).map {
+            return text.toUpperCase(Locale.ENGLISH).split(state_separator).map {
                 State.valueOf(it)
             }
 
@@ -173,6 +182,7 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
             if (manual) return
             daVinCi?.let {
                 expressions = when (it.currentToken) {
+                    Shape.tag-> Shape().apply { injectThenParse(it) }
                     Corners.tag -> Corners(it)
                     Solid.tag -> Solid(it)
                     ShapeType.tag -> ShapeType(it)
@@ -278,6 +288,55 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
         }
 
 
+    }
+    //endregion
+
+    //region StateListDrawable
+    class StateListDrawable internal constructor(val manual: Boolean = false) : DaVinCiExpression(null) {
+
+        private var expressions: ListExpression? = null
+        override fun startTag(): String = tag
+
+        internal fun exps(): ListExpression = expressions ?: ListExpression(daVinCi, manual).apply {
+            expressions = this
+        }
+
+        companion object {
+            const val tag = "sld:["
+        }
+
+        override fun injectThenParse(daVinCi: DaVinCi?) {
+            this.daVinCi = daVinCi
+            if (manual) return
+            daVinCi?.next()
+        }
+
+        override fun interpret() {
+            daVinCi?.let {
+                if (manual) {
+                    this.expressions = exps().apply {
+                        this.injectThenParse(it)
+                        this.interpret()
+                    }
+                } else if (!it.equalsWithCommand(ColorStateList.tag)) {
+                    if (DaVinCi.enableDebugLog) Log.e(
+                        sLogTag,
+                        "The ${ColorStateList.tag} is Excepted For Start When Not Manual!"
+                    )
+                } else {
+                    //解析型
+                    it.next()
+                    this.expressions = exps().apply {
+                        this.injectThenParse(it)
+                        this.interpret()
+                    }
+                }
+            }
+        }
+
+        override fun toString(): String {
+            return "${ColorStateList.tag} $expressions $END"
+        }
     }
     //endregion
 
@@ -1191,8 +1250,6 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
 
         companion object {
             const val tag = "csl:["
-            const val separator = ","
-
         }
 
         fun color(color: String): Statable<ColorStateList> {
@@ -1271,7 +1328,7 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
 
             const val prop_color = "color:"
 
-            const val separator = ","
+            const val separator = CommandExpression.state_separator
         }
 
         init {
@@ -1324,9 +1381,6 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
 
             if (tag == tokenName || manual) {
                 daVinCi?.core?.addColorItem(StateItem.of(colorInt).applyState(states))
-//                daVinCi?.let {
-//                    state.adapt(it.core, colorInt)
-//                }
             }
         }
 
@@ -1346,6 +1400,31 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
     ///////////////////////////////////////////////////////////////////////////
 
     //region
+
+    class SldSyntactic : Statable<SldSyntactic> {
+        companion object {
+            val factory: DPools.Factory<SldSyntactic> = object : DPools.Factory<SldSyntactic> {
+                override fun create(): SldSyntactic {
+                    return SldSyntactic()
+                }
+            }
+
+            val resetter: DPools.Resetter<SldSyntactic> = object : DPools.Resetter<SldSyntactic> {
+                override fun reset(target: SldSyntactic) {
+                }
+            }
+        }
+        override fun states(vararg states: State): SldSyntactic {
+//            TODO("Not yet implemented")
+            return this
+        }
+
+        override fun states(vararg states: String): SldSyntactic {
+//            TODO("Not yet implemented")
+            return this
+        }
+
+    }
 
     class CslSyntactic : Statable<ColorStateList> {
 

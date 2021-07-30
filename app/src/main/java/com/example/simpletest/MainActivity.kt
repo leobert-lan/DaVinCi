@@ -71,7 +71,7 @@ class MainActivity : AppCompatActivity() {
 
         //这种不推荐使用啊，考虑语法解析一方面是考虑方便打印，另一方面是考虑到以后替换xml内的方案时，可以有后手
         binding.test2.setOnClickListener {
-            it.daVinCi("shape:[ gradient:[ type:linear;startColor:#ff3c08;endColor:#353538 ]; st:[ Oval ]; corners:[ 40dp ]; stroke:[ width:4dp;color:rc/colorAccent ] ]")
+            it.daVinCi("sld:[ shape:[ gradient:[ type:linear;startColor:#ff3c08;endColor:#353538 ]; st:[ Oval ]; corners:[ 40dp ]; stroke:[ width:4dp;color:rc/colorAccent ] ] ]")
         }
 
         binding.tvTestFactory.setOnTouchListener { v, event ->

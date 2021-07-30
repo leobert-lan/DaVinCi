@@ -20,7 +20,7 @@ fun View.daVinCi(str: String) {
     if (DaVinCi.enableDebugLog) Log.d(DaVinCiExpression.sLogTag, "${this.logTag()} daVinCi:$str")
     val daVinCi = DaVinCi(str, this)
 
-    val expressions: DaVinCiExpression = DaVinCiExpression.Shape()
+    val expressions: DaVinCiExpression = DaVinCiExpression.stateListDrawable()// DaVinCiExpression.Shape()
 
     expressions.injectThenParse(daVinCi)
     expressions.interpret()

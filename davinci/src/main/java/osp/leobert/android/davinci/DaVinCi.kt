@@ -51,9 +51,7 @@ class DaVinCi(text: String?, val view: View) {
                 exp.injectThenParse(this@DaVinCi)
                 exp.interpret()
 
-                core.buildTextColor().apply {
-                    Log.d("xxx", "csl:${this}")
-                }
+                core.buildTextColor()
             }
         )?.also { core.clear() }
     }

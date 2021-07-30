@@ -195,12 +195,17 @@ class DaVinCiCore {
     //endregion
 
 
-    private val csl: MutableList<StateItem.ColorItem> = arrayListOf()
+    /**
+     * used to build [ColorStateList]
+     * */
+    private val csl: MutableList<StateItem.ColorItem> by lazy { arrayListOf() }
+    private val sld: MutableList<StateItem.DrawableItem> by lazy { arrayListOf() }
 
-    private var textColorCount = 0
-
-    private var hasSelectDrawable = false
     private var baseGradientDrawable: GradientDrawable? = null
+
+    @Deprecated("改进构建方式")
+    private var hasSelectDrawable = false
+
     private var baseStateListDrawable: StateListDrawable? = null
 
     fun clear() {
@@ -333,7 +338,11 @@ class DaVinCiCore {
     }
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-    fun setGradientColor(@ColorInt startColor: Int?, @ColorInt centerColor: Int?, @ColorInt endColor: Int?): DaVinCiCore {
+    fun setGradientColor(
+        @ColorInt startColor: Int?,
+        @ColorInt centerColor: Int?,
+        @ColorInt endColor: Int?
+    ): DaVinCiCore {
         gradientStartColor = startColor
         gradientCenterColor = centerColor
         gradientEndColor = endColor
@@ -355,7 +364,12 @@ class DaVinCiCore {
         return this
     }
 
-    fun setPadding(@Px paddingLeft: Float, @Px paddingTop: Float, @Px paddingRight: Float, @Px paddingBottom: Float): DaVinCiCore {
+    fun setPadding(
+        @Px paddingLeft: Float,
+        @Px paddingTop: Float,
+        @Px paddingRight: Float,
+        @Px paddingBottom: Float
+    ): DaVinCiCore {
         padding.left = paddingLeft.toInt()
         padding.top = paddingTop.toInt()
         padding.right = paddingRight.toInt()
@@ -399,73 +413,109 @@ class DaVinCiCore {
         return this
     }
 
-    fun setCheckableStrokeColor(@ColorInt checkableStrokeColor: Int, @ColorInt unCheckableStrokeColor: Int): DaVinCiCore {
+    fun setCheckableStrokeColor(
+        @ColorInt checkableStrokeColor: Int,
+        @ColorInt unCheckableStrokeColor: Int
+    ): DaVinCiCore {
         this.checkableStrokeColor = checkableStrokeColor
         this.unCheckableStrokeColor = unCheckableStrokeColor
         return this
     }
 
-    fun setCheckedStrokeColor(@ColorInt checkedStrokeColor: Int, @ColorInt unCheckedStrokeColor: Int): DaVinCiCore {
+    fun setCheckedStrokeColor(
+        @ColorInt checkedStrokeColor: Int,
+        @ColorInt unCheckedStrokeColor: Int
+    ): DaVinCiCore {
         this.checkedStrokeColor = checkedStrokeColor
         this.unCheckedStrokeColor = unCheckedStrokeColor
         return this
     }
 
-    fun setEnabledStrokeColor(@ColorInt enabledStrokeColor: Int, @ColorInt unEnabledStrokeColor: Int): DaVinCiCore {
+    fun setEnabledStrokeColor(
+        @ColorInt enabledStrokeColor: Int,
+        @ColorInt unEnabledStrokeColor: Int
+    ): DaVinCiCore {
         this.enabledStrokeColor = enabledStrokeColor
         this.unEnabledStrokeColor = unEnabledStrokeColor
         return this
     }
 
-    fun setSelectedStrokeColor(@ColorInt selectedStrokeColor: Int, @ColorInt unSelectedStrokeColor: Int): DaVinCiCore {
+    fun setSelectedStrokeColor(
+        @ColorInt selectedStrokeColor: Int,
+        @ColorInt unSelectedStrokeColor: Int
+    ): DaVinCiCore {
         this.selectedStrokeColor = selectedStrokeColor
         this.unSelectedStrokeColor = unSelectedStrokeColor
         return this
     }
 
-    fun setPressedStrokeColor(@ColorInt pressedStrokeColor: Int, @ColorInt unPressedStrokeColor: Int): DaVinCiCore {
+    fun setPressedStrokeColor(
+        @ColorInt pressedStrokeColor: Int,
+        @ColorInt unPressedStrokeColor: Int
+    ): DaVinCiCore {
         this.pressedStrokeColor = pressedStrokeColor
         this.unPressedStrokeColor = unPressedStrokeColor
         return this
     }
 
-    fun setFocusedStrokeColor(@ColorInt focusedStrokeColor: Int, @ColorInt unFocusedStrokeColor: Int): DaVinCiCore {
+    fun setFocusedStrokeColor(
+        @ColorInt focusedStrokeColor: Int,
+        @ColorInt unFocusedStrokeColor: Int
+    ): DaVinCiCore {
         this.focusedStrokeColor = focusedStrokeColor
         this.unFocusedStrokeColor = unFocusedStrokeColor
         return this
     }
 
-    fun setCheckableSolidColor(@ColorInt checkableSolidColor: Int, @ColorInt unCheckableSolidColor: Int): DaVinCiCore {
+    fun setCheckableSolidColor(
+        @ColorInt checkableSolidColor: Int,
+        @ColorInt unCheckableSolidColor: Int
+    ): DaVinCiCore {
         this.checkableSolidColor = checkableSolidColor
         this.unCheckableSolidColor = unCheckableSolidColor
         return this
     }
 
-    fun setCheckedSolidColor(@ColorInt checkedSolidColor: Int, @ColorInt unCheckedSolidColor: Int): DaVinCiCore {
+    fun setCheckedSolidColor(
+        @ColorInt checkedSolidColor: Int,
+        @ColorInt unCheckedSolidColor: Int
+    ): DaVinCiCore {
         this.checkedSolidColor = checkedSolidColor
         this.unCheckedSolidColor = unCheckedSolidColor
         return this
     }
 
-    fun setEnabledSolidColor(@ColorInt enabledSolidColor: Int, @ColorInt unEnabledSolidColor: Int): DaVinCiCore {
+    fun setEnabledSolidColor(
+        @ColorInt enabledSolidColor: Int,
+        @ColorInt unEnabledSolidColor: Int
+    ): DaVinCiCore {
         this.enabledSolidColor = enabledSolidColor
         this.unEnabledSolidColor = unEnabledSolidColor
         return this
     }
 
-    fun setSelectedSolidColor(@ColorInt selectedSolidColor: Int, @ColorInt unSelectedSolidColor: Int): DaVinCiCore {
+    fun setSelectedSolidColor(
+        @ColorInt selectedSolidColor: Int,
+        @ColorInt unSelectedSolidColor: Int
+    ): DaVinCiCore {
         this.selectedSolidColor = selectedSolidColor
         this.unSelectedSolidColor = unSelectedSolidColor
         return this
     }
 
-    fun setPressedSolidColor(@ColorInt pressedSolidColor: Int, @ColorInt unPressedSolidColor: Int): DaVinCiCore {
+    fun setPressedSolidColor(
+        @ColorInt pressedSolidColor: Int,
+        @ColorInt unPressedSolidColor: Int
+    ): DaVinCiCore {
         this.pressedSolidColor = pressedSolidColor
         this.unPressedSolidColor = unPressedSolidColor
         return this
     }
 
-    fun setFocusedSolidColor(@ColorInt focusedSolidColor: Int, @ColorInt unFocusedSolidColor: Int): DaVinCiCore {
+    fun setFocusedSolidColor(
+        @ColorInt focusedSolidColor: Int,
+        @ColorInt unFocusedSolidColor: Int
+    ): DaVinCiCore {
         this.focusedSolidColor = focusedSolidColor
         this.unFocusedSolidColor = unFocusedSolidColor
         return this
@@ -591,7 +641,11 @@ class DaVinCiCore {
         return if (rippleEnable) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 val contentDrawable = stateListDrawable ?: drawable
-                RippleDrawable(ColorStateList.valueOf(rippleColor), contentDrawable, contentDrawable)
+                RippleDrawable(
+                    ColorStateList.valueOf(rippleColor),
+                    contentDrawable,
+                    contentDrawable
+                )
             } else {
                 val resultDrawable = StateListDrawable()
                 val unPressDrawable = gradientDrawable
@@ -615,79 +669,134 @@ class DaVinCiCore {
         return ColorStateList(states, colors)
     }
 
+    @Deprecated("改进构建方式")
     private val stateListDrawable: StateListDrawable?
         get() {
-            var stateListDrawable = baseStateListDrawable
-            if (checkableDrawable != null) {
-                stateListDrawable = getStateListDrawable(stateListDrawable)
-                stateListDrawable.addState(intArrayOf(android.R.attr.state_checkable), checkableDrawable)
-            }
-            if (unCheckableDrawable != null) {
-                stateListDrawable = getStateListDrawable(stateListDrawable)
-                stateListDrawable.addState(intArrayOf(-android.R.attr.state_checkable), unCheckableDrawable)
-            }
-            if (checkedDrawable != null) {
-                stateListDrawable = getStateListDrawable(stateListDrawable)
-                stateListDrawable.addState(intArrayOf(android.R.attr.state_checked), checkedDrawable)
-            }
-            if (unCheckedDrawable != null) {
-                stateListDrawable = getStateListDrawable(stateListDrawable)
-                stateListDrawable.addState(intArrayOf(-android.R.attr.state_checked), unCheckedDrawable)
+            val sld = sld.takeUnless { it.isEmpty() } ?: return baseStateListDrawable
+            val stateListDrawable = getStateListDrawable(baseStateListDrawable)
+
+            sld.forEach { drawableItem ->
+                stateListDrawable.addState(drawableItem.getStatesArray(), drawableItem.drawable)
             }
 
-            if (enabledDrawable != null) {
-                stateListDrawable = getStateListDrawable(stateListDrawable)
-                stateListDrawable.addState(intArrayOf(android.R.attr.state_enabled), enabledDrawable)
-            }
-            if (unEnabledDrawable != null) {
-                stateListDrawable = getStateListDrawable(stateListDrawable)
-                stateListDrawable.addState(intArrayOf(-android.R.attr.state_enabled), unEnabledDrawable)
-            }
-
-
-            if (selectedDrawable != null) {
-                stateListDrawable = getStateListDrawable(stateListDrawable)
-                stateListDrawable.addState(intArrayOf(android.R.attr.state_selected), selectedDrawable)
-            }
-            if (unSelectedDrawable != null) {
-                stateListDrawable = getStateListDrawable(stateListDrawable)
-                stateListDrawable.addState(intArrayOf(-android.R.attr.state_selected), unSelectedDrawable)
-            }
-
-            if (pressedDrawable != null) {
-                stateListDrawable = getStateListDrawable(stateListDrawable)
-                stateListDrawable.addState(intArrayOf(android.R.attr.state_pressed), pressedDrawable)
-            }
-            if (unPressedDrawable != null) {
-                stateListDrawable = getStateListDrawable(stateListDrawable)
-                stateListDrawable.addState(intArrayOf(-android.R.attr.state_pressed), unPressedDrawable)
-            }
-
-            if (focusedDrawable != null) {
-                stateListDrawable = getStateListDrawable(stateListDrawable)
-                stateListDrawable.addState(intArrayOf(android.R.attr.state_focused), focusedDrawable)
-            }
-            if (unFocusedDrawable != null) {
-                stateListDrawable = getStateListDrawable(stateListDrawable)
-                stateListDrawable.addState(intArrayOf(-android.R.attr.state_focused), unFocusedDrawable)
-            }
-            if (focusedHovered != null) {
-                stateListDrawable = getStateListDrawable(stateListDrawable)
-                stateListDrawable.addState(intArrayOf(android.R.attr.state_hovered), focusedHovered)
-            }
-            if (unFocusedHovered != null) {
-                stateListDrawable = getStateListDrawable(stateListDrawable)
-                stateListDrawable.addState(intArrayOf(-android.R.attr.state_hovered), unFocusedHovered)
-            }
-            if (focusedActivated != null) {
-                stateListDrawable = getStateListDrawable(stateListDrawable)
-                stateListDrawable.addState(intArrayOf(android.R.attr.state_activated), focusedActivated)
-            }
-            if (unFocusedActivated != null) {
-                stateListDrawable = getStateListDrawable(stateListDrawable)
-                stateListDrawable.addState(intArrayOf(-android.R.attr.state_activated), unFocusedActivated)
-            }
             return stateListDrawable
+
+//            var stateListDrawable = baseStateListDrawable
+//            if (checkableDrawable != null) {
+//                stateListDrawable = getStateListDrawable(stateListDrawable)
+//                stateListDrawable.addState(
+//                    intArrayOf(android.R.attr.state_checkable),
+//                    checkableDrawable
+//                )
+//            }
+//            if (unCheckableDrawable != null) {
+//                stateListDrawable = getStateListDrawable(stateListDrawable)
+//                stateListDrawable.addState(
+//                    intArrayOf(-android.R.attr.state_checkable),
+//                    unCheckableDrawable
+//                )
+//            }
+//            if (checkedDrawable != null) {
+//                stateListDrawable = getStateListDrawable(stateListDrawable)
+//                stateListDrawable.addState(
+//                    intArrayOf(android.R.attr.state_checked),
+//                    checkedDrawable
+//                )
+//            }
+//            if (unCheckedDrawable != null) {
+//                stateListDrawable = getStateListDrawable(stateListDrawable)
+//                stateListDrawable.addState(
+//                    intArrayOf(-android.R.attr.state_checked),
+//                    unCheckedDrawable
+//                )
+//            }
+//
+//            if (enabledDrawable != null) {
+//                stateListDrawable = getStateListDrawable(stateListDrawable)
+//                stateListDrawable.addState(
+//                    intArrayOf(android.R.attr.state_enabled),
+//                    enabledDrawable
+//                )
+//            }
+//            if (unEnabledDrawable != null) {
+//                stateListDrawable = getStateListDrawable(stateListDrawable)
+//                stateListDrawable.addState(
+//                    intArrayOf(-android.R.attr.state_enabled),
+//                    unEnabledDrawable
+//                )
+//            }
+//
+//
+//            if (selectedDrawable != null) {
+//                stateListDrawable = getStateListDrawable(stateListDrawable)
+//                stateListDrawable.addState(
+//                    intArrayOf(android.R.attr.state_selected),
+//                    selectedDrawable
+//                )
+//            }
+//            if (unSelectedDrawable != null) {
+//                stateListDrawable = getStateListDrawable(stateListDrawable)
+//                stateListDrawable.addState(
+//                    intArrayOf(-android.R.attr.state_selected),
+//                    unSelectedDrawable
+//                )
+//            }
+//
+//            if (pressedDrawable != null) {
+//                stateListDrawable = getStateListDrawable(stateListDrawable)
+//                stateListDrawable.addState(
+//                    intArrayOf(android.R.attr.state_pressed),
+//                    pressedDrawable
+//                )
+//            }
+//            if (unPressedDrawable != null) {
+//                stateListDrawable = getStateListDrawable(stateListDrawable)
+//                stateListDrawable.addState(
+//                    intArrayOf(-android.R.attr.state_pressed),
+//                    unPressedDrawable
+//                )
+//            }
+//
+//            if (focusedDrawable != null) {
+//                stateListDrawable = getStateListDrawable(stateListDrawable)
+//                stateListDrawable.addState(
+//                    intArrayOf(android.R.attr.state_focused),
+//                    focusedDrawable
+//                )
+//            }
+//            if (unFocusedDrawable != null) {
+//                stateListDrawable = getStateListDrawable(stateListDrawable)
+//                stateListDrawable.addState(
+//                    intArrayOf(-android.R.attr.state_focused),
+//                    unFocusedDrawable
+//                )
+//            }
+//            if (focusedHovered != null) {
+//                stateListDrawable = getStateListDrawable(stateListDrawable)
+//                stateListDrawable.addState(intArrayOf(android.R.attr.state_hovered), focusedHovered)
+//            }
+//            if (unFocusedHovered != null) {
+//                stateListDrawable = getStateListDrawable(stateListDrawable)
+//                stateListDrawable.addState(
+//                    intArrayOf(-android.R.attr.state_hovered),
+//                    unFocusedHovered
+//                )
+//            }
+//            if (focusedActivated != null) {
+//                stateListDrawable = getStateListDrawable(stateListDrawable)
+//                stateListDrawable.addState(
+//                    intArrayOf(android.R.attr.state_activated),
+//                    focusedActivated
+//                )
+//            }
+//            if (unFocusedActivated != null) {
+//                stateListDrawable = getStateListDrawable(stateListDrawable)
+//                stateListDrawable.addState(
+//                    intArrayOf(-android.R.attr.state_activated),
+//                    unFocusedActivated
+//                )
+//            }
+//            return stateListDrawable
         }
 
     private val gradientDrawable: GradientDrawable
@@ -929,6 +1038,10 @@ class DaVinCiCore {
 
     private fun getStateListDrawable(stateListDrawable: StateListDrawable?): StateListDrawable {
         return stateListDrawable ?: StateListDrawable()
+    }
+
+    fun addDrawableItem(stateItem: StateItem.DrawableItem) {
+        sld.add(stateItem)
     }
 
     fun addColorItem(stateItem: StateItem.ColorItem) {

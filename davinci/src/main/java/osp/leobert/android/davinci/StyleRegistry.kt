@@ -92,12 +92,13 @@ object StyleRegistry {
         }
     }
 
-    open class Style(val name: String) {
+    open class Style(val name: String):Statable<Style> {
         private val statedExpressions: MutableMap<State, DaVinCiExpression> = mutableMapOf()
 
         //考虑到两者的特性，将其分开
         private var statedColorExp: DaVinCiExpression.ColorStateList? = null
 
+        @Deprecated("不符合一般认知")
         fun register(state: State, expression: DaVinCiExpression): Style = this.apply {
             statedExpressions[state] = expression
         }
@@ -159,6 +160,14 @@ object StyleRegistry {
             }
 
             abstract fun apply(style: Style)
+        }
+
+        override fun states(vararg states: State): Style {
+            TODO("Not yet implemented")
+        }
+
+        override fun states(vararg states: String): Style {
+            TODO("Not yet implemented")
         }
     }
 
