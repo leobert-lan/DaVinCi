@@ -88,7 +88,7 @@ fun View.daVinCi(
     normal: DaVinCiExpression? = null,
     pressed: DaVinCiExpression? = null, unpressed: DaVinCiExpression? = null,
     checkable: DaVinCiExpression? = null, uncheckable: DaVinCiExpression? = null,
-    checked: DaVinCiExpression? = null, unchecked: DaVinCiExpression? = null
+    checked: DaVinCiExpression? = null, unchecked: DaVinCiExpression? = null,
 ) {
     val daVinCi = DaVinCi(null, this)
     //用于多次构建
@@ -109,37 +109,49 @@ fun View.daVinCi(
 
     pressed?.let {
         simplify(daVinCiLoop, it, "pressed")
-        daVinCi.core.setPressedDrawable(daVinCiLoop.core.build())
+        daVinCiLoop.core.build()?.let { d ->
+            daVinCi.core.addDrawableItem(StateItem.of(d).applyState(arrayListOf(State.STATE_PRESSED_TRUE)))
+        }
         daVinCiLoop.core.clear()
     }
 
     unpressed?.let {
         simplify(daVinCiLoop, it, "unpressed")
-        daVinCi.core.setUnPressedDrawable(daVinCiLoop.core.build())
+        daVinCiLoop.core.build()?.let { d ->
+            daVinCi.core.addDrawableItem(StateItem.of(d).applyState(arrayListOf(State.STATE_PRESSED_FALSE)))
+        }
         daVinCiLoop.core.clear()
     }
 
     checkable?.let {
         simplify(daVinCiLoop, it, "checkable")
-        daVinCi.core.setCheckableDrawable(daVinCiLoop.core.build())
+        daVinCiLoop.core.build()?.let { d ->
+            daVinCi.core.addDrawableItem(StateItem.of(d).applyState(arrayListOf(State.STATE_CHECKABLE_TRUE)))
+        }
         daVinCiLoop.core.clear()
     }
 
     uncheckable?.let {
         simplify(daVinCiLoop, it, "uncheckable")
-        daVinCi.core.setUnCheckableDrawable(daVinCiLoop.core.build())
+        daVinCiLoop.core.build()?.let { d ->
+            daVinCi.core.addDrawableItem(StateItem.of(d).applyState(arrayListOf(State.STATE_CHECKABLE_FALSE)))
+        }
         daVinCiLoop.core.clear()
     }
 
     checked?.let {
         simplify(daVinCiLoop, it, "checked")
-        daVinCi.core.setCheckedDrawable(daVinCiLoop.core.build())
+        daVinCiLoop.core.build()?.let { d ->
+            daVinCi.core.addDrawableItem(StateItem.of(d).applyState(arrayListOf(State.STATE_CHECKED_TRUE)))
+        }
         daVinCiLoop.core.clear()
     }
 
     unchecked?.let {
         simplify(daVinCiLoop, it, "unchecked")
-        daVinCi.core.setUnCheckedDrawable(daVinCiLoop.core.build())
+        daVinCiLoop.core.build()?.let { d ->
+            daVinCi.core.addDrawableItem(StateItem.of(d).applyState(arrayListOf(State.STATE_CHECKABLE_FALSE)))
+        }
         daVinCiLoop.core.clear()
     }
 
@@ -162,7 +174,7 @@ fun View.daVinCi(
 internal fun simplify(
     daVinCiLoop: DaVinCi,
     exp: DaVinCiExpression?,
-    state: String
+    state: String,
 ) {
     exp?.let {
         daVinCiLoop.apply {

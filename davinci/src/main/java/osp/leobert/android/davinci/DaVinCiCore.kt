@@ -101,99 +101,6 @@ class DaVinCiCore {
     private var rippleColor: Int? = null
     //endregion
 
-    //region 状态色，方便一次性构造 deprecated
-    @ColorInt
-    private var checkableStrokeColor: Int? = null
-
-    @ColorInt
-    private var checkedStrokeColor: Int? = null
-
-    @ColorInt
-    private var enabledStrokeColor: Int? = null
-
-    @ColorInt
-    private var selectedStrokeColor: Int? = null
-
-    @ColorInt
-    private var pressedStrokeColor: Int? = null
-
-    @ColorInt
-    private var focusedStrokeColor: Int? = null
-
-    @ColorInt
-    private var unCheckableStrokeColor: Int? = null
-
-    @ColorInt
-    private var unCheckedStrokeColor: Int? = null
-
-    @ColorInt
-    private var unEnabledStrokeColor: Int? = null
-
-    @ColorInt
-    private var unSelectedStrokeColor: Int? = null
-
-    @ColorInt
-    private var unPressedStrokeColor: Int? = null
-
-    @ColorInt
-    private var unFocusedStrokeColor: Int? = null
-
-    @ColorInt
-    private var checkableSolidColor: Int? = null
-
-    @ColorInt
-    private var checkedSolidColor: Int? = null
-
-    @ColorInt
-    private var enabledSolidColor: Int? = null
-
-    @ColorInt
-    private var selectedSolidColor: Int? = null
-
-    @ColorInt
-    private var pressedSolidColor: Int? = null
-
-    @ColorInt
-    private var focusedSolidColor: Int? = null
-
-    @ColorInt
-    private var unCheckableSolidColor: Int? = null
-
-    @ColorInt
-    private var unCheckedSolidColor: Int? = null
-
-    @ColorInt
-    private var unEnabledSolidColor: Int? = null
-
-    @ColorInt
-    private var unSelectedSolidColor: Int? = null
-
-    @ColorInt
-    private var unPressedSolidColor: Int? = null
-
-    @ColorInt
-    private var unFocusedSolidColor: Int? = null
-    //endregion
-
-    //region 状态drawable,分层组装含义明确
-    private var checkableDrawable: Drawable? = null
-    private var checkedDrawable: Drawable? = null
-    private var enabledDrawable: Drawable? = null
-    private var selectedDrawable: Drawable? = null
-    private var pressedDrawable: Drawable? = null
-    private var focusedDrawable: Drawable? = null
-    private var focusedHovered: Drawable? = null
-    private var focusedActivated: Drawable? = null
-    private var unCheckableDrawable: Drawable? = null
-    private var unCheckedDrawable: Drawable? = null
-    private var unEnabledDrawable: Drawable? = null
-    private var unSelectedDrawable: Drawable? = null
-    private var unPressedDrawable: Drawable? = null
-    private var unFocusedDrawable: Drawable? = null
-    private var unFocusedHovered: Drawable? = null
-    private var unFocusedActivated: Drawable? = null
-    //endregion
-
 
     /**
      * used to build [ColorStateList]
@@ -203,8 +110,8 @@ class DaVinCiCore {
 
     private var baseGradientDrawable: GradientDrawable? = null
 
-    @Deprecated("改进构建方式")
-    private var hasSelectDrawable = false
+//    @Deprecated("改进构建方式")
+//    private var hasSelectDrawable = false
 
     private var baseStateListDrawable: StateListDrawable? = null
 
@@ -238,83 +145,12 @@ class DaVinCiCore {
     }
 
     fun clear() {
-        shape = Shape.Rectangle
-        solidColor = null
-        cornersRadius = null
-        cornersBottomLeftRadius = null
-        cornersBottomRightRadius = null
-        cornersTopLeftRadius = null
-        cornersTopRightRadius = null
-        gradientAngle = -1
-        gradientCenterX = null
-        gradientCenterY = null
-        gradientCenterColor = null
-        gradientEndColor = null
-        gradientStartColor = null
+        clearSimpleDrawable()
 
-        gradientRadius = null
-        gradient = Gradient.Linear
-        useLevel = false
-        padding.set(0, 0, 0, 0)
-        sizeWidth = null
-        sizeHeight = null
-        strokeWidth = null
-        strokeColor = null
-        strokeDashWidth = 0f
-        strokeDashGap = 0f
-        rippleEnable = false
-        rippleColor = null
-
-
-        //region 状态色，方便一次性构造
-
-        checkableStrokeColor = null
-        checkedStrokeColor = null
-        enabledStrokeColor = null
-        selectedStrokeColor = null
-        pressedStrokeColor = null
-        focusedStrokeColor = null
-        unCheckableStrokeColor = null
-        unCheckedStrokeColor = null
-        unEnabledStrokeColor = null
-        unSelectedStrokeColor = null
-        unPressedStrokeColor = null
-        unFocusedStrokeColor = null
-        checkableSolidColor = null
-        checkedSolidColor = null
-        enabledSolidColor = null
-        selectedSolidColor = null
-        pressedSolidColor = null
-        focusedSolidColor = null
-        unCheckableSolidColor = null
-        unCheckedSolidColor = null
-        unEnabledSolidColor = null
-        unSelectedSolidColor = null
-        unPressedSolidColor = null
-        unFocusedSolidColor = null
-
-
-        //region 状态drawable,分层组装含义明确
-        checkableDrawable = null
-        checkedDrawable = null
-        enabledDrawable = null
-        selectedDrawable = null
-        pressedDrawable = null
-        focusedDrawable = null
-        focusedHovered = null
-        focusedActivated = null
-        unCheckableDrawable = null
-        unCheckedDrawable = null
-        unEnabledDrawable = null
-        unSelectedDrawable = null
-        unPressedDrawable = null
-        unFocusedDrawable = null
-        unFocusedHovered = null
-        unFocusedActivated = null
+        sld.clear()
 
         csl.clear()
 
-        hasSelectDrawable = false
         baseGradientDrawable = null
         baseStateListDrawable = null
     }
@@ -442,210 +278,6 @@ class DaVinCiCore {
         return this
     }
 
-    fun setCheckableStrokeColor(
-        @ColorInt checkableStrokeColor: Int,
-        @ColorInt unCheckableStrokeColor: Int,
-    ): DaVinCiCore {
-        this.checkableStrokeColor = checkableStrokeColor
-        this.unCheckableStrokeColor = unCheckableStrokeColor
-        return this
-    }
-
-    fun setCheckedStrokeColor(
-        @ColorInt checkedStrokeColor: Int,
-        @ColorInt unCheckedStrokeColor: Int,
-    ): DaVinCiCore {
-        this.checkedStrokeColor = checkedStrokeColor
-        this.unCheckedStrokeColor = unCheckedStrokeColor
-        return this
-    }
-
-    fun setEnabledStrokeColor(
-        @ColorInt enabledStrokeColor: Int,
-        @ColorInt unEnabledStrokeColor: Int,
-    ): DaVinCiCore {
-        this.enabledStrokeColor = enabledStrokeColor
-        this.unEnabledStrokeColor = unEnabledStrokeColor
-        return this
-    }
-
-    fun setSelectedStrokeColor(
-        @ColorInt selectedStrokeColor: Int,
-        @ColorInt unSelectedStrokeColor: Int,
-    ): DaVinCiCore {
-        this.selectedStrokeColor = selectedStrokeColor
-        this.unSelectedStrokeColor = unSelectedStrokeColor
-        return this
-    }
-
-    fun setPressedStrokeColor(
-        @ColorInt pressedStrokeColor: Int,
-        @ColorInt unPressedStrokeColor: Int,
-    ): DaVinCiCore {
-        this.pressedStrokeColor = pressedStrokeColor
-        this.unPressedStrokeColor = unPressedStrokeColor
-        return this
-    }
-
-    fun setFocusedStrokeColor(
-        @ColorInt focusedStrokeColor: Int,
-        @ColorInt unFocusedStrokeColor: Int,
-    ): DaVinCiCore {
-        this.focusedStrokeColor = focusedStrokeColor
-        this.unFocusedStrokeColor = unFocusedStrokeColor
-        return this
-    }
-
-    fun setCheckableSolidColor(
-        @ColorInt checkableSolidColor: Int,
-        @ColorInt unCheckableSolidColor: Int,
-    ): DaVinCiCore {
-        this.checkableSolidColor = checkableSolidColor
-        this.unCheckableSolidColor = unCheckableSolidColor
-        return this
-    }
-
-    fun setCheckedSolidColor(
-        @ColorInt checkedSolidColor: Int,
-        @ColorInt unCheckedSolidColor: Int,
-    ): DaVinCiCore {
-        this.checkedSolidColor = checkedSolidColor
-        this.unCheckedSolidColor = unCheckedSolidColor
-        return this
-    }
-
-    fun setEnabledSolidColor(
-        @ColorInt enabledSolidColor: Int,
-        @ColorInt unEnabledSolidColor: Int,
-    ): DaVinCiCore {
-        this.enabledSolidColor = enabledSolidColor
-        this.unEnabledSolidColor = unEnabledSolidColor
-        return this
-    }
-
-    fun setSelectedSolidColor(
-        @ColorInt selectedSolidColor: Int,
-        @ColorInt unSelectedSolidColor: Int,
-    ): DaVinCiCore {
-        this.selectedSolidColor = selectedSolidColor
-        this.unSelectedSolidColor = unSelectedSolidColor
-        return this
-    }
-
-    fun setPressedSolidColor(
-        @ColorInt pressedSolidColor: Int,
-        @ColorInt unPressedSolidColor: Int,
-    ): DaVinCiCore {
-        this.pressedSolidColor = pressedSolidColor
-        this.unPressedSolidColor = unPressedSolidColor
-        return this
-    }
-
-    fun setFocusedSolidColor(
-        @ColorInt focusedSolidColor: Int,
-        @ColorInt unFocusedSolidColor: Int,
-    ): DaVinCiCore {
-        this.focusedSolidColor = focusedSolidColor
-        this.unFocusedSolidColor = unFocusedSolidColor
-        return this
-    }
-
-    fun setCheckableDrawable(checkableDrawable: Drawable?): DaVinCiCore {
-        hasSelectDrawable = true
-        this.checkableDrawable = checkableDrawable
-        return this
-    }
-
-    fun setCheckedDrawable(checkedDrawable: Drawable?): DaVinCiCore {
-        hasSelectDrawable = true
-        this.checkedDrawable = checkedDrawable
-        return this
-    }
-
-    fun setEnabledDrawable(enabledDrawable: Drawable?): DaVinCiCore {
-        hasSelectDrawable = true
-        this.enabledDrawable = enabledDrawable
-        return this
-    }
-
-    fun setSelectedDrawable(selectedDrawable: Drawable?): DaVinCiCore {
-        hasSelectDrawable = true
-        this.selectedDrawable = selectedDrawable
-        return this
-    }
-
-    fun setPressedDrawable(pressedDrawable: Drawable?): DaVinCiCore {
-        hasSelectDrawable = true
-        this.pressedDrawable = pressedDrawable
-        return this
-    }
-
-    fun setFocusedDrawable(focusedDrawable: Drawable?): DaVinCiCore {
-        hasSelectDrawable = true
-        this.focusedDrawable = focusedDrawable
-        return this
-    }
-
-    fun setFocusedHovered(focusedHovered: Drawable?): DaVinCiCore {
-        hasSelectDrawable = true
-        this.focusedHovered = focusedHovered
-        return this
-    }
-
-    fun setFocusedActivated(focusedActivated: Drawable?): DaVinCiCore {
-        hasSelectDrawable = true
-        this.focusedActivated = focusedActivated
-        return this
-    }
-
-    fun setUnCheckableDrawable(unCheckableDrawable: Drawable?): DaVinCiCore {
-        hasSelectDrawable = true
-        this.unCheckableDrawable = unCheckableDrawable
-        return this
-    }
-
-    fun setUnCheckedDrawable(unCheckedDrawable: Drawable?): DaVinCiCore {
-        hasSelectDrawable = true
-        this.unCheckedDrawable = unCheckedDrawable
-        return this
-    }
-
-    fun setUnEnabledDrawable(unEnabledDrawable: Drawable?): DaVinCiCore {
-        hasSelectDrawable = true
-        this.unEnabledDrawable = unEnabledDrawable
-        return this
-    }
-
-    fun setUnSelectedDrawable(unSelectedDrawable: Drawable?): DaVinCiCore {
-        hasSelectDrawable = true
-        this.unSelectedDrawable = unSelectedDrawable
-        return this
-    }
-
-    fun setUnPressedDrawable(unPressedDrawable: Drawable?): DaVinCiCore {
-        hasSelectDrawable = true
-        this.unPressedDrawable = unPressedDrawable
-        return this
-    }
-
-    fun setUnFocusedDrawable(unFocusedDrawable: Drawable?): DaVinCiCore {
-        hasSelectDrawable = true
-        this.unFocusedDrawable = unFocusedDrawable
-        return this
-    }
-
-    fun setUnFocusedHovered(unFocusedHovered: Drawable?): DaVinCiCore {
-        hasSelectDrawable = true
-        this.unFocusedHovered = unFocusedHovered
-        return this
-    }
-
-    fun setUnFocusedActivated(unFocusedActivated: Drawable?): DaVinCiCore {
-        hasSelectDrawable = true
-        this.unFocusedActivated = unFocusedActivated
-        return this
-    }
-
     fun setBaseGradientDrawable(baseGradientDrawable: GradientDrawable?): DaVinCiCore {
         this.baseGradientDrawable = baseGradientDrawable
         return this
@@ -656,14 +288,14 @@ class DaVinCiCore {
         return this
     }
 
-    fun buildSimpleDrawable(): Drawable? {
+    fun buildSimpleDrawable(): Drawable {
         val drawable: GradientDrawable = gradientDrawable
 
         val rippleColor = rippleColor ?: return drawable
 
         return if (rippleEnable) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                val contentDrawable =  drawable
+                val contentDrawable = drawable
                 RippleDrawable(
                     ColorStateList.valueOf(rippleColor),
                     contentDrawable,
@@ -722,7 +354,6 @@ class DaVinCiCore {
         return ColorStateList(states, colors)
     }
 
-    @Deprecated("改进构建方式")
     private val stateListDrawable: StateListDrawable?
         get() {
             val sld = sld.takeUnless { it.isEmpty() } ?: return baseStateListDrawable
@@ -733,123 +364,6 @@ class DaVinCiCore {
             }
 
             return stateListDrawable
-
-//            var stateListDrawable = baseStateListDrawable
-//            if (checkableDrawable != null) {
-//                stateListDrawable = getStateListDrawable(stateListDrawable)
-//                stateListDrawable.addState(
-//                    intArrayOf(android.R.attr.state_checkable),
-//                    checkableDrawable
-//                )
-//            }
-//            if (unCheckableDrawable != null) {
-//                stateListDrawable = getStateListDrawable(stateListDrawable)
-//                stateListDrawable.addState(
-//                    intArrayOf(-android.R.attr.state_checkable),
-//                    unCheckableDrawable
-//                )
-//            }
-//            if (checkedDrawable != null) {
-//                stateListDrawable = getStateListDrawable(stateListDrawable)
-//                stateListDrawable.addState(
-//                    intArrayOf(android.R.attr.state_checked),
-//                    checkedDrawable
-//                )
-//            }
-//            if (unCheckedDrawable != null) {
-//                stateListDrawable = getStateListDrawable(stateListDrawable)
-//                stateListDrawable.addState(
-//                    intArrayOf(-android.R.attr.state_checked),
-//                    unCheckedDrawable
-//                )
-//            }
-//
-//            if (enabledDrawable != null) {
-//                stateListDrawable = getStateListDrawable(stateListDrawable)
-//                stateListDrawable.addState(
-//                    intArrayOf(android.R.attr.state_enabled),
-//                    enabledDrawable
-//                )
-//            }
-//            if (unEnabledDrawable != null) {
-//                stateListDrawable = getStateListDrawable(stateListDrawable)
-//                stateListDrawable.addState(
-//                    intArrayOf(-android.R.attr.state_enabled),
-//                    unEnabledDrawable
-//                )
-//            }
-//
-//
-//            if (selectedDrawable != null) {
-//                stateListDrawable = getStateListDrawable(stateListDrawable)
-//                stateListDrawable.addState(
-//                    intArrayOf(android.R.attr.state_selected),
-//                    selectedDrawable
-//                )
-//            }
-//            if (unSelectedDrawable != null) {
-//                stateListDrawable = getStateListDrawable(stateListDrawable)
-//                stateListDrawable.addState(
-//                    intArrayOf(-android.R.attr.state_selected),
-//                    unSelectedDrawable
-//                )
-//            }
-//
-//            if (pressedDrawable != null) {
-//                stateListDrawable = getStateListDrawable(stateListDrawable)
-//                stateListDrawable.addState(
-//                    intArrayOf(android.R.attr.state_pressed),
-//                    pressedDrawable
-//                )
-//            }
-//            if (unPressedDrawable != null) {
-//                stateListDrawable = getStateListDrawable(stateListDrawable)
-//                stateListDrawable.addState(
-//                    intArrayOf(-android.R.attr.state_pressed),
-//                    unPressedDrawable
-//                )
-//            }
-//
-//            if (focusedDrawable != null) {
-//                stateListDrawable = getStateListDrawable(stateListDrawable)
-//                stateListDrawable.addState(
-//                    intArrayOf(android.R.attr.state_focused),
-//                    focusedDrawable
-//                )
-//            }
-//            if (unFocusedDrawable != null) {
-//                stateListDrawable = getStateListDrawable(stateListDrawable)
-//                stateListDrawable.addState(
-//                    intArrayOf(-android.R.attr.state_focused),
-//                    unFocusedDrawable
-//                )
-//            }
-//            if (focusedHovered != null) {
-//                stateListDrawable = getStateListDrawable(stateListDrawable)
-//                stateListDrawable.addState(intArrayOf(android.R.attr.state_hovered), focusedHovered)
-//            }
-//            if (unFocusedHovered != null) {
-//                stateListDrawable = getStateListDrawable(stateListDrawable)
-//                stateListDrawable.addState(
-//                    intArrayOf(-android.R.attr.state_hovered),
-//                    unFocusedHovered
-//                )
-//            }
-//            if (focusedActivated != null) {
-//                stateListDrawable = getStateListDrawable(stateListDrawable)
-//                stateListDrawable.addState(
-//                    intArrayOf(android.R.attr.state_activated),
-//                    focusedActivated
-//                )
-//            }
-//            if (unFocusedActivated != null) {
-//                stateListDrawable = getStateListDrawable(stateListDrawable)
-//                stateListDrawable.addState(
-//                    intArrayOf(-android.R.attr.state_activated),
-//                    unFocusedActivated
-//                )
-//            }
-//            return stateListDrawable
         }
 
     private val gradientDrawable: GradientDrawable
@@ -859,21 +373,24 @@ class DaVinCiCore {
                 drawable = GradientDrawable()
             }
             drawable.shape = shape.value
-            if (cornersRadius != null) {
-                drawable.cornerRadius = cornersRadius!!
+            cornersRadius?.let {
+                drawable.cornerRadius = it
             }
-            if (cornersBottomLeftRadius != null && cornersBottomRightRadius != null
-                && cornersTopLeftRadius != null && cornersTopRightRadius != null
-            ) {
+
+            val blr = cornersBottomLeftRadius
+            val brr = cornersBottomRightRadius
+            val tlr = cornersTopLeftRadius
+            val trr = cornersTopRightRadius
+            if (blr != null && brr != null && tlr != null && trr != null) {
                 val cornerRadius = FloatArray(8)
-                cornerRadius[0] = cornersTopLeftRadius!!
-                cornerRadius[1] = cornersTopLeftRadius!!
-                cornerRadius[2] = cornersTopRightRadius!!
-                cornerRadius[3] = cornersTopRightRadius!!
-                cornerRadius[4] = cornersBottomRightRadius!!
-                cornerRadius[5] = cornersBottomRightRadius!!
-                cornerRadius[6] = cornersBottomLeftRadius!!
-                cornerRadius[7] = cornersBottomLeftRadius!!
+                cornerRadius[0] = tlr
+                cornerRadius[1] = tlr
+                cornerRadius[2] = trr
+                cornerRadius[3] = trr
+                cornerRadius[4] = brr
+                cornerRadius[5] = brr
+                cornerRadius[6] = blr
+                cornerRadius[7] = blr
                 drawable.cornerRadii = cornerRadius
             }
             if (gradient == Gradient.Linear && gradientAngle != -1) {
@@ -904,38 +421,40 @@ class DaVinCiCore {
                     }
                 }
             }
-            if (gradientCenterX != null && gradientCenterY != null) {
-                drawable.setGradientCenter(gradientCenterX!!, gradientCenterY!!)
+
+            val gcx = gradientCenterX
+            val gcy = gradientCenterY
+            if (gcx != null && gcy != null) {
+                drawable.setGradientCenter(gcx, gcy)
             }
-            if (gradientStartColor != null && gradientEndColor != null) {
+
+            val gsc = gradientStartColor
+            val gec = gradientEndColor
+            if (gsc != null && gec != null) {
                 val colors: IntArray
-                if (gradientCenterColor != null) {
+                val gcc = gradientCenterColor
+                if (gcc != null) {
                     colors = IntArray(3)
-                    colors[0] = gradientStartColor!!
-                    colors[1] = gradientCenterColor!!
-                    colors[2] = gradientEndColor!!
+                    colors[0] = gsc
+                    colors[1] = gcc
+                    colors[2] = gec
                 } else {
                     colors = IntArray(2)
-                    colors[0] = gradientStartColor!!
-                    colors[1] = gradientEndColor!!
+                    colors[0] = gsc
+                    colors[1] = gec
                 }
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                     drawable.colors = colors
                 }
             }
-            if (gradientRadius != null) {
-                drawable.gradientRadius = gradientRadius!!
+            gradientRadius?.let {
+                drawable.gradientRadius = it
             }
             drawable.gradientType = gradient.value
             drawable.useLevel = useLevel
             if (!padding.isEmpty) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                    drawable.setPadding(
-                        padding.left,
-                        padding.top,
-                        padding.right,
-                        padding.bottom
-                    )
+                    drawable.setPadding(padding.left, padding.top, padding.right, padding.bottom)
                 } else {
                     try {
                         val paddingField =
@@ -949,142 +468,24 @@ class DaVinCiCore {
                     }
                 }
             }
-            if (sizeWidth != null && sizeHeight != null) {
-                drawable.setSize(sizeWidth!!.toInt(), sizeHeight!!.toInt())
+            val sw = sizeWidth
+            val sh = sizeHeight
+            if (sw != null && sh != null) {
+                drawable.setSize(sw.toInt(), sh.toInt())
             }
-            if (strokeWidth != null && strokeWidth!! > 0) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    var start = 0
-                    val stateList: ArrayList<Int> = ArrayList()
-                    val colorList: ArrayList<Int> = ArrayList()
-                    if (pressedStrokeColor != null && unPressedStrokeColor != null) {
-                        stateList.add(android.R.attr.state_pressed)
-                        stateList.add(-android.R.attr.state_pressed)
-                        colorList.add(pressedStrokeColor!!)
-                        colorList.add(unPressedStrokeColor!!)
-                    }
-                    if (checkableStrokeColor != null && unCheckableStrokeColor != null) {
-                        stateList.add(android.R.attr.state_checkable)
-                        stateList.add(-android.R.attr.state_checkable)
-                        colorList.add(checkableStrokeColor!!)
-                        colorList.add(unCheckableStrokeColor!!)
-                    }
-                    if (checkedStrokeColor != null && unCheckedStrokeColor != null) {
-                        stateList.add(android.R.attr.state_checked)
-                        stateList.add(-android.R.attr.state_checked)
-                        colorList.add(checkedStrokeColor!!)
-                        colorList.add(unCheckedStrokeColor!!)
-                    }
-                    if (enabledStrokeColor != null && unEnabledStrokeColor != null) {
-                        stateList.add(android.R.attr.state_enabled)
-                        stateList.add(-android.R.attr.state_enabled)
-                        colorList.add(enabledStrokeColor!!)
-                        colorList.add(unEnabledStrokeColor!!)
-                    }
-                    if (selectedStrokeColor != null && unSelectedStrokeColor != null) {
-                        stateList.add(android.R.attr.state_selected)
-                        stateList.add(-android.R.attr.state_selected)
-                        colorList.add(selectedStrokeColor!!)
-                        colorList.add(unSelectedStrokeColor!!)
-                    }
-                    if (focusedStrokeColor != null && unFocusedStrokeColor != null) {
-                        stateList.add(android.R.attr.state_focused)
-                        stateList.add(-android.R.attr.state_focused)
-                        colorList.add(focusedStrokeColor!!)
-                        colorList.add(unFocusedStrokeColor!!)
-                    }
-                    if (stateList.size > 0) {
-                        val state = arrayOfNulls<IntArray>(stateList.size)
-                        val color = IntArray(stateList.size)
-                        for (iState in stateList) {
-                            state[start] = intArrayOf(iState)
-                            color[start] = colorList[start]
-                            start++
-                        }
-                        val colorStateList =
-                            ColorStateList(
-                                state,
-                                color
-                            )
-                        drawable.setStroke(
-                            strokeWidth!!.toInt(),
-                            colorStateList,
-                            strokeDashWidth,
-                            strokeDashGap
-                        )
-                    } else if (strokeColor != null) {
-                        drawable.setStroke(
-                            strokeWidth!!.toInt(),
-                            strokeColor!!,
-                            strokeDashWidth,
-                            strokeDashGap
-                        )
-                    }
-                } else if (strokeColor != null) {
+            strokeWidth?.takeIf { it > 0 }?.let { strokeWidth ->
+                strokeColor?.let { strokeColor ->
                     drawable.setStroke(
-                        strokeWidth!!.toInt(),
-                        strokeColor!!,
+                        strokeWidth.toInt(),
+                        strokeColor,
                         strokeDashWidth,
                         strokeDashGap
                     )
+
                 }
             }
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                var start = 0
-                val stateList: ArrayList<Int> = ArrayList()
-                val colorList: ArrayList<Int> = ArrayList()
-                if (pressedSolidColor != null && unPressedSolidColor != null) {
-                    stateList.add(android.R.attr.state_pressed)
-                    stateList.add(-android.R.attr.state_pressed)
-                    colorList.add(pressedSolidColor!!)
-                    colorList.add(unPressedSolidColor!!)
-                }
-                if (checkableSolidColor != null && unCheckableSolidColor != null) {
-                    stateList.add(android.R.attr.state_checkable)
-                    stateList.add(-android.R.attr.state_checkable)
-                    colorList.add(checkableSolidColor!!)
-                    colorList.add(unCheckableSolidColor!!)
-                }
-                if (checkedSolidColor != null && unCheckedSolidColor != null) {
-                    stateList.add(android.R.attr.state_checked)
-                    stateList.add(-android.R.attr.state_checked)
-                    colorList.add(checkedSolidColor!!)
-                    colorList.add(unCheckedSolidColor!!)
-                }
-                if (enabledSolidColor != null && unEnabledSolidColor != null) {
-                    stateList.add(android.R.attr.state_enabled)
-                    stateList.add(-android.R.attr.state_enabled)
-                    colorList.add(enabledSolidColor!!)
-                    colorList.add(unEnabledSolidColor!!)
-                }
-                if (selectedSolidColor != null && unSelectedSolidColor != null) {
-                    stateList.add(android.R.attr.state_selected)
-                    stateList.add(-android.R.attr.state_selected)
-                    colorList.add(selectedSolidColor!!)
-                    colorList.add(unSelectedSolidColor!!)
-                }
-                if (focusedSolidColor != null && unFocusedSolidColor != null) {
-                    stateList.add(android.R.attr.state_focused)
-                    stateList.add(-android.R.attr.state_focused)
-                    colorList.add(focusedSolidColor!!)
-                    colorList.add(unFocusedSolidColor!!)
-                }
-                if (stateList.size > 0) {
-                    val state = arrayOfNulls<IntArray>(stateList.size)
-                    val color = IntArray(stateList.size)
-                    for (iState in stateList) {
-                        state[start] = intArrayOf(iState)
-                        color[start] = colorList[start]
-                        start++
-                    }
-                    val colorStateList =
-                        ColorStateList(state, color)
-                    drawable.color = colorStateList
-                } else if (solidColor != null) {
-                    drawable.setColor(solidColor!!)
-                }
-            } else if (solidColor != null) {
-                drawable.setColor(solidColor!!)
+            solidColor?.let {
+                drawable.setColor(it)
             }
             return drawable
         }
@@ -1132,7 +533,7 @@ class DaVinCiCore {
         override fun states(vararg states: State): DaVinCiCore {
 
             val host = requireNotNull(host)
-            host.buildSimpleDrawable()?.let {
+            host.buildSimpleDrawable().let {
                 host.clearSimpleDrawable()
                 host.addDrawableItem(StateItem.of(it).applyState(states = states.toList()))
             }
@@ -1144,7 +545,7 @@ class DaVinCiCore {
         override fun states(vararg states: String): DaVinCiCore {
             val host = requireNotNull(host)
             val allStates = states.map { State.valueOf(it) }
-            host.buildSimpleDrawable()?.let {
+            host.buildSimpleDrawable().let {
                 host.clearSimpleDrawable()
                 host.addDrawableItem(StateItem.of(it).applyState(states = allStates))
             }
@@ -1154,7 +555,7 @@ class DaVinCiCore {
 
         fun states(states: List<State>): DaVinCiCore {
             val host = requireNotNull(host)
-            host.buildSimpleDrawable()?.let {
+            host.buildSimpleDrawable().let {
                 host.clearSimpleDrawable()
                 host.addDrawableItem(StateItem.of(it).applyState(states = states))
             }
