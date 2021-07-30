@@ -92,19 +92,19 @@ object StyleRegistry {
         }
     }
 
-    open class Style(val name: String):Statable<Style> {
-        private val statedExpressions: MutableMap<State, DaVinCiExpression> = mutableMapOf()
+    open class Style(val name: String) {
 
         //考虑到两者的特性，将其分开
         private var statedColorExp: DaVinCiExpression.ColorStateList? = null
         private var sldExp: DaVinCiExpression.StateListDrawable? = null
 
-        @Deprecated("不符合一般认知")
+        @Deprecated("不符合一般认知", replaceWith = ReplaceWith("registerSld(exp: DaVinCiExpression.StateListDrawable)"))
         fun register(state: State, expression: DaVinCiExpression): Style = this.apply {
-            statedExpressions[state] = expression
+            val sld = sldExp ?: DaVinCiExpression.stateListDrawable()
+            sldExp = sld.shape(exp = expression as DaVinCiExpression.Shape).states(state)
         }
 
-        fun registerSld(exp:DaVinCiExpression.StateListDrawable):Style {
+        fun registerSld(exp: DaVinCiExpression.StateListDrawable): Style {
             sldExp = exp
             return this
         }
@@ -116,13 +116,6 @@ object StyleRegistry {
 
         @SuppressLint("all")
         fun applyTo(daVinCi: DaVinCi) {
-            val daVinCiLoop = DaVinCi(null, daVinCi.view)
-            statedExpressions.entries.forEach {
-                it.key.adapt(daVinCi, daVinCiLoop, it.value)
-            }
-            ViewCompat.setBackground(daVinCi.view, daVinCi.core.build())
-            daVinCi.core.clear()
-
             sldExp?.let {
                 daVinCi.applySld(it)
             }
@@ -140,21 +133,21 @@ object StyleRegistry {
             other as Style
 
             if (name != other.name) return false
-            if (statedExpressions != other.statedExpressions) return false
             if (statedColorExp != other.statedColorExp) return false
+            if (sldExp != other.sldExp) return false
 
             return true
         }
 
         override fun hashCode(): Int {
             var result = name.hashCode()
-            result = 31 * result + statedExpressions.hashCode()
             result = 31 * result + (statedColorExp?.hashCode() ?: 0)
+            result = 31 * result + (sldExp?.hashCode() ?: 0)
             return result
         }
 
         override fun toString(): String {
-            return "Style(name='$name', statedExpressions=$statedExpressions, statedColorExp=$statedColorExp)"
+            return "Style(name='$name', statedColorExp=$statedColorExp, sldExp=$sldExp)"
         }
 
 
@@ -170,14 +163,6 @@ object StyleRegistry {
             }
 
             abstract fun apply(style: Style)
-        }
-
-        override fun states(vararg states: State): Style {
-            TODO("Not yet implemented")
-        }
-
-        override fun states(vararg states: String): Style {
-            TODO("Not yet implemented")
         }
     }
 
