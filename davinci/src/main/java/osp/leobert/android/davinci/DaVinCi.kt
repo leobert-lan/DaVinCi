@@ -4,10 +4,14 @@ import android.content.Context
 import android.util.Log
 import android.view.View
 import android.widget.TextView
+import androidx.core.view.ViewCompat
+import osp.leobert.android.davinci.Applier.Companion.csl
+import osp.leobert.android.davinci.Applier.Companion.viewBackground
 import java.util.*
 
+// TODO: 2021/7/30 make it poolable
 @Suppress("unused")
-class DaVinCi(text: String?, val view: View) {
+class DaVinCi/*(text: String?, val view: View)*/ {
     companion object {
         var enableDebugLog = true
 
@@ -18,15 +22,29 @@ class DaVinCi(text: String?, val view: View) {
 
     }
 
-    val context: Context = view.context
+
+    val context: Context
+        get() = requireNotNull(applier).context
 
     val core: DaVinCiCore by lazy {
         DaVinCiCore()
     }
 
+    var applier: Applier? = null
+
     // 待解析的文本内容
     // 使用空格分隔待解析文本内容
-    private val stringTokenizer: StringTokenizer = StringTokenizer(text ?: "")
+    private val stringTokenizer: StringTokenizer
+
+    constructor(text: String?, view: View) {
+        stringTokenizer = StringTokenizer(text ?: "")
+        applier = (view.takeIfInstance<TextView>()?.csl()?.viewBackground())?:view.viewBackground()
+    }
+
+    constructor(text: String?, applier: Applier?) {
+        stringTokenizer = StringTokenizer(text ?: "")
+        this.applier = applier
+    }
 
     // 当前命令
     var currentToken: String? = null
@@ -34,10 +52,6 @@ class DaVinCi(text: String?, val view: View) {
     // 用来存储动态变化信息内容
     private val map: MutableMap<String, Any> = HashMap()
 
-    // TODO: 2021/7/9 add api
-//    fun applyBg(exp:DaVinCiExpression) {
-//
-//    }
     fun applySld(exp: DaVinCiExpression.StateListDrawable) {
         if (enableDebugLog)
             Log.d(DaVinCiExpression.sLogTag, "daVinCi sld:$exp")
@@ -45,8 +59,7 @@ class DaVinCi(text: String?, val view: View) {
         exp.injectThenParse(this)
         exp.interpret()
         val d = core.build()
-        if (d != null)
-            view.background = d
+        applier?.applyDrawable(d)
     }
 
     fun applyCsl(exp: DaVinCiExpression.ColorStateList) {
@@ -55,15 +68,15 @@ class DaVinCi(text: String?, val view: View) {
         if (enableDebugLog)
             Log.d(DaVinCiExpression.sLogTag, "daVinCi csl:$exp")
 
-        view.takeIfInstance<TextView>()?.setTextColor(
-            exp.run {
-                core.clear()
-                exp.injectThenParse(this@DaVinCi)
-                exp.interpret()
+        applier?.applyColorStateList(exp.run {
+            core.clear()
+            exp.injectThenParse(this@DaVinCi)
+            exp.interpret()
 
-                core.buildTextColor()
-            }
-        )?.also { core.clear() }
+            core.buildTextColor()
+        })
+        core.clear()
+
     }
 
     /*
