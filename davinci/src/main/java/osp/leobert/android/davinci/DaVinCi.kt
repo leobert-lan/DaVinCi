@@ -19,7 +19,6 @@ class DaVinCi/*(text: String?, val view: View)*/ {
             if (this is R) return this
             return null
         }
-
     }
 
 

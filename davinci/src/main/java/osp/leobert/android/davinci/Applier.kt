@@ -16,11 +16,16 @@ import androidx.core.view.ViewCompat
 interface Applier {
     val context: Context
 
+    fun getTag(id:Int):Any?
+
     fun applyDrawable(drawable: Drawable?)
 
     fun applyColorStateList(csl: ColorStateList?)
 
     abstract class Adapter(override val context: Context) : Applier {
+        override fun getTag(id: Int): Any? {
+            return null
+        }
         override fun applyDrawable(drawable: Drawable?) {
         }
 
@@ -39,7 +44,11 @@ interface Applier {
         }
     }
 
-    class ViewComposer<T : View>(val view: T) : Composer(context = view.context, null, null)
+    class ViewComposer<T : View>(val view: T) : Composer(context = view.context, null, null) {
+        override fun getTag(id: Int): Any? {
+            return view.getTag(id)
+        }
+    }
 
     companion object {
         inline fun drawable(context: Context, crossinline consumer: Drawable?.() -> Unit) = object : Adapter(context) {

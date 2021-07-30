@@ -152,7 +152,7 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
             val id = resources.getIdentifier(resName, "id", context.packageName)
             return if (id == 0) {
                 null
-            } else (daVinCi?.view?.getTag(id) ?: "").toString()
+            } else (daVinCi?.applier?.getTag(id) ?: "").toString()
         }
 
         protected fun getColor(context: Context?, resName: String?): Int? {
