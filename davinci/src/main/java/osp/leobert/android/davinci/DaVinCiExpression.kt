@@ -182,7 +182,6 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
             if (manual) return
             daVinCi?.let {
                 expressions = when (it.currentToken) {
-                    Shape.tag-> Shape().apply { injectThenParse(it) }
                     Corners.tag -> Corners(it)
                     Solid.tag -> Solid(it)
                     ShapeType.tag -> ShapeType(it)
@@ -286,18 +285,16 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
                 i++
             }
         }
-
-
     }
     //endregion
 
     //region StateListDrawable
     class StateListDrawable internal constructor(val manual: Boolean = false) : DaVinCiExpression(null) {
 
-        private var expressions: ListExpression? = null
+        private var expressions: ShapeListExpression? = null
         override fun startTag(): String = tag
 
-        internal fun exps(): ListExpression = expressions ?: ListExpression(daVinCi, manual).apply {
+        internal fun exps(): ShapeListExpression = expressions ?: ShapeListExpression(daVinCi, manual).apply {
             expressions = this
         }
 
@@ -318,10 +315,10 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
                         this.injectThenParse(it)
                         this.interpret()
                     }
-                } else if (!it.equalsWithCommand(ColorStateList.tag)) {
+                } else if (!it.equalsWithCommand(tag)) {
                     if (DaVinCi.enableDebugLog) Log.e(
                         sLogTag,
-                        "The ${ColorStateList.tag} is Excepted For Start When Not Manual!"
+                        "The {$tag} is Excepted For Start When Not Manual! but got {${it.currentToken}}"
                     )
                 } else {
                     //解析型
@@ -335,10 +332,85 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
         }
 
         override fun toString(): String {
-            return "${ColorStateList.tag} $expressions $END"
+            return "$tag $expressions $END"
         }
     }
     //endregion
+
+    //专门用于解析一串shape
+    internal class ShapeListExpression(daVinCi: DaVinCi? = null, private val manual: Boolean = false) :
+        DaVinCiExpression(daVinCi) {
+        private val list: ArrayList<DaVinCiExpression> = ArrayList()
+
+        fun append(exp: DaVinCiExpression) {
+            list.add(exp)
+        }
+
+        @SuppressLint("all")
+        override fun injectThenParse(daVinCi: DaVinCi?) {
+            this.daVinCi = daVinCi
+            if (manual) {
+                list.forEach { it.injectThenParse(daVinCi) }
+                return
+            }
+
+            // 在ListExpression解析表达式中,循环解释语句中的每一个单词,直到终结符表达式或者异常情况退出
+            daVinCi?.let {
+                var i = 0
+                while (i < 100) { // true,语法错误时有点可怕，先上限100
+                    if (it.currentToken == null) { // 获取当前节点如果为 null 则表示缺少]表达式
+                        println("Error: The Expression Missing ']'! ")
+                        break
+                    } else if (it.equalsWithCommand(END)) {
+                        it.next()
+                        // 解析正常结束
+                        break
+                    } else if (it.equalsWithCommand(NEXT)) {
+                        //进入同级别下一个解析
+                        it.next()
+                    } else if (it.equalsWithCommand(Shape.tag)) { // 建立Command 表达式
+                        list.add(Shape().apply {
+                            this.daVinCi = it
+                            //injectThenParse(it) //should not call this method, in autoParse mode, it will invoke nextToken to fetch the specified tag, but now it has moved to
+                            interpret()
+                        })
+                    } else {
+                        if (DaVinCi.enableDebugLog) Log.e(
+                            sLogTag,
+                            "The {${Shape.tag}} is Excepted to parse item in list! but got {${it.currentToken}}"
+                        )
+                    }
+                    i++
+                }
+                if (i == 100) {
+                    if (DaVinCi.enableDebugLog) Log.e(sLogTag, "语法解析有误，进入死循环，强制跳出")
+                }
+            }
+        }
+
+        @SuppressLint("all")
+        override fun interpret() { // 循环list列表中每一个表达式 解释执行
+            if (manual) {
+                list.forEach { it.interpret() }
+            } else {
+                if (DaVinCi.enableDebugLog) Log.d(sLogTag, "已自动解析")
+            }
+        }
+
+        override fun toString(): String {
+            val b = StringBuilder()
+
+            val iMax: Int = list.size - 1
+            if (iMax == -1) return ""
+            var i = 0
+            while (true) {
+                b.append(list[i].toString())
+                if (i == iMax) return b.toString()
+                b.append("; ")
+                i++
+            }
+        }
+    }
 
     //region Shape
     class Shape internal constructor(private val manual: Boolean = false) :
@@ -353,6 +425,9 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
                 expressions = this
             }
         }
+
+        //region apis
+
 
         fun type(str: String): Shape {
             ShapeType(manual = true).apply {
@@ -539,6 +614,8 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
             }
             return this
         }
+        //endregion
+
 
         companion object {
             const val tag = "shape:["
@@ -560,7 +637,7 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
                 } else if (!it.equalsWithCommand(tag)) {
                     if (DaVinCi.enableDebugLog) Log.e(
                         sLogTag,
-                        "The $tag is Excepted For Start When Not Manual!"
+                        "The {$tag} is Excepted For Start When Not Manual! but got {${it.currentToken}}"
                     )
                 } else {
                     //解析型
@@ -1294,7 +1371,7 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
                 } else if (!it.equalsWithCommand(tag)) {
                     if (DaVinCi.enableDebugLog) Log.e(
                         sLogTag,
-                        "The $tag is Excepted For Start When Not Manual!"
+                        "The {$tag} is Excepted For Start When Not Manual! but got {${it.currentToken}}"
                     )
                 } else {
                     //解析型
@@ -1414,6 +1491,7 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
                 }
             }
         }
+
         override fun states(vararg states: State): SldSyntactic {
 //            TODO("Not yet implemented")
             return this
