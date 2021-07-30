@@ -10,16 +10,13 @@ import android.graphics.drawable.StateListDrawable
 import android.os.Build
 import androidx.annotation.ColorInt
 import androidx.annotation.Px
-import java.util.*
 
 /*
  * <p><b>Package:</b> com.example.simpletest.background </p>
  * <p><b>Classname:</b> Expression </p>
  * Created by leobert on 2020-02-23.
  */
-
-
-@Suppress("unused", "ObsoleteSdkInt")
+@Suppress("unused")
 class DaVinCiCore {
     enum class Shape(var value: Int) {
         Rectangle(0), Oval(1), Line(2), Ring(3);
