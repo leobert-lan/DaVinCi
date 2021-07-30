@@ -70,8 +70,7 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
     //region CommandExp 用于解析构建实际子属性
     //manual = true 认为是手动创建的，不会进入解析逻辑
     @Suppress("WeakerAccess", "unused")
-    open class CommandExpression(daVinCi: DaVinCi? = null, val manual: Boolean = false) :
-        DaVinCiExpression(daVinCi) {
+    open class CommandExpression(daVinCi: DaVinCi? = null, val manual: Boolean = false) : DaVinCiExpression(daVinCi) {
 
         companion object {
             const val state_separator = ","
@@ -220,9 +219,13 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
     //endregion
 
     //region ListExp 同级别多条目解析
-    internal class ListExpression(daVinCi: DaVinCi? = null, private val manual: Boolean = false) :
-        DaVinCiExpression(daVinCi) {
+    internal class ListExpression(daVinCi: DaVinCi? = null, private val manual: Boolean = false) : DaVinCiExpression(daVinCi) {
         private val list: ArrayList<DaVinCiExpression> = ArrayList()
+
+        /**
+         * in rule: only one state expression is permitted
+         * */
+        var dState: DState? = null
 
         fun append(exp: DaVinCiExpression) {
             list.add(exp)
@@ -233,6 +236,7 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
             this.daVinCi = daVinCi
             if (manual) {
                 list.forEach { it.injectThenParse(daVinCi) }
+                dState?.injectThenParse(daVinCi)
                 return
             }
 
@@ -250,6 +254,13 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
                     } else if (it.equalsWithCommand(NEXT)) {
                         //进入同级别下一个解析
                         it.next()
+                    } else if (it.equalsWithCommand(DState.tag)) {
+                        if (dState != null) {
+                            if (DaVinCi.enableDebugLog) Log.d(sLogTag,
+                                "only one state expression is permitted in one group, will override old one $dState")
+                        }
+                        dState = DState(it)
+
                     } else { // 建立Command 表达式
                         try {
                             val expressions: DaVinCiExpression = CommandExpression(it)
@@ -270,6 +281,7 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
         @SuppressLint("all")
         override fun interpret() { // 循环list列表中每一个表达式 解释执行
             list.forEach { it.interpret() }
+            dState?.interpret()
         }
 
         override fun toString(): String {
@@ -296,6 +308,11 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
 
         internal fun exps(): ShapeListExpression = expressions ?: ShapeListExpression(daVinCi, manual).apply {
             expressions = this
+        }
+
+        fun shape(exp: Shape): SldSyntactic {
+            // TODO: 2021/7/30 should be passed if it is't a manual parsed exp?
+            return SldSyntactic.of(this, exp)
         }
 
         companion object {
@@ -413,14 +430,12 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
     }
 
     //region Shape
-    class Shape internal constructor(private val manual: Boolean = false) :
-        DaVinCiExpression(null) {
+    class Shape internal constructor(private val manual: Boolean = false) : DaVinCiExpression(null) {
 
         private var expressions: ListExpression? = null
         override fun startTag(): String = tag
 
-
-        private fun exps(): ListExpression {
+        internal fun exps(): ListExpression {
             return expressions ?: ListExpression(daVinCi, manual).apply {
                 expressions = this
             }
@@ -666,8 +681,7 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
     //        <!--android:bottomLeftRadius="integer"-->
     //        <!--android:bottomRightRadius="integer" />-->
     // shape:[ corners:[ 4 ] solid:[ #353538 ] ]
-    class Corners(daVinCi: DaVinCi? = null, manual: Boolean = false) :
-        CommandExpression(daVinCi, manual) {
+    class Corners(daVinCi: DaVinCi? = null, manual: Boolean = false) : CommandExpression(daVinCi, manual) {
 
         var conners: List<Int>? = null
 
@@ -763,8 +777,7 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
 
     // Rectangle(0), Oval(1), Line(2), Ring(3);
 
-    class ShapeType(daVinCi: DaVinCi? = null, manual: Boolean = false) :
-        CommandExpression(daVinCi, manual) {
+    class ShapeType(daVinCi: DaVinCi? = null, manual: Boolean = false) : CommandExpression(daVinCi, manual) {
 
         companion object {
             const val tag = "st:["
@@ -813,8 +826,7 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
     //endregion
 
     //region Solid
-    class Solid(daVinCi: DaVinCi? = null, manual: Boolean = false) :
-        CommandExpression(daVinCi, manual) {
+    class Solid(daVinCi: DaVinCi? = null, manual: Boolean = false) : CommandExpression(daVinCi, manual) {
         @ColorInt
         internal var colorInt: Int? = null //这是解析出来的，不要乱赋值
 
@@ -868,8 +880,7 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
     //    android:gradientRadius="float"  //渐变的半径，只有当渐变类型为radial时才能使用
     //    android:useLevel=["true" | "false"] />  //使用LevelListDrawable时就要设置为true。设为false时才有渐变效果
 
-    class Gradient constructor(daVinCi: DaVinCi? = null, manual: Boolean = false) :
-        CommandExpression(daVinCi, manual) {
+    class Gradient constructor(daVinCi: DaVinCi? = null, manual: Boolean = false) : CommandExpression(daVinCi, manual) {
 
         override fun startTag(): String = tag
 
@@ -1030,8 +1041,7 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
     //        <!--android:top="integer"-->
     //        <!--android:right="integer"-->
     //        <!--android:bottom="integer" />-->
-    class Padding(daVinCi: DaVinCi? = null, manual: Boolean = false) :
-        CommandExpression(daVinCi, manual) {
+    class Padding(daVinCi: DaVinCi? = null, manual: Boolean = false) : CommandExpression(daVinCi, manual) {
 
         override fun startTag(): String = tag
 
@@ -1126,8 +1136,7 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
     //        <!--<size-->
     //        <!--android:width="integer"-->
     //        <!--android:height="integer" />-->
-    class Size(daVinCi: DaVinCi? = null, manual: Boolean = false) :
-        CommandExpression(daVinCi, manual) {
+    class Size(daVinCi: DaVinCi? = null, manual: Boolean = false) : CommandExpression(daVinCi, manual) {
 
         override fun startTag(): String = tag
 
@@ -1210,8 +1219,7 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
     //        <!--android:dashWidth="integer"-->
     //        <!--android:dashGap="integer" />-->
     //shape:[ stroke:[ width:1dp;color:#aaaaaa;dashWidth:4;dashGap:6dp ] ]
-    class Stroke(daVinCi: DaVinCi? = null, manual: Boolean = false) :
-        CommandExpression(daVinCi, manual) {
+    class Stroke(daVinCi: DaVinCi? = null, manual: Boolean = false) : CommandExpression(daVinCi, manual) {
 
         override fun startTag(): String = tag
 
@@ -1311,10 +1319,61 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
     }
     //endregion
 
+    //region state
+    class DState(daVinCi: DaVinCi? = null, manual: Boolean = false) : CommandExpression(daVinCi, manual) {
+
+        val states: MutableList<State> by lazy { arrayListOf() }
+
+        companion object {
+            const val tag = "state:["
+        }
+
+        init {
+            injectThenParse(daVinCi)
+        }
+
+        override fun injectThenParse(daVinCi: DaVinCi?) {
+            this.daVinCi = daVinCi
+            if (manual) {
+                if (parseFromText)
+                    parse(daVinCi)
+                return
+            }
+            asPrimitiveParse(tag, daVinCi)
+            parse(daVinCi)
+        }
+
+        private fun parse(daVinCi: DaVinCi?) {
+            text?.let { content ->
+                states.clear()
+                if (daVinCi != null) {
+                    parseStates(content)?.let { s ->
+                        states.addAll(s)
+                    }
+                }
+
+                states.takeUnless { it.isEmpty() } ?: log<State>("state 不能为空", null)
+            }
+        }
+
+        override fun interpret() {
+            states.takeUnless { it.isEmpty() } ?: log<State>("state 不能为空", null)
+
+            if (tag == tokenName || manual) {
+                daVinCi?.core?.asOneStateInStateListDrawable()?.states(states = states)
+            }
+        }
+
+        override fun toString(): String {
+            return "$tag ${if (parseFromText) text else states.joinToString("|")} $END"
+        }
+    }
+
+
+    //endregion
+
     //region Color State List
-    // TODO: 2021/7/21 每一个item的state不只是一个
-    class ColorStateList internal constructor(private val manual: Boolean = false) :
-        DaVinCiExpression(null) {
+    class ColorStateList internal constructor(private val manual: Boolean = false) : DaVinCiExpression(null) {
 
         private var expressions: ListExpression? = null
         override fun startTag(): String = tag
@@ -1478,7 +1537,10 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
 
     //region
 
-    class SldSyntactic : Statable<SldSyntactic> {
+    class SldSyntactic : Statable<StateListDrawable> {
+        private var exp: Shape? = null
+        private var host: StateListDrawable? = null
+
         companion object {
             val factory: DPools.Factory<SldSyntactic> = object : DPools.Factory<SldSyntactic> {
                 override fun create(): SldSyntactic {
@@ -1488,20 +1550,48 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
 
             val resetter: DPools.Resetter<SldSyntactic> = object : DPools.Resetter<SldSyntactic> {
                 override fun reset(target: SldSyntactic) {
+                    target.exp = null
+                    target.host = null
+                }
+            }
+
+            fun of(host: StateListDrawable, exp: Shape): SldSyntactic {
+                return requireNotNull(DPools.sldSyntacticPool.acquire()).apply {
+                    this.exp = exp
+                    this.host = host
                 }
             }
         }
 
-        override fun states(vararg states: State): SldSyntactic {
-//            TODO("Not yet implemented")
-            return this
+        override fun states(vararg states: State): StateListDrawable {
+
+            val host = requireNotNull(host)
+            val exp = requireNotNull(exp)
+            exp.exps().dState = DState(manual = true).apply {
+                parseFromText = false
+                this.states.addAll(states)
+                this.text = states.joinToString("|")
+            }
+
+            host.exps().append(exp)
+
+            DPools.sldSyntacticPool.release(this)
+            return host
         }
 
-        override fun states(vararg states: String): SldSyntactic {
-//            TODO("Not yet implemented")
-            return this
-        }
+        override fun states(vararg states: String): StateListDrawable {
+            val host = requireNotNull(host)
+            val exp = requireNotNull(exp)
+            exp.exps().dState = DState(manual = true).apply {
+                parseFromText = true
+                this.text = states.joinToString("|")
+            }
 
+            host.exps().append(exp)
+
+            DPools.sldSyntacticPool.release(this)
+            return host
+        }
     }
 
     class CslSyntactic : Statable<ColorStateList> {

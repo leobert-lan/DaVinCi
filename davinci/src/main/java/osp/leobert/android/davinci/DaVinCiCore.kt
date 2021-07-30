@@ -208,6 +208,35 @@ class DaVinCiCore {
 
     private var baseStateListDrawable: StateListDrawable? = null
 
+    fun clearSimpleDrawable() {
+        shape = Shape.Rectangle
+        solidColor = null
+        cornersRadius = null
+        cornersBottomLeftRadius = null
+        cornersBottomRightRadius = null
+        cornersTopLeftRadius = null
+        cornersTopRightRadius = null
+        gradientAngle = -1
+        gradientCenterX = null
+        gradientCenterY = null
+        gradientCenterColor = null
+        gradientEndColor = null
+        gradientStartColor = null
+
+        gradientRadius = null
+        gradient = Gradient.Linear
+        useLevel = false
+        padding.set(0, 0, 0, 0)
+        sizeWidth = null
+        sizeHeight = null
+        strokeWidth = null
+        strokeColor = null
+        strokeDashWidth = 0f
+        strokeDashGap = 0f
+        rippleEnable = false
+        rippleColor = null
+    }
+
     fun clear() {
         shape = Shape.Rectangle
         solidColor = null
@@ -341,7 +370,7 @@ class DaVinCiCore {
     fun setGradientColor(
         @ColorInt startColor: Int?,
         @ColorInt centerColor: Int?,
-        @ColorInt endColor: Int?
+        @ColorInt endColor: Int?,
     ): DaVinCiCore {
         gradientStartColor = startColor
         gradientCenterColor = centerColor
@@ -368,7 +397,7 @@ class DaVinCiCore {
         @Px paddingLeft: Float,
         @Px paddingTop: Float,
         @Px paddingRight: Float,
-        @Px paddingBottom: Float
+        @Px paddingBottom: Float,
     ): DaVinCiCore {
         padding.left = paddingLeft.toInt()
         padding.top = paddingTop.toInt()
@@ -415,7 +444,7 @@ class DaVinCiCore {
 
     fun setCheckableStrokeColor(
         @ColorInt checkableStrokeColor: Int,
-        @ColorInt unCheckableStrokeColor: Int
+        @ColorInt unCheckableStrokeColor: Int,
     ): DaVinCiCore {
         this.checkableStrokeColor = checkableStrokeColor
         this.unCheckableStrokeColor = unCheckableStrokeColor
@@ -424,7 +453,7 @@ class DaVinCiCore {
 
     fun setCheckedStrokeColor(
         @ColorInt checkedStrokeColor: Int,
-        @ColorInt unCheckedStrokeColor: Int
+        @ColorInt unCheckedStrokeColor: Int,
     ): DaVinCiCore {
         this.checkedStrokeColor = checkedStrokeColor
         this.unCheckedStrokeColor = unCheckedStrokeColor
@@ -433,7 +462,7 @@ class DaVinCiCore {
 
     fun setEnabledStrokeColor(
         @ColorInt enabledStrokeColor: Int,
-        @ColorInt unEnabledStrokeColor: Int
+        @ColorInt unEnabledStrokeColor: Int,
     ): DaVinCiCore {
         this.enabledStrokeColor = enabledStrokeColor
         this.unEnabledStrokeColor = unEnabledStrokeColor
@@ -442,7 +471,7 @@ class DaVinCiCore {
 
     fun setSelectedStrokeColor(
         @ColorInt selectedStrokeColor: Int,
-        @ColorInt unSelectedStrokeColor: Int
+        @ColorInt unSelectedStrokeColor: Int,
     ): DaVinCiCore {
         this.selectedStrokeColor = selectedStrokeColor
         this.unSelectedStrokeColor = unSelectedStrokeColor
@@ -451,7 +480,7 @@ class DaVinCiCore {
 
     fun setPressedStrokeColor(
         @ColorInt pressedStrokeColor: Int,
-        @ColorInt unPressedStrokeColor: Int
+        @ColorInt unPressedStrokeColor: Int,
     ): DaVinCiCore {
         this.pressedStrokeColor = pressedStrokeColor
         this.unPressedStrokeColor = unPressedStrokeColor
@@ -460,7 +489,7 @@ class DaVinCiCore {
 
     fun setFocusedStrokeColor(
         @ColorInt focusedStrokeColor: Int,
-        @ColorInt unFocusedStrokeColor: Int
+        @ColorInt unFocusedStrokeColor: Int,
     ): DaVinCiCore {
         this.focusedStrokeColor = focusedStrokeColor
         this.unFocusedStrokeColor = unFocusedStrokeColor
@@ -469,7 +498,7 @@ class DaVinCiCore {
 
     fun setCheckableSolidColor(
         @ColorInt checkableSolidColor: Int,
-        @ColorInt unCheckableSolidColor: Int
+        @ColorInt unCheckableSolidColor: Int,
     ): DaVinCiCore {
         this.checkableSolidColor = checkableSolidColor
         this.unCheckableSolidColor = unCheckableSolidColor
@@ -478,7 +507,7 @@ class DaVinCiCore {
 
     fun setCheckedSolidColor(
         @ColorInt checkedSolidColor: Int,
-        @ColorInt unCheckedSolidColor: Int
+        @ColorInt unCheckedSolidColor: Int,
     ): DaVinCiCore {
         this.checkedSolidColor = checkedSolidColor
         this.unCheckedSolidColor = unCheckedSolidColor
@@ -487,7 +516,7 @@ class DaVinCiCore {
 
     fun setEnabledSolidColor(
         @ColorInt enabledSolidColor: Int,
-        @ColorInt unEnabledSolidColor: Int
+        @ColorInt unEnabledSolidColor: Int,
     ): DaVinCiCore {
         this.enabledSolidColor = enabledSolidColor
         this.unEnabledSolidColor = unEnabledSolidColor
@@ -496,7 +525,7 @@ class DaVinCiCore {
 
     fun setSelectedSolidColor(
         @ColorInt selectedSolidColor: Int,
-        @ColorInt unSelectedSolidColor: Int
+        @ColorInt unSelectedSolidColor: Int,
     ): DaVinCiCore {
         this.selectedSolidColor = selectedSolidColor
         this.unSelectedSolidColor = unSelectedSolidColor
@@ -505,7 +534,7 @@ class DaVinCiCore {
 
     fun setPressedSolidColor(
         @ColorInt pressedSolidColor: Int,
-        @ColorInt unPressedSolidColor: Int
+        @ColorInt unPressedSolidColor: Int,
     ): DaVinCiCore {
         this.pressedSolidColor = pressedSolidColor
         this.unPressedSolidColor = unPressedSolidColor
@@ -514,7 +543,7 @@ class DaVinCiCore {
 
     fun setFocusedSolidColor(
         @ColorInt focusedSolidColor: Int,
-        @ColorInt unFocusedSolidColor: Int
+        @ColorInt unFocusedSolidColor: Int,
     ): DaVinCiCore {
         this.focusedSolidColor = focusedSolidColor
         this.unFocusedSolidColor = unFocusedSolidColor
@@ -627,10 +656,34 @@ class DaVinCiCore {
         return this
     }
 
+    fun buildSimpleDrawable(): Drawable? {
+        val drawable: GradientDrawable = gradientDrawable
+
+        val rippleColor = rippleColor ?: return drawable
+
+        return if (rippleEnable) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                val contentDrawable =  drawable
+                RippleDrawable(
+                    ColorStateList.valueOf(rippleColor),
+                    contentDrawable,
+                    contentDrawable
+                )
+            } else {
+                val resultDrawable = StateListDrawable()
+                val unPressDrawable = gradientDrawable
+                unPressDrawable.setColor(rippleColor)
+                resultDrawable.addState(intArrayOf(-android.R.attr.state_pressed), drawable)
+                resultDrawable.addState(intArrayOf(android.R.attr.state_pressed), unPressDrawable)
+                resultDrawable
+            }
+        } else drawable
+    }
+
     fun build(): Drawable? {
         var drawable: GradientDrawable? = null
         var stateListDrawable: StateListDrawable? = null
-        if (hasSelectDrawable) {
+        if (sld.size > 0) {
             stateListDrawable = this.stateListDrawable
         } else {
             drawable = gradientDrawable
@@ -1046,5 +1099,68 @@ class DaVinCiCore {
 
     fun addColorItem(stateItem: StateItem.ColorItem) {
         csl.add(stateItem)
+    }
+
+    fun asOneStateInStateListDrawable(): DaVinCiCoreSyntactic {
+        return DaVinCiCoreSyntactic.of(this)
+    }
+
+
+    class DaVinCiCoreSyntactic private constructor() : Statable<DaVinCiCore> {
+        private var host: DaVinCiCore? = null
+
+        companion object {
+            val factory: DPools.Factory<DaVinCiCoreSyntactic> = object : DPools.Factory<DaVinCiCoreSyntactic> {
+                override fun create(): DaVinCiCoreSyntactic {
+                    return DaVinCiCoreSyntactic()
+                }
+            }
+
+            val resetter: DPools.Resetter<DaVinCiCoreSyntactic> = object : DPools.Resetter<DaVinCiCoreSyntactic> {
+                override fun reset(target: DaVinCiCoreSyntactic) {
+                    target.host = null
+                }
+            }
+
+            fun of(host: DaVinCiCore): DaVinCiCoreSyntactic {
+                return requireNotNull(DPools.dvcCoreSyntacticPool.acquire()).apply {
+                    this.host = host
+                }
+            }
+        }
+
+        override fun states(vararg states: State): DaVinCiCore {
+
+            val host = requireNotNull(host)
+            host.buildSimpleDrawable()?.let {
+                host.clearSimpleDrawable()
+                host.addDrawableItem(StateItem.of(it).applyState(states = states.toList()))
+            }
+
+            DPools.dvcCoreSyntacticPool.release(this)
+            return host
+        }
+
+        override fun states(vararg states: String): DaVinCiCore {
+            val host = requireNotNull(host)
+            val allStates = states.map { State.valueOf(it) }
+            host.buildSimpleDrawable()?.let {
+                host.clearSimpleDrawable()
+                host.addDrawableItem(StateItem.of(it).applyState(states = allStates))
+            }
+            DPools.dvcCoreSyntacticPool.release(this)
+            return host
+        }
+
+        fun states(states: List<State>): DaVinCiCore {
+            val host = requireNotNull(host)
+            host.buildSimpleDrawable()?.let {
+                host.clearSimpleDrawable()
+                host.addDrawableItem(StateItem.of(it).applyState(states = states))
+            }
+
+            DPools.dvcCoreSyntacticPool.release(this)
+            return host
+        }
     }
 }

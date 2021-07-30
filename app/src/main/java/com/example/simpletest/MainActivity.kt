@@ -32,13 +32,12 @@ class MainActivity : AppCompatActivity() {
         binding.executePendingBindings()
         Log.e("lmsg", "3")
 
-        DaVinCiExpression.stateColor().apply(
-            state = State.STATE_PRESSED_TRUE, color = Color.parseColor("#e5332c")
-        ).apply(
-            state = State.STATE_PRESSED_FALSE, color = Color.parseColor("#667700")
-        ).let {
-            binding.test.daVinCiColor(it)
-        }
+        DaVinCiExpression.stateColor()
+            .color("#e5332c").states(State.STATE_PRESSED_TRUE)
+            .color("#667700").states(State.STATE_PRESSED_FALSE)
+            .let {
+                binding.test.daVinCiColor(it)
+            }
 
         DaVinCiExpression.stateColor().apply(
             state = State.STATE_PRESSED_TRUE, color = Color.parseColor("#00aa00")
@@ -77,11 +76,13 @@ class MainActivity : AppCompatActivity() {
                         gradient:[ type:linear;startColor:#ff3c08;endColor:#353538 ];
                         st:[ Oval ];
                         corners:[ 40dp ];
+                        state:[ ${State.STATE_ENABLE_TRUE.name} ];
                         stroke:[ width:4dp;color:rc/colorAccent ]
                     ];
                     shape:[ 
                         gradient:[ type:linear;startColor:#ff3c08;endColor:#353538 ];
                         st:[ Oval ];
+                        state:[ ${State.STATE_ENABLE_FALSE.name} ];
                         corners:[ 40dp ];
                         stroke:[ width:4dp;color:#000000 ]
                     ]

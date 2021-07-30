@@ -12,7 +12,11 @@ object DPools {
 
     private const val DEFAULT_POOL_SIZE = 3
 
-    val cslSyntacticPool by lazy { simple(1, DaVinCiExpression.CslSyntactic.factory , DaVinCiExpression.CslSyntactic.resetter) }
+    val cslSyntacticPool by lazy { simple(1, DaVinCiExpression.CslSyntactic.factory, DaVinCiExpression.CslSyntactic.resetter) }
+
+    val sldSyntacticPool by lazy { simple(1, DaVinCiExpression.SldSyntactic.factory, DaVinCiExpression.SldSyntactic.resetter) }
+
+    val dvcCoreSyntacticPool by lazy { simple(1, DaVinCiCore.DaVinCiCoreSyntactic.factory, DaVinCiCore.DaVinCiCoreSyntactic.resetter) }
 
     private val EMPTY_RESETTER: Resetter<Any> = object : Resetter<Any> {
         override fun reset(target: Any) {

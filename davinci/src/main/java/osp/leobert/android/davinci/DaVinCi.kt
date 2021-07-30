@@ -38,6 +38,16 @@ class DaVinCi(text: String?, val view: View) {
 //    fun applyBg(exp:DaVinCiExpression) {
 //
 //    }
+    fun applySld(exp: DaVinCiExpression.StateListDrawable) {
+        if (enableDebugLog)
+            Log.d(DaVinCiExpression.sLogTag, "daVinCi sld:$exp")
+
+        exp.injectThenParse(this)
+        exp.interpret()
+        val d = core.build()
+        if (d != null)
+            view.background = d
+    }
 
     fun applyCsl(exp: DaVinCiExpression.ColorStateList) {
         // TODO: 2021/7/9 add applier and replace

@@ -19,31 +19,21 @@ import osp.leobert.android.davinci.annotation.StyleViewer
     type = StyleViewer.FLAG_CSL or StyleViewer.FLAG_BG, background = "#ffffff")
 class DemoStyle : StyleRegistry.Style("btn_style.main") {
     init {
-        this.register(
-            state = State.STATE_CHECKED_FALSE,
-            expression = DaVinCiExpression.shape().stroke("1", "#ff653c").corner("2dp")
-        ).register(State.STATE_CHECKED_TRUE,
-            DaVinCiExpression.shape().solid("#ff653c").corner("2dp,2dp,0,0")
-        ).register(
-            state = State.STATE_ENABLE_FALSE,
-            expression = DaVinCiExpression.shape().rectAngle().solid("#80ff3c08").corner("10dp")
-        ).register(
-            state = State.STATE_ENABLE_TRUE,
-            expression = DaVinCiExpression.shape().rectAngle().corner("10dp")
-                .gradient("#ff3c08", "#ff653c", 0)
+        this.registerSld(
+            exp = DaVinCiExpression.stateListDrawable()
+                .shape(DaVinCiExpression.shape().stroke("1", "#ff653c").corner("2dp"))
+                .states(State.STATE_CHECKED_FALSE, State.STATE_ENABLE_TRUE)
+
+                .shape(DaVinCiExpression.shape().solid("#ff653c").corner("2dp,2dp,0,0"))
+                .states(State.STATE_CHECKED_TRUE, State.STATE_ENABLE_TRUE)
+
+                .shape(DaVinCiExpression.shape().rectAngle().solid("#80ff3c08").corner("10dp")).states(State.STATE_ENABLE_FALSE)
+
         ).registerCsl(
             exp = DaVinCiExpression.stateColor()
                 .color("#000000").states(State.STATE_ENABLE_TRUE, State.STATE_CHECKED_TRUE)
                 .color("#666666").states(State.STATE_ENABLE_TRUE, State.STATE_CHECKED_FALSE)
                 .color("#ffffff").states(State.STATE_ENABLE_FALSE)
-
-//                .apply(
-//                    state = State.STATE_ENABLE_FALSE,
-//                    color = "#ffffff"
-//                ).apply(
-//                    state = State.STATE_ENABLE_TRUE,
-//                    color = "#333333"
-//                )
         )
     }
 }

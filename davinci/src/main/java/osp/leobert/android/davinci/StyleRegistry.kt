@@ -97,10 +97,16 @@ object StyleRegistry {
 
         //考虑到两者的特性，将其分开
         private var statedColorExp: DaVinCiExpression.ColorStateList? = null
+        private var sldExp: DaVinCiExpression.StateListDrawable? = null
 
         @Deprecated("不符合一般认知")
         fun register(state: State, expression: DaVinCiExpression): Style = this.apply {
             statedExpressions[state] = expression
+        }
+
+        fun registerSld(exp:DaVinCiExpression.StateListDrawable):Style {
+            sldExp = exp
+            return this
         }
 
         fun registerCsl(exp: DaVinCiExpression.ColorStateList): Style {
@@ -116,6 +122,10 @@ object StyleRegistry {
             }
             ViewCompat.setBackground(daVinCi.view, daVinCi.core.build())
             daVinCi.core.clear()
+
+            sldExp?.let {
+                daVinCi.applySld(it)
+            }
 
             statedColorExp?.let {
                 daVinCi.applyCsl(it)
