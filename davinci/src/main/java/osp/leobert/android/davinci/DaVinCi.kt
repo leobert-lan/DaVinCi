@@ -4,14 +4,13 @@ import android.content.Context
 import android.util.Log
 import android.view.View
 import android.widget.TextView
-import androidx.core.view.ViewCompat
 import osp.leobert.android.davinci.Applier.Companion.csl
 import osp.leobert.android.davinci.Applier.Companion.viewBackground
 import java.util.*
 
 // TODO: 2021/7/30 make it poolable
 @Suppress("unused")
-class DaVinCi/*(text: String?, val view: View)*/ {
+class DaVinCi private constructor() {
     companion object {
         var enableDebugLog = true
 
@@ -19,6 +18,30 @@ class DaVinCi/*(text: String?, val view: View)*/ {
             if (this is R) return this
             return null
         }
+
+        val factory: DPools.Factory<DaVinCi> = object : DPools.Factory<DaVinCi> {
+            override fun create(): DaVinCi {
+                return DaVinCi()
+            }
+        }
+
+        val resetter: DPools.Resetter<DaVinCi> = object : DPools.Resetter<DaVinCi> {
+            override fun reset(target: DaVinCi) {
+                target.core.clear()
+                target.applier = null
+                target.stringTokenizer = null
+                target.currentToken = null
+                target.clearAllVariable()
+            }
+        }
+
+        fun of(text: String? = null, applier: Applier? = null): DaVinCi {
+            return requireNotNull(DPools.daVinCiPool.acquire()).apply {
+                this.stringTokenizer = StringTokenizer(text)
+                this.applier = applier
+            }
+        }
+
     }
 
 
@@ -33,23 +56,24 @@ class DaVinCi/*(text: String?, val view: View)*/ {
 
     // 待解析的文本内容
     // 使用空格分隔待解析文本内容
-    private val stringTokenizer: StringTokenizer
-
-    constructor(text: String?, view: View) {
-        stringTokenizer = StringTokenizer(text ?: "")
-        applier = (view.takeIfInstance<TextView>()?.csl()?.viewBackground())?:view.viewBackground()
-    }
-
-    constructor(text: String?, applier: Applier?) {
-        stringTokenizer = StringTokenizer(text ?: "")
-        this.applier = applier
-    }
+    private var stringTokenizer: StringTokenizer? = null
 
     // 当前命令
     var currentToken: String? = null
 
     // 用来存储动态变化信息内容
     private val map: MutableMap<String, Any> = HashMap()
+
+    @Deprecated("不适合缓存池")
+    constructor(text: String?, view: View) : this() {
+        stringTokenizer = StringTokenizer(text ?: "")
+        applier = (view.takeIfInstance<TextView>()?.csl()?.viewBackground()) ?: view.viewBackground()
+    }
+
+    constructor(text: String?, applier: Applier?) : this() {
+        stringTokenizer = StringTokenizer(text ?: "")
+        this.applier = applier
+    }
 
     fun applySld(exp: DaVinCiExpression.StateListDrawable) {
         if (enableDebugLog)
@@ -62,8 +86,6 @@ class DaVinCi/*(text: String?, val view: View)*/ {
     }
 
     fun applyCsl(exp: DaVinCiExpression.ColorStateList) {
-        // TODO: 2021/7/9 add applier and replace
-
         if (enableDebugLog)
             Log.d(DaVinCiExpression.sLogTag, "daVinCi csl:$exp")
 
@@ -82,8 +104,8 @@ class DaVinCi/*(text: String?, val view: View)*/ {
      * 解析文本
      */
     operator fun next(): String? {
-        currentToken = if (stringTokenizer.hasMoreTokens()) {
-            stringTokenizer.nextToken()
+        currentToken = if (stringTokenizer?.hasMoreTokens() == true) {
+            stringTokenizer?.nextToken()
         } else {
             null
         }
@@ -97,14 +119,11 @@ class DaVinCi/*(text: String?, val view: View)*/ {
         return command != null && command == currentToken
     }
 
-
     /*
      * 获得节点的内容
      */
     fun getTokenContent(text: String?): String? {
-        // 替换map中的动态变化内容后返回 Iterator<String>
         // 替换map中的动态变化内容后返回
-
         return text?.run {
             var a = this
             for (key in map.keys) {
@@ -121,5 +140,10 @@ class DaVinCi/*(text: String?, val view: View)*/ {
 
     fun clear(key: String?) {
         map.remove(key)
+    }
+
+
+    fun clearAllVariable() {
+        map.clear()
     }
 }

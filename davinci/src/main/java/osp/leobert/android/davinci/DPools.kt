@@ -1,6 +1,7 @@
 package osp.leobert.android.davinci
 
 import androidx.core.util.Pools
+import org.jetbrains.annotations.NotNull
 
 /**
  * <p><b>Package:</b> osp.leobert.android.davinci </p>
@@ -17,6 +18,9 @@ object DPools {
     val sldSyntacticPool by lazy { simple(1, DaVinCiExpression.SldSyntactic.factory, DaVinCiExpression.SldSyntactic.resetter) }
 
     val dvcCoreSyntacticPool by lazy { simple(1, DaVinCiCore.DaVinCiCoreSyntactic.factory, DaVinCiCore.DaVinCiCoreSyntactic.resetter) }
+
+    val daVinCiPool by lazy { simple(3, DaVinCi.factory, DaVinCi.resetter) }
+
 
     private val EMPTY_RESETTER: Resetter<Any> = object : Resetter<Any> {
         override fun reset(target: Any) {
@@ -72,7 +76,7 @@ object DPools {
             return result
         }
 
-        override fun release(instance: T): Boolean {
+        override fun release(@NotNull instance: T): Boolean {
             if (instance == null) return false
 
             resetter.reset(instance)
