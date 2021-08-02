@@ -5,6 +5,9 @@ import android.view.View
 import android.widget.TextView
 import androidx.core.view.ViewCompat
 import androidx.databinding.BindingAdapter
+import osp.leobert.android.davinci.Applier.Companion.applier
+import osp.leobert.android.davinci.Applier.Companion.csl
+import osp.leobert.android.davinci.Applier.Companion.viewBackground
 
 /**
  * <p><b>Package:</b> osp.leobert.android.davinci </p>
@@ -13,36 +16,53 @@ import androidx.databinding.BindingAdapter
  * Created by leobert on 2021/5/31.
  */
 
-/*
- *自high 功能，语法解析，目前语法校验还不严格，没有按照严谨的文法约束以及校验
- * */
-fun View.daVinCi(str: String) {
-    if (DaVinCi.enableDebugLog) Log.d(DaVinCiExpression.sLogTag, "${this.logTag()} daVinCi:$str")
-    val daVinCi = DaVinCi(str, this)
+//region 利用符合语法的String设置相关内容
 
-    val expressions: DaVinCiExpression = DaVinCiExpression.StateListDrawable()// DaVinCiExpression.Shape()
+fun View.daVinCiSld(str: String) {
+    if (DaVinCi.enableDebugLog) Log.d(DaVinCiExpression.sLogTag, "${this.logTag()} daVinCi:$str")
+
+    val daVinCi = DaVinCi.of(str, this.applier())
+    val expressions = DaVinCiExpression.StateListDrawable()
+
+    daVinCi.applySld(expressions)
+    daVinCi.release()
+}
+
+@Deprecated("", ReplaceWith("this.daVinCiShape(str)"))
+fun View.daVinCi(str: String) {
+    this.daVinCiShape(str)
+}
+
+fun View.daVinCiShape(str: String) {
+    if (DaVinCi.enableDebugLog) Log.d(DaVinCiExpression.sLogTag, "${this.logTag()} daVinCi:$str")
+
+    val daVinCi = DaVinCi.of(str, this.applier())
+
+    val expressions: DaVinCiExpression = DaVinCiExpression.Shape()
 
     expressions.injectThenParse(daVinCi)
     expressions.interpret()
-    ViewCompat.setBackground(this, daVinCi.core.build())
+    ViewCompat.setBackground(this, daVinCi.core.buildSimpleDrawable())
+    daVinCi.release()
 }
 
 fun TextView.daVinCiColor(str: String) {
-    if (DaVinCi.enableDebugLog) Log.d(
-        DaVinCiExpression.sLogTag,
-        "${this.logTag()} daVinCiColor:$str"
-    )
-    val daVinCi = DaVinCi(str, this)
+    if (DaVinCi.enableDebugLog) Log.d(DaVinCiExpression.sLogTag, "${this.logTag()} daVinCiColor:$str")
+    val daVinCi = DaVinCi.of(str, this.csl())
 
-    val expressions: DaVinCiExpression = DaVinCiExpression.stateColor()
+    val expressions = DaVinCiExpression.stateColor()
+    daVinCi.applyCsl(expressions)
+    daVinCi.release()
 
-    expressions.injectThenParse(daVinCi)
-    expressions.interpret()
-
-    daVinCi.core.buildTextColor()?.let {
-        this.setTextColor(it)
-    }
+//    expressions.injectThenParse(daVinCi)
+//    expressions.interpret()
+//
+//    daVinCi.core.buildTextColor()?.let {
+//        this.setTextColor(it)
+//    }
 }
+//endregion
+
 
 @BindingAdapter("daVinCiTextColor")
 fun TextView.daVinCiColor(expressions: DaVinCiExpression.ColorStateList) {
@@ -50,31 +70,29 @@ fun TextView.daVinCiColor(expressions: DaVinCiExpression.ColorStateList) {
         DaVinCiExpression.sLogTag,
         "${this.logTag()} daVinCiColor:$expressions"
     )
-    val daVinCi = DaVinCi(null, this)
+    val daVinCi = DaVinCi.of(null, this.csl())
 
-    expressions.injectThenParse(daVinCi)
-    expressions.interpret()
+    daVinCi.applyCsl(expressions)
+    daVinCi.release()
 
-    daVinCi.core.buildTextColor()?.let {
-        this.setTextColor(it)
-    }
+//    expressions.injectThenParse(daVinCi)
+//    expressions.interpret()
+//
+//    daVinCi.core.buildTextColor()?.let {
+//        this.setTextColor(it)
+//    }
 }
 
 @BindingAdapter("daVinCiBgStyle")
 fun View.daVinCiBgStyle(styleName: String) {
     with(StyleRegistry.find(styleName)) {
 
-        this?.applyTo(
-            DaVinCi(null, this@daVinCiBgStyle)
-        )
+        this?.applyTo(daVinCi = DaVinCi.of(null, this@daVinCiBgStyle.applier()), releaseAfter = true)
             ?: Log.d(DaVinCiExpression.sLogTag, "could not found style with name $styleName")
     }
 }
 
-@Deprecated(
-    "nobody want to read the log",
-    ReplaceWith("")
-)
+@Deprecated("nobody want to read the log", ReplaceWith(""))
 internal fun View.logTag(): String {
     return this.getTag(R.id.log_tag)?.run { "{${toString()}}:" } ?: this.toString()
 }
@@ -90,9 +108,11 @@ fun View.daVinCi(
     checkable: DaVinCiExpression? = null, uncheckable: DaVinCiExpression? = null,
     checked: DaVinCiExpression? = null, unchecked: DaVinCiExpression? = null,
 ) {
-    val daVinCi = DaVinCi(null, this)
-    //用于多次构建
-    val daVinCiLoop = DaVinCi(null, this)
+    val daVinCi = DaVinCi.of(null, this.viewBackground())
+
+    // TODO: 2021/8/2 表意性不准确，和一般性预期不符，
+//    //用于多次构建
+//    val daVinCiLoop = DaVinCi.of(null, this.viewBackground())
 
     normal?.let {
         daVinCi.apply {
@@ -108,51 +128,68 @@ fun View.daVinCi(
     }
 
     pressed?.let {
-        simplify(daVinCiLoop, it, "pressed")
-        daVinCiLoop.core.build()?.let { d ->
-            daVinCi.core.addDrawableItem(StateItem.of(d).applyState(arrayListOf(State.STATE_PRESSED_TRUE)))
-        }
-        daVinCiLoop.core.clear()
+//        simplify(daVinCiLoop, it, "pressed")
+//        daVinCiLoop.core.build()?.let { d ->
+//            daVinCi.core.addDrawableItem(StateItem.of(d).applyState(arrayListOf(State.STATE_PRESSED_TRUE)))
+//        }
+//        daVinCiLoop.core.clear()
+
+        simplify(daVinCi,it,"pressed")
+        daVinCi.core.asOneStateInStateListDrawable().states(State.STATE_PRESSED_TRUE)
     }
 
     unpressed?.let {
-        simplify(daVinCiLoop, it, "unpressed")
-        daVinCiLoop.core.build()?.let { d ->
-            daVinCi.core.addDrawableItem(StateItem.of(d).applyState(arrayListOf(State.STATE_PRESSED_FALSE)))
-        }
-        daVinCiLoop.core.clear()
+//        simplify(daVinCiLoop, it, "unpressed")
+//        daVinCiLoop.core.build()?.let { d ->
+//            daVinCi.core.addDrawableItem(StateItem.of(d).applyState(arrayListOf(State.STATE_PRESSED_FALSE)))
+//        }
+//        daVinCiLoop.core.clear()
+        simplify(daVinCi,it,"unpressed")
+        daVinCi.core.asOneStateInStateListDrawable().states(State.STATE_PRESSED_FALSE)
     }
 
     checkable?.let {
-        simplify(daVinCiLoop, it, "checkable")
-        daVinCiLoop.core.build()?.let { d ->
-            daVinCi.core.addDrawableItem(StateItem.of(d).applyState(arrayListOf(State.STATE_CHECKABLE_TRUE)))
-        }
-        daVinCiLoop.core.clear()
+//        simplify(daVinCiLoop, it, "checkable")
+//        daVinCiLoop.core.build()?.let { d ->
+//            daVinCi.core.addDrawableItem(StateItem.of(d).applyState(arrayListOf(State.STATE_CHECKABLE_TRUE)))
+//        }
+//        daVinCiLoop.core.clear()
+
+        simplify(daVinCi,it,"checkable")
+        daVinCi.core.asOneStateInStateListDrawable().states(State.STATE_CHECKABLE_TRUE)
     }
 
     uncheckable?.let {
-        simplify(daVinCiLoop, it, "uncheckable")
-        daVinCiLoop.core.build()?.let { d ->
-            daVinCi.core.addDrawableItem(StateItem.of(d).applyState(arrayListOf(State.STATE_CHECKABLE_FALSE)))
-        }
-        daVinCiLoop.core.clear()
+//        simplify(daVinCiLoop, it, "uncheckable")
+//        daVinCiLoop.core.build()?.let { d ->
+//            daVinCi.core.addDrawableItem(StateItem.of(d).applyState(arrayListOf(State.STATE_CHECKABLE_FALSE)))
+//        }
+//        daVinCiLoop.core.clear()
+
+        simplify(daVinCi,it,"uncheckable")
+        daVinCi.core.asOneStateInStateListDrawable().states(State.STATE_CHECKABLE_FALSE)
     }
 
     checked?.let {
-        simplify(daVinCiLoop, it, "checked")
-        daVinCiLoop.core.build()?.let { d ->
-            daVinCi.core.addDrawableItem(StateItem.of(d).applyState(arrayListOf(State.STATE_CHECKED_TRUE)))
-        }
-        daVinCiLoop.core.clear()
+//        simplify(daVinCiLoop, it, "checked")
+//        daVinCiLoop.core.build()?.let { d ->
+//            daVinCi.core.addDrawableItem(StateItem.of(d).applyState(arrayListOf(State.STATE_CHECKED_TRUE)))
+//        }
+//        daVinCiLoop.core.clear()
+
+        simplify(daVinCi,it,"checked")
+        daVinCi.core.asOneStateInStateListDrawable().states(State.STATE_CHECKED_TRUE)
     }
 
     unchecked?.let {
-        simplify(daVinCiLoop, it, "unchecked")
-        daVinCiLoop.core.build()?.let { d ->
-            daVinCi.core.addDrawableItem(StateItem.of(d).applyState(arrayListOf(State.STATE_CHECKABLE_FALSE)))
-        }
-        daVinCiLoop.core.clear()
+//        simplify(daVinCiLoop, it, "unchecked")
+//        daVinCiLoop.core.build()?.let { d ->
+//            daVinCi.core.addDrawableItem(StateItem.of(d).applyState(arrayListOf(State.STATE_CHECKABLE_FALSE)))
+//        }
+//        daVinCiLoop.core.clear()
+
+        simplify(daVinCi,it,"unchecked")
+        daVinCi.core.asOneStateInStateListDrawable().states(State.STATE_CHECKABLE_FALSE)
     }
 
 
@@ -168,7 +205,8 @@ fun View.daVinCi(
     //    private var unFocusedHovered: Drawable? = null
     //    private var unFocusedActivated: Drawable? = null
 
-    ViewCompat.setBackground(this, daVinCi.core.build())
+    ViewCompat.setBackground(this, daVinCi.core.buildDrawable())
+    daVinCi.release()
 }
 
 internal fun simplify(

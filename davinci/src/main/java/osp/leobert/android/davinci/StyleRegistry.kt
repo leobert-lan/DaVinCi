@@ -1,8 +1,6 @@
 package osp.leobert.android.davinci
 
-import android.annotation.SuppressLint
 import android.util.Log
-import androidx.core.view.ViewCompat
 
 /**
  * <p><b>Package:</b> osp.leobert.android.davinci </p>
@@ -114,7 +112,6 @@ object StyleRegistry {
             return this
         }
 
-        @SuppressLint("all")
         fun applyTo(daVinCi: DaVinCi) {
             sldExp?.let {
                 daVinCi.applySld(it)
@@ -123,7 +120,12 @@ object StyleRegistry {
             statedColorExp?.let {
                 daVinCi.applyCsl(it)
             }
+        }
 
+        fun applyTo(daVinCi: DaVinCi, releaseAfter: Boolean) {
+            applyTo(daVinCi)
+            if (releaseAfter)
+                daVinCi.release()
         }
 
         override fun equals(other: Any?): Boolean {

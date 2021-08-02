@@ -103,12 +103,13 @@ class DaVinCiCore {
      * used to build [ColorStateList]
      * */
     private val csl: MutableList<StateItem.ColorItem> by lazy { arrayListOf() }
+
+    /**
+     * used to build [StateListDrawable]
+     * */
     private val sld: MutableList<StateItem.DrawableItem> by lazy { arrayListOf() }
 
     private var baseGradientDrawable: GradientDrawable? = null
-
-//    @Deprecated("改进构建方式")
-//    private var hasSelectDrawable = false
 
     private var baseStateListDrawable: StateListDrawable? = null
 
@@ -285,6 +286,9 @@ class DaVinCiCore {
         return this
     }
 
+    /**
+     * 构建[GradientDrawable]
+     * */
     fun buildSimpleDrawable(): Drawable {
         val drawable: GradientDrawable = gradientDrawable
 
@@ -292,11 +296,10 @@ class DaVinCiCore {
 
         return if (rippleEnable) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                val contentDrawable = drawable
                 RippleDrawable(
                     ColorStateList.valueOf(rippleColor),
-                    contentDrawable,
-                    contentDrawable
+                    drawable,
+                    drawable
                 )
             } else {
                 val resultDrawable = StateListDrawable()
@@ -309,7 +312,10 @@ class DaVinCiCore {
         } else drawable
     }
 
-    fun build(): Drawable? {
+    /**
+     * 如果[sld]有信息，则构建StateListDrawable，否则构建 [GradientDrawable]
+     * */
+    fun buildDrawable():Drawable? {
         var drawable: GradientDrawable? = null
         var stateListDrawable: StateListDrawable? = null
         if (sld.size > 0) {
@@ -339,6 +345,14 @@ class DaVinCiCore {
         } else drawable ?: stateListDrawable
     }
 
+    @Deprecated("含义不够准确", ReplaceWith("buildDrawable()"))
+    fun build(): Drawable? {
+        return buildDrawable()
+    }
+
+    /**
+     * 利用[csl]信息，构建[ColorStateList]
+     * */
     fun buildTextColor(): ColorStateList? {
         val csl = csl.takeUnless { it.isEmpty() } ?: return null
         val states = arrayOfNulls<IntArray>(csl.size)

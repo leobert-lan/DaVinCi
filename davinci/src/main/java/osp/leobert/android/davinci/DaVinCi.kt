@@ -8,7 +8,6 @@ import osp.leobert.android.davinci.Applier.Companion.csl
 import osp.leobert.android.davinci.Applier.Companion.viewBackground
 import java.util.*
 
-// TODO: 2021/7/30 make it poolable
 @Suppress("unused")
 class DaVinCi private constructor() {
     companion object {
@@ -37,11 +36,14 @@ class DaVinCi private constructor() {
 
         fun of(text: String? = null, applier: Applier? = null): DaVinCi {
             return requireNotNull(DPools.daVinCiPool.acquire()).apply {
-                this.stringTokenizer = StringTokenizer(text)
+                this.stringTokenizer = text?.run { StringTokenizer(this) }
                 this.applier = applier
             }
         }
+    }
 
+    fun release() {
+        DPools.daVinCiPool.release(this)
     }
 
 
@@ -64,24 +66,28 @@ class DaVinCi private constructor() {
     // 用来存储动态变化信息内容
     private val map: MutableMap<String, Any> = HashMap()
 
-    @Deprecated("不适合缓存池")
+    @Deprecated("和缓存池设计相悖", replaceWith = ReplaceWith("DaVinCi.Companion.of(text: String? = null, applier: Applier? = null)"))
     constructor(text: String?, view: View) : this() {
         stringTokenizer = StringTokenizer(text ?: "")
         applier = (view.takeIfInstance<TextView>()?.csl()?.viewBackground()) ?: view.viewBackground()
     }
 
-    constructor(text: String?, applier: Applier?) : this() {
-        stringTokenizer = StringTokenizer(text ?: "")
-        this.applier = applier
-    }
+//    constructor(text: String?, applier: Applier?) : this() {
+//        stringTokenizer = StringTokenizer(text ?: "")
+//        this.applier = applier
+//    }
 
     fun applySld(exp: DaVinCiExpression.StateListDrawable) {
-        if (enableDebugLog)
-            Log.d(DaVinCiExpression.sLogTag, "daVinCi sld:$exp")
+        if (enableDebugLog && exp.manual) //手动创建的结构
+            Log.d(DaVinCiExpression.sLogTag, "manual created,daVinCi sld:$exp")
 
         exp.injectThenParse(this)
         exp.interpret()
-        val d = core.build()
+
+        if (enableDebugLog && !exp.manual) //利用DaVinCi内容解析的结构
+            Log.d(DaVinCiExpression.sLogTag, "parsed,daVinCi sld:$exp")
+
+        val d = core.buildDrawable()
         applier?.applyDrawable(d)
     }
 

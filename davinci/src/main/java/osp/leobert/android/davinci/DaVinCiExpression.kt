@@ -278,8 +278,7 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
             }
         }
 
-        @SuppressLint("all")
-        override fun interpret() { // 循环list列表中每一个表达式 解释执行
+        override fun interpret() {
             list.forEach { it.interpret() }
             dState?.interpret()
         }
@@ -287,8 +286,12 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
         override fun toString(): String {
             val b = StringBuilder()
 
+            dState?.let { b.append(it.toString()) }
+
             val iMax: Int = list.size - 1
-            if (iMax == -1) return ""
+            if (iMax == -1) return b.toString()
+            if (dState != null)
+                b.append("; ")
             var i = 0
             while (true) {
                 b.append(list[i].toString())
@@ -379,13 +382,13 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
                         println("Error: The Expression Missing ']'! ")
                         break
                     } else if (it.equalsWithCommand(END)) {
-                        it.next()
                         // 解析正常结束
+                        it.next()
                         break
                     } else if (it.equalsWithCommand(NEXT)) {
                         //进入同级别下一个解析
                         it.next()
-                    } else if (it.equalsWithCommand(Shape.tag)) { // 建立Command 表达式
+                    } else if (it.equalsWithCommand(Shape.tag)) {
                         list.add(Shape().apply {
                             this.daVinCi = it
                             //injectThenParse(it) //should not call this method, in autoParse mode, it will invoke nextToken to fetch the specified tag, but now it has moved to
@@ -405,8 +408,7 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
             }
         }
 
-        @SuppressLint("all")
-        override fun interpret() { // 循环list列表中每一个表达式 解释执行
+        override fun interpret() {
             if (manual) {
                 list.forEach { it.interpret() }
             } else {
@@ -1464,7 +1466,7 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
 
             const val prop_color = "color:"
 
-            const val separator = CommandExpression.state_separator
+            const val separator = state_separator
         }
 
         init {
@@ -1506,13 +1508,15 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
                     }
                 }
 
-                states ?: log<State>("state 不能为空", null)
+                if (states.isEmpty())
+                    log<State>("state 不能为空", null)
                 colorInt ?: log<Int>("color 不能为空", null)
             }
         }
 
         override fun interpret() {
-            val state = states ?: log<State>("state 不能为空", null) ?: return
+            val states: List<State> = (states.takeUnless { it.isEmpty() } ?: log<List<State>>("state 不能为空", null)) ?: return
+
             val colorInt = colorInt ?: log<Int>("color 不能为空", null) ?: return
 
             if (tag == tokenName || manual) {
@@ -1532,10 +1536,10 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
     //endregion
 
     ///////////////////////////////////////////////////////////////////////////
-    //
+    // make syntactic more easy and smooth
     ///////////////////////////////////////////////////////////////////////////
 
-    //region
+    //region make syntactic more easy and smooth
 
     class SldSyntactic : Statable<StateListDrawable> {
         private var exp: Shape? = null

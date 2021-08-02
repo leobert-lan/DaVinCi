@@ -7,10 +7,7 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.example.simpletest.databinding.ActivityMainBinding
-import osp.leobert.android.davinci.DaVinCiExpression
-import osp.leobert.android.davinci.State
-import osp.leobert.android.davinci.daVinCi
-import osp.leobert.android.davinci.daVinCiColor
+import osp.leobert.android.davinci.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -70,7 +67,7 @@ class MainActivity : AppCompatActivity() {
 
         //这种不推荐使用啊，考虑语法解析一方面是考虑方便打印，另一方面是考虑到以后替换xml内的方案时，可以有后手
         binding.test2.setOnClickListener {
-            it.daVinCi("""
+            it.daVinCiSld("""
                 sld:[ 
                     shape:[ 
                         gradient:[ type:linear;startColor:#ff3c08;endColor:#353538 ];

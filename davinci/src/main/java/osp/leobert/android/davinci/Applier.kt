@@ -16,7 +16,7 @@ import androidx.core.view.ViewCompat
 interface Applier {
     val context: Context
 
-    fun getTag(id:Int):Any?
+    fun getTag(id: Int): Any?
 
     fun applyDrawable(drawable: Drawable?)
 
@@ -26,6 +26,7 @@ interface Applier {
         override fun getTag(id: Int): Any? {
             return null
         }
+
         override fun applyDrawable(drawable: Drawable?) {
         }
 
@@ -76,5 +77,11 @@ interface Applier {
             this.cslConsumer = { this@apply.view.setTextColor(this) }
         }
 
+        fun View.applier(): Applier {
+            return when (this) {
+                is TextView -> this.csl().viewBackground()
+                else -> this.viewBackground()
+            }
+        }
     }
 }
