@@ -292,6 +292,7 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
             }
         }
 
+        @SuppressLint("all")
         override fun interpret() {
             list.forEach { it.interpret() }
             dState?.interpret()
@@ -422,6 +423,7 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
             }
         }
 
+        @SuppressLint("all")
         override fun interpret() {
             if (manual) {
                 list.forEach { it.interpret() }
