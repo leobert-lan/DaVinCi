@@ -231,6 +231,20 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
             list.add(exp)
         }
 
+        fun appendState(vararg states: State) {
+            val dState = dState ?: DState(daVinCi)
+            dState.states.addAll(states) //ignore all check！
+            dState.text = dState.states.joinToString("|")
+            this.dState = dState
+        }
+
+        fun appendState1(states: Array<out State>) {
+            val dState = dState ?: DState(daVinCi)
+            dState.states.addAll(states) //ignore all check！
+            dState.text = dState.states.joinToString("|")
+            this.dState = dState
+        }
+
         @SuppressLint("all")
         override fun injectThenParse(daVinCi: DaVinCi?) {
             this.daVinCi = daVinCi
@@ -444,7 +458,11 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
         }
 
         //region apis
-
+        fun appendState(vararg states: State): Shape {
+            val exp: ListExpression = exps()
+            exp.appendState1(states)
+            return this
+        }
 
         fun type(str: String): Shape {
             ShapeType(manual = true).apply {

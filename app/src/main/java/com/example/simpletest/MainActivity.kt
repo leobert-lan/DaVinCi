@@ -30,20 +30,20 @@ class MainActivity : AppCompatActivity() {
         Log.e("lmsg", "3")
 
         DaVinCiExpression.stateColor()
-            .color("#e5332c").states(State.STATE_PRESSED_TRUE)
-            .color("#667700").states(State.STATE_PRESSED_FALSE)
+            .color("#e5332c").states(State.PRESSED_T)
+            .color("#667700").states(State.PRESSED_F)
             .let {
                 binding.test.daVinCiColor(it)
             }
 
         DaVinCiExpression.stateColor().apply(
-            state = State.STATE_PRESSED_TRUE, color = Color.parseColor("#00aa00")
+            state = State.PRESSED_T, color = Color.parseColor("#00aa00")
         ).apply(
-            state = State.STATE_PRESSED_FALSE, color = Color.parseColor("#667700")
+            state = State.PRESSED_F, color = Color.parseColor("#667700")
         ).apply(
-            state = State.STATE_CHECKED_TRUE.name, color = "#ff0000"
+            state = State.CHECKED_T.name, color = "#ff0000"
         ).apply(
-            state = State.STATE_CHECKED_FALSE, color = "#000000"
+            state = State.CHECKED_F, color = "#000000"
         )
             .let {
                 binding.cb1.daVinCiColor(it)
@@ -73,13 +73,13 @@ class MainActivity : AppCompatActivity() {
                         gradient:[ type:linear;startColor:#ff3c08;endColor:#353538 ];
                         st:[ Oval ];
                         corners:[ 40dp ];
-                        state:[ ${State.STATE_ENABLE_TRUE.name} ];
+                        state:[ ${State.ENABLE_T.name} ];
                         stroke:[ width:4dp;color:rc/colorAccent ]
                     ];
                     shape:[ 
                         gradient:[ type:linear;startColor:#ff3c08;endColor:#353538 ];
                         st:[ Oval ];
-                        state:[ ${State.STATE_ENABLE_FALSE.name} ];
+                        state:[ ${State.ENABLE_F.name} ];
                         corners:[ 40dp ];
                         stroke:[ width:4dp;color:#000000 ]
                     ]

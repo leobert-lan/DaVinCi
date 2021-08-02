@@ -97,11 +97,16 @@ internal fun View.logTag(): String {
     return this.getTag(R.id.log_tag)?.run { "{${toString()}}:" } ?: this.toString()
 }
 
+/**
+ * 2021/8/2 在原先的设计中，仅打算使用一对属性，但是这并不符合一般性需求，往往会出现组合情况，故而该API的表意是不恰当的，很容易导致误解,
+ * 但是拆解开来作为多组API也会对原先的使用者造成影响（BindingAdapter的制约），
+ * */
 @BindingAdapter(
     "daVinCi_bg", "daVinCi_bg_pressed", "daVinCi_bg_unpressed",
     "daVinCi_bg_checkable", "daVinCi_bg_uncheckable", "daVinCi_bg_checked", "daVinCi_bg_unchecked",
     requireAll = false
 )
+@Deprecated("在原先的设计中，仅打算使用一对属性，但是这并不符合一般性需求，往往会出现组合情况，故而该API的表意是不恰当的，很容易导致误解")
 fun View.daVinCi(
     normal: DaVinCiExpression? = null,
     pressed: DaVinCiExpression? = null, unpressed: DaVinCiExpression? = null,
@@ -109,10 +114,6 @@ fun View.daVinCi(
     checked: DaVinCiExpression? = null, unchecked: DaVinCiExpression? = null,
 ) {
     val daVinCi = DaVinCi.of(null, this.viewBackground())
-
-    // TODO: 2021/8/2 表意性不准确，和一般性预期不符，
-//    //用于多次构建
-//    val daVinCiLoop = DaVinCi.of(null, this.viewBackground())
 
     normal?.let {
         daVinCi.apply {
@@ -128,68 +129,33 @@ fun View.daVinCi(
     }
 
     pressed?.let {
-//        simplify(daVinCiLoop, it, "pressed")
-//        daVinCiLoop.core.build()?.let { d ->
-//            daVinCi.core.addDrawableItem(StateItem.of(d).applyState(arrayListOf(State.STATE_PRESSED_TRUE)))
-//        }
-//        daVinCiLoop.core.clear()
-
         simplify(daVinCi,it,"pressed")
-        daVinCi.core.asOneStateInStateListDrawable().states(State.STATE_PRESSED_TRUE)
+        daVinCi.core.asOneStateInStateListDrawable().states(State.PRESSED_T)
     }
 
     unpressed?.let {
-//        simplify(daVinCiLoop, it, "unpressed")
-//        daVinCiLoop.core.build()?.let { d ->
-//            daVinCi.core.addDrawableItem(StateItem.of(d).applyState(arrayListOf(State.STATE_PRESSED_FALSE)))
-//        }
-//        daVinCiLoop.core.clear()
         simplify(daVinCi,it,"unpressed")
-        daVinCi.core.asOneStateInStateListDrawable().states(State.STATE_PRESSED_FALSE)
+        daVinCi.core.asOneStateInStateListDrawable().states(State.PRESSED_F)
     }
 
     checkable?.let {
-//        simplify(daVinCiLoop, it, "checkable")
-//        daVinCiLoop.core.build()?.let { d ->
-//            daVinCi.core.addDrawableItem(StateItem.of(d).applyState(arrayListOf(State.STATE_CHECKABLE_TRUE)))
-//        }
-//        daVinCiLoop.core.clear()
-
         simplify(daVinCi,it,"checkable")
-        daVinCi.core.asOneStateInStateListDrawable().states(State.STATE_CHECKABLE_TRUE)
+        daVinCi.core.asOneStateInStateListDrawable().states(State.CHECKABLE_T)
     }
 
     uncheckable?.let {
-//        simplify(daVinCiLoop, it, "uncheckable")
-//        daVinCiLoop.core.build()?.let { d ->
-//            daVinCi.core.addDrawableItem(StateItem.of(d).applyState(arrayListOf(State.STATE_CHECKABLE_FALSE)))
-//        }
-//        daVinCiLoop.core.clear()
-
         simplify(daVinCi,it,"uncheckable")
-        daVinCi.core.asOneStateInStateListDrawable().states(State.STATE_CHECKABLE_FALSE)
+        daVinCi.core.asOneStateInStateListDrawable().states(State.CHECKABLE_F)
     }
 
     checked?.let {
-//        simplify(daVinCiLoop, it, "checked")
-//        daVinCiLoop.core.build()?.let { d ->
-//            daVinCi.core.addDrawableItem(StateItem.of(d).applyState(arrayListOf(State.STATE_CHECKED_TRUE)))
-//        }
-//        daVinCiLoop.core.clear()
-
         simplify(daVinCi,it,"checked")
-        daVinCi.core.asOneStateInStateListDrawable().states(State.STATE_CHECKED_TRUE)
+        daVinCi.core.asOneStateInStateListDrawable().states(State.CHECKED_T)
     }
 
     unchecked?.let {
-//        simplify(daVinCiLoop, it, "unchecked")
-//        daVinCiLoop.core.build()?.let { d ->
-//            daVinCi.core.addDrawableItem(StateItem.of(d).applyState(arrayListOf(State.STATE_CHECKABLE_FALSE)))
-//        }
-//        daVinCiLoop.core.clear()
-
         simplify(daVinCi,it,"unchecked")
-        daVinCi.core.asOneStateInStateListDrawable().states(State.STATE_CHECKABLE_FALSE)
+        daVinCi.core.asOneStateInStateListDrawable().states(State.CHECKABLE_F)
     }
 
 
