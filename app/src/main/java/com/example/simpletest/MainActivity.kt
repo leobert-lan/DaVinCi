@@ -13,21 +13,20 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-//        setContentView(R.layout.activity_main)
 
         val binding =
             DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main)
-        Log.e("lmsg", "1")
 
-        //单纯测试下是否会引起binding重复调用背景设置
-
-        binding.a = "aaa"
-        binding.executePendingBindings()
-        Log.e("lmsg", "2")
-
-        binding.a = "bbb"
-        binding.executePendingBindings()
-        Log.e("lmsg", "3")
+//        //单纯测试下：binding.executePendingBindings() 是否会引起重复调用背景设置。如果构建参数和binding无关则不会
+//        Log.e("lmsg", "1")
+//
+//        binding.a = "aaa"
+//        binding.executePendingBindings()
+//        Log.e("lmsg", "2")
+//
+//        binding.a = "bbb"
+//        binding.executePendingBindings()
+//        Log.e("lmsg", "3")
 
         DaVinCiExpression.stateColor()
             .color("#e5332c").states(State.PRESSED_T)
@@ -44,11 +43,6 @@ class MainActivity : AppCompatActivity() {
             .let {
                 binding.cb1.daVinCiColor(it)
             }
-
-
-        binding.test.getTag(R.id.i1).let {
-            Log.e("lmsg", (it ?: "null").toString())
-        }
 
 
         binding.test.setOnClickListener {
@@ -90,9 +84,8 @@ class MainActivity : AppCompatActivity() {
             """.trimIndent())
         }
 
-        binding.tvTestFactory.setOnTouchListener { v, event ->
-            v.isEnabled = !v.isEnabled
-            true
+        binding.tvTestFactory.setOnClickListener {
+            binding.tvTestFactory2.isEnabled = !binding.tvTestFactory2.isEnabled
         }
     }
 }

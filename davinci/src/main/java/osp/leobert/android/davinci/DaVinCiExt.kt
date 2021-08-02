@@ -69,13 +69,20 @@ fun TextView.daVinCiColor(expressions: DaVinCiExpression.ColorStateList) {
 }
 
 @BindingAdapter("daVinCiBgStyle")
+@Deprecated("含义不恰当", ReplaceWith("this.daVinCiStyle(styleName)"))
 fun View.daVinCiBgStyle(styleName: String) {
+    this.daVinCiStyle(styleName)
+}
+
+@BindingAdapter("daVinCiStyle")
+fun View.daVinCiStyle(styleName: String) {
     with(StyleRegistry.find(styleName)) {
 
-        this?.applyTo(daVinCi = DaVinCi.of(null, this@daVinCiBgStyle.applier()), releaseAfter = true)
+        this?.applyTo(daVinCi = DaVinCi.of(null, this@daVinCiStyle.applier()), releaseAfter = true)
             ?: Log.d(DaVinCiExpression.sLogTag, "could not found style with name $styleName")
     }
 }
+
 
 @Deprecated("nobody want to read the log", ReplaceWith(""))
 internal fun View.logTag(): String {
@@ -91,7 +98,10 @@ internal fun View.logTag(): String {
     "daVinCi_bg_checkable", "daVinCi_bg_uncheckable", "daVinCi_bg_checked", "daVinCi_bg_unchecked",
     requireAll = false
 )
-@Deprecated("在原先的设计中，仅打算使用一对属性，但是这并不符合一般性需求，往往会出现组合情况，故而该API的表意是不恰当的，很容易导致误解")
+@Deprecated("在原先的设计中，仅打算使用一对属性，但是这并不符合一般性需求，往往会出现组合情况，故而该API的表意是不恰当的，很容易导致误解。" +
+        "例如：enable_t/enable_f + checked_t/checked_f; 一般可以构建三组背景，对应 'enable_t+checked_t','enable_t+checked_f','enable_f'," +
+        "但是原始设计中并不包含这一意图。需要注意，如果直接使用StateListDrawable可以解决问题，但是会导致xml宽度很宽！" +
+        "下个版本会考虑添加最小成本的迁移方案")
 fun View.daVinCi(
     normal: DaVinCiExpression? = null,
     pressed: DaVinCiExpression? = null, unpressed: DaVinCiExpression? = null,
