@@ -1,3 +1,5 @@
+[![GitHub](https://img.shields.io/github/license/leobert-lan/DaVinCi)](https://github.com/leobert-lan/DaVinCi/blob/master/LICENSE)
+
 ## 是什么？
 在Android上取代xml方式定义 Shape/GradientDrawable 以及 ColorStateList的方案。
 
@@ -41,6 +43,16 @@ debugImplementation "io.github.leobert-lan:davinci-style-viewer:0.0.1" //预览
 
 ```
 
+最新版本：
+
+* <img src="https://img.shields.io/static/v1?label=MavenCentray&message=davinci"/> : [<img src="https://img.shields.io/maven-central/v/io.github.leobert-lan/davinci.svg?label=latest%20release"/>](https://search.maven.org/search?q=g:io.github.leobert-lan%20And%20a:davinci)
+
+* <img src="https://img.shields.io/static/v1?label=MavenCentray&message=davinci-anno"/> : [<img src="https://img.shields.io/maven-central/v/io.github.leobert-lan/davinci-anno.svg?label=latest%20release"/>](https://search.maven.org/search?q=g:io.github.leobert-lan%20And%20a:davinci-anno)
+
+* <img src="https://img.shields.io/static/v1?label=MavenCentray&message=davinci-anno-ksp"/> : [<img src="https://img.shields.io/maven-central/v/io.github.leobert-lan/davinci-anno-ksp.svg?label=latest%20release"/>](https://search.maven.org/search?q=g:io.github.leobert-lan%20And%20a:davinci-anno-ksp)
+
+* <img src="https://img.shields.io/static/v1?label=MavenCentray&message=davinci-style-viewer"/> : [<img src="https://img.shields.io/maven-central/v/io.github.leobert-lan/davinci-style-viewer.svg?label=latest%20release"/>](https://search.maven.org/search?q=g:io.github.leobert-lan%20And%20a:davinci-style-viewer)
+
 ## 具体使用方式
 
 详见：[leobert.github.io/DaVinCi](https://leobert-lan.github.io/repo/DaVinCi.html)
@@ -53,3 +65,6 @@ debugImplementation "io.github.leobert-lan:davinci-style-viewer:0.0.1" //预览
 * 实现原理解析，详见拙作：[好玩系列：拥有它，XML文件少一半--更方便的处理View背景](https://leobert-lan.github.io/Android/Drawable/post_4.html)
 * 关于注解处理器（ksp实现）以及实现的核心目标，详见拙作： [好玩系列 | 拥抱Kotlin Symbol Processing(KSP),项目实战](https://leobert-lan.github.io/Android/KSP/post_24.html)
 
+## 重大变更版本的ReleaseNote
+
+* [DaVinCi-0.0.6](./release-note/rn-davinci-0.0.6.md) 
