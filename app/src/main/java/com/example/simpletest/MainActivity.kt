@@ -36,15 +36,11 @@ class MainActivity : AppCompatActivity() {
                 binding.test.daVinCiColor(it)
             }
 
-        DaVinCiExpression.stateColor().apply(
-            state = State.PRESSED_T, color = Color.parseColor("#00aa00")
-        ).apply(
-            state = State.PRESSED_F, color = Color.parseColor("#667700")
-        ).apply(
-            state = State.CHECKED_T.name, color = "#ff0000"
-        ).apply(
-            state = State.CHECKED_F, color = "#000000"
-        )
+        DaVinCiExpression.stateColor()
+            .color(Color.parseColor("#ff0000")).states(State.PRESSED_F, State.CHECKED_T)
+            .color(Color.parseColor("#0000dd")).states(State.PRESSED_T, State.CHECKED_T)
+            .color(Color.parseColor("#ff0000")).states(State.CHECKED_T.name)
+            .color(Color.parseColor("#00aa00")).states(State.CHECKED_F)
             .let {
                 binding.cb1.daVinCiColor(it)
             }
@@ -55,7 +51,7 @@ class MainActivity : AppCompatActivity() {
         }
 
 
-        binding.test.setOnClickListener(View.OnClickListener {
+        binding.test.setOnClickListener {
             it.daVinCi(
                 normal = DaVinCiExpression.shape().oval()
                     .corner("40dp") //这个就没啥用了
@@ -63,12 +59,19 @@ class MainActivity : AppCompatActivity() {
                     .stroke(12, Color.parseColor("#26262a"))
             )
 
-        })
+        }
 
-        //这种不推荐使用啊，考虑语法解析一方面是考虑方便打印，另一方面是考虑到以后替换xml内的方案时，可以有后手
+        //这种方式不推荐使用，手写语法式很容易出错，但这是一个保留功能，日志将以此语法形式输出，
         binding.test2.setOnClickListener {
             it.daVinCiSld("""
                 sld:[ 
+                    shape:[ 
+                        gradient:[ type:linear;startColor:#ff3c08;endColor:#353538 ];
+                        st:[ Oval ];
+                        state:[ ${State.ENABLE_T.name}|${State.PRESSED_T.name} ];
+                        corners:[ 40dp ];
+                        stroke:[ width:4dp;color:#000000 ]
+                    ];
                     shape:[ 
                         gradient:[ type:linear;startColor:#ff3c08;endColor:#353538 ];
                         st:[ Oval ];

@@ -64,7 +64,7 @@ interface Applier {
             }
         }
 
-        fun View.viewBackground() = ViewComposer<View>(this).apply {
+        fun View.viewBackground() = ViewComposer(this).apply {
             this.drawableConsumer = { ViewCompat.setBackground(this@apply.view, this) }
         }
 
@@ -73,8 +73,8 @@ interface Applier {
             return this
         }
 
-        fun TextView.csl() = ViewComposer<TextView>(this).apply {
-            this.cslConsumer = { this@apply.view.setTextColor(this) }
+        fun TextView.csl() = ViewComposer(this).apply {
+            this.cslConsumer = { if (this != null) this@apply.view.setTextColor(this) }
         }
 
         fun View.applier(): Applier {

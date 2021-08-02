@@ -3,6 +3,8 @@ package osp.leobert.android.davinci
 import android.util.Log
 import android.view.View
 import android.widget.TextView
+import androidx.annotation.CheckResult
+import androidx.annotation.Nullable
 import androidx.core.view.ViewCompat
 import androidx.databinding.BindingAdapter
 import osp.leobert.android.davinci.Applier.Companion.applier
@@ -53,34 +55,17 @@ fun TextView.daVinCiColor(str: String) {
     val expressions = DaVinCiExpression.stateColor()
     daVinCi.applyCsl(expressions)
     daVinCi.release()
-
-//    expressions.injectThenParse(daVinCi)
-//    expressions.interpret()
-//
-//    daVinCi.core.buildTextColor()?.let {
-//        this.setTextColor(it)
-//    }
 }
 //endregion
 
 
 @BindingAdapter("daVinCiTextColor")
 fun TextView.daVinCiColor(expressions: DaVinCiExpression.ColorStateList) {
-    if (DaVinCi.enableDebugLog) Log.d(
-        DaVinCiExpression.sLogTag,
-        "${this.logTag()} daVinCiColor:$expressions"
-    )
+    if (DaVinCi.enableDebugLog) Log.d(DaVinCiExpression.sLogTag, "${this.logTag()} daVinCiColor:$expressions")
     val daVinCi = DaVinCi.of(null, this.csl())
 
     daVinCi.applyCsl(expressions)
     daVinCi.release()
-
-//    expressions.injectThenParse(daVinCi)
-//    expressions.interpret()
-//
-//    daVinCi.core.buildTextColor()?.let {
-//        this.setTextColor(it)
-//    }
 }
 
 @BindingAdapter("daVinCiBgStyle")
@@ -129,33 +114,33 @@ fun View.daVinCi(
     }
 
     pressed?.let {
-        simplify(daVinCi,it,"pressed")
-        daVinCi.core.asOneStateInStateListDrawable().states(State.PRESSED_T)
+        val states = simplify(daVinCi, it, "pressed").apply { add(State.PRESSED_T) }
+        daVinCi.core.asOneStateInStateListDrawable().states(states)
     }
 
     unpressed?.let {
-        simplify(daVinCi,it,"unpressed")
-        daVinCi.core.asOneStateInStateListDrawable().states(State.PRESSED_F)
+        val states = simplify(daVinCi, it, "unpressed").apply { add(State.PRESSED_F) }
+        daVinCi.core.asOneStateInStateListDrawable().states(states)
     }
 
     checkable?.let {
-        simplify(daVinCi,it,"checkable")
-        daVinCi.core.asOneStateInStateListDrawable().states(State.CHECKABLE_T)
+        val states = simplify(daVinCi, it, "checkable").apply { add(State.CHECKABLE_T) }
+        daVinCi.core.asOneStateInStateListDrawable().states(states)
     }
 
     uncheckable?.let {
-        simplify(daVinCi,it,"uncheckable")
-        daVinCi.core.asOneStateInStateListDrawable().states(State.CHECKABLE_F)
+        val states = simplify(daVinCi, it, "uncheckable").apply { add(State.CHECKABLE_F) }
+        daVinCi.core.asOneStateInStateListDrawable().states(states)
     }
 
     checked?.let {
-        simplify(daVinCi,it,"checked")
-        daVinCi.core.asOneStateInStateListDrawable().states(State.CHECKED_T)
+        val states = simplify(daVinCi, it, "checked").apply { add(State.CHECKED_T) }
+        daVinCi.core.asOneStateInStateListDrawable().states(states)
     }
 
     unchecked?.let {
-        simplify(daVinCi,it,"unchecked")
-        daVinCi.core.asOneStateInStateListDrawable().states(State.CHECKABLE_F)
+        val states = simplify(daVinCi, it, "unchecked").apply { add(State.CHECKABLE_F) }
+        daVinCi.core.asOneStateInStateListDrawable().states(states)
     }
 
 
@@ -175,11 +160,12 @@ fun View.daVinCi(
     daVinCi.release()
 }
 
+@CheckResult
 internal fun simplify(
     daVinCiLoop: DaVinCi,
     exp: DaVinCiExpression?,
     state: String,
-) {
+): MutableList<State> {
     exp?.let {
         daVinCiLoop.apply {
             currentToken = exp.startTag()
@@ -189,5 +175,12 @@ internal fun simplify(
 
         exp.injectThenParse(daVinCiLoop)
         exp.interpret()
+
+        return if (exp is DaVinCiExpression.Shape) {
+            exp.exps().dState?.states?.toCollection(arrayListOf()) ?: arrayListOf()
+        } else {
+            arrayListOf()
+        }
     }
+    return arrayListOf()
 }

@@ -73,7 +73,7 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
     open class CommandExpression(daVinCi: DaVinCi? = null, val manual: Boolean = false) : DaVinCiExpression(daVinCi) {
 
         companion object {
-            const val state_separator = ","
+            const val state_separator = "|"
         }
 
         private var expressions: DaVinCiExpression? = null
@@ -234,14 +234,14 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
         fun appendState(vararg states: State) {
             val dState = dState ?: DState(daVinCi)
             dState.states.addAll(states) //ignore all check！
-            dState.text = dState.states.joinToString("|")
+            dState.text = dState.states.joinToString(CommandExpression.state_separator)
             this.dState = dState
         }
 
         fun appendState1(states: Array<out State>) {
             val dState = dState ?: DState(daVinCi)
             dState.states.addAll(states) //ignore all check！
-            dState.text = dState.states.joinToString("|")
+            dState.text = dState.states.joinToString(CommandExpression.state_separator)
             this.dState = dState
         }
 
@@ -458,6 +458,7 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
         }
 
         //region apis
+        @Deprecated("为了迁移旧版本正确性的保留API，不建议常规使用", replaceWith = ReplaceWith("ShapeListExpression"))
         fun appendState(vararg states: State): Shape {
             val exp: ListExpression = exps()
             exp.appendState1(states)
@@ -1346,6 +1347,7 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
 
         companion object {
             const val tag = "state:["
+            private val state_separator = CommandExpression.state_separator
         }
 
         init {
@@ -1385,7 +1387,7 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
         }
 
         override fun toString(): String {
-            return "$tag ${if (parseFromText) text else states.joinToString("|")} $END"
+            return "$tag ${if (parseFromText) text else states.joinToString(state_separator)} $END"
         }
     }
 
@@ -1592,7 +1594,7 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
             exp.exps().dState = DState(manual = true).apply {
                 parseFromText = false
                 this.states.addAll(states)
-                this.text = states.joinToString("|")
+                this.text = states.joinToString(CommandExpression.state_separator)
             }
 
             host.exps().append(exp)
@@ -1606,7 +1608,7 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
             val exp = requireNotNull(exp)
             exp.exps().dState = DState(manual = true).apply {
                 parseFromText = true
-                this.text = states.joinToString("|")
+                this.text = states.joinToString(CommandExpression.state_separator)
             }
 
             host.exps().append(exp)
@@ -1670,7 +1672,7 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
         private fun strColor(): String? {
             return when (colorTag) {
                 1 -> color
-                2 -> String.format("%8x", colorInt)
+                2 -> "#"+String.format("%8x", colorInt)
                 else -> null
             }
         }
@@ -1680,7 +1682,7 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
             StatedColor(
                 manual = true
             ).apply {
-                if (this@CslSyntactic.colorTag == 1)
+                if (this@CslSyntactic.colorTag == 2)
                     this.colorInt = this@CslSyntactic.colorInt
                 this.states.addAll(states)
                 parseFromText = (this@CslSyntactic.colorTag == 1)
@@ -1702,6 +1704,7 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
             ).apply {
                 if (this@CslSyntactic.colorTag == 2)
                     this.colorInt = this@CslSyntactic.colorInt
+
                 text =
                     "${StatedColor.prop_state}${states.joinToString(StatedColor.separator)};${StatedColor.prop_color}${this@CslSyntactic.strColor()}"
 
