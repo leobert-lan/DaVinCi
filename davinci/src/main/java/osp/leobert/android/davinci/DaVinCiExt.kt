@@ -4,7 +4,6 @@ import android.util.Log
 import android.view.View
 import android.widget.TextView
 import androidx.annotation.CheckResult
-import androidx.annotation.Nullable
 import androidx.core.view.ViewCompat
 import androidx.databinding.BindingAdapter
 import osp.leobert.android.davinci.Applier.Companion.applier
@@ -21,7 +20,7 @@ import osp.leobert.android.davinci.Applier.Companion.viewBackground
 //region 利用符合语法的String设置相关内容
 
 fun View.daVinCiSld(str: String) {
-    if (DaVinCi.enableDebugLog) Log.d(DaVinCiExpression.sLogTag, "${this.logTag()} daVinCi:$str")
+    if (DaVinCi.enableDebugLog) Log.d(DaVinCiExpression.sLogTag, "daVinCi:$str")
 
     val daVinCi = DaVinCi.of(str, this.applier())
     val expressions = DaVinCiExpression.StateListDrawable()
@@ -36,7 +35,7 @@ fun View.daVinCi(str: String) {
 }
 
 fun View.daVinCiShape(str: String) {
-    if (DaVinCi.enableDebugLog) Log.d(DaVinCiExpression.sLogTag, "${this.logTag()} daVinCi:$str")
+    if (DaVinCi.enableDebugLog) Log.d(DaVinCiExpression.sLogTag, "daVinCi:$str")
 
     val daVinCi = DaVinCi.of(str, this.applier())
 
@@ -49,7 +48,7 @@ fun View.daVinCiShape(str: String) {
 }
 
 fun TextView.daVinCiColor(str: String) {
-    if (DaVinCi.enableDebugLog) Log.d(DaVinCiExpression.sLogTag, "${this.logTag()} daVinCiColor:$str")
+    if (DaVinCi.enableDebugLog) Log.d(DaVinCiExpression.sLogTag, "daVinCiColor:$str")
     val daVinCi = DaVinCi.of(str, this.csl())
 
     val expressions = DaVinCiExpression.stateColor()
@@ -61,7 +60,7 @@ fun TextView.daVinCiColor(str: String) {
 
 @BindingAdapter("daVinCiTextColor")
 fun TextView.daVinCiColor(expressions: DaVinCiExpression.ColorStateList) {
-    if (DaVinCi.enableDebugLog) Log.d(DaVinCiExpression.sLogTag, "${this.logTag()} daVinCiColor:$expressions")
+    if (DaVinCi.enableDebugLog) Log.d(DaVinCiExpression.sLogTag, "daVinCiColor:$expressions")
     val daVinCi = DaVinCi.of(null, this.csl())
 
     daVinCi.applyCsl(expressions)
@@ -81,12 +80,6 @@ fun View.daVinCiStyle(styleName: String) {
         this?.applyTo(daVinCi = DaVinCi.of(null, this@daVinCiStyle.applier()), releaseAfter = true)
             ?: Log.d(DaVinCiExpression.sLogTag, "could not found style with name $styleName")
     }
-}
-
-
-@Deprecated("nobody want to read the log", ReplaceWith(""))
-internal fun View.logTag(): String {
-    return this.getTag(R.id.log_tag)?.run { "{${toString()}}:" } ?: this.toString()
 }
 
 /**
@@ -116,7 +109,7 @@ fun View.daVinCi(
         }
         if (DaVinCi.enableDebugLog) Log.d(
             DaVinCiExpression.sLogTag,
-            "${this.logTag()} daVinCi normal:$normal"
+            "daVinCi normal:$normal"
         )
 
         normal.injectThenParse(daVinCi)
