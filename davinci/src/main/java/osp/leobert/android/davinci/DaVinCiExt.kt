@@ -1,5 +1,9 @@
 package osp.leobert.android.davinci
 
+/*
+ * Created by leobert on 2021/5/31.
+ */
+
 import android.util.Log
 import android.view.View
 import android.widget.TextView
@@ -10,12 +14,25 @@ import osp.leobert.android.davinci.Applier.Companion.applier
 import osp.leobert.android.davinci.Applier.Companion.csl
 import osp.leobert.android.davinci.Applier.Companion.viewBackground
 
-/**
- * <p><b>Package:</b> osp.leobert.android.davinci </p>
- * <p><b>Project:</b> DaVinCi </p>
- * <p><b>Classname:</b> DaVinCiExt </p>
- * Created by leobert on 2021/5/31.
- */
+
+///////////////////////////////////////////////////////////////////////////
+// deprecated and removed
+///////////////////////////////////////////////////////////////////////////
+
+//region deprecated
+
+//@Deprecated("", ReplaceWith("this.daVinCiShape(str)"))
+//fun View.daVinCi(str: String) {
+//    this.daVinCiShape(str)
+//}
+
+//@BindingAdapter("daVinCiBgStyle")
+//@Deprecated("含义不恰当", ReplaceWith("this.daVinCiStyle(styleName)"))
+//fun View.daVinCiBgStyle(styleName: String) {
+//    this.daVinCiStyle(styleName)
+//}
+
+//endregion deprecated
 
 //region 利用符合语法的String设置相关内容
 
@@ -29,10 +46,7 @@ fun View.daVinCiSld(str: String) {
     daVinCi.release()
 }
 
-@Deprecated("", ReplaceWith("this.daVinCiShape(str)"))
-fun View.daVinCi(str: String) {
-    this.daVinCiShape(str)
-}
+
 
 fun View.daVinCiShape(str: String) {
     if (DaVinCi.enableDebugLog) Log.d(DaVinCiExpression.sLogTag, "daVinCi:$str")
@@ -67,10 +81,12 @@ fun TextView.daVinCiColor(expressions: DaVinCiExpression.ColorStateList) {
     daVinCi.release()
 }
 
-@BindingAdapter("daVinCiBgStyle")
-@Deprecated("含义不恰当", ReplaceWith("this.daVinCiStyle(styleName)"))
-fun View.daVinCiBgStyle(styleName: String) {
-    this.daVinCiStyle(styleName)
+fun View.daVinCiShape(expressions: DaVinCiExpression.StateListDrawable) {
+    if (DaVinCi.enableDebugLog) Log.d(DaVinCiExpression.sLogTag, "daVinCiShape:$expressions")
+    val daVinCi = DaVinCi.of(null, this.applier())
+
+    daVinCi.applySld(expressions)
+    daVinCi.release()
 }
 
 @BindingAdapter("daVinCiStyle")

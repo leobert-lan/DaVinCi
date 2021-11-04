@@ -9,7 +9,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.Observable
 import osp.leobert.android.davinci.annotation.PreviewConfig
 import osp.leobert.android.davinci.annotation.StyleViewer
-import osp.leobert.android.davinci.daVinCiBgStyle
+import osp.leobert.android.davinci.daVinCiStyle
 import osp.leobert.android.davinci.viewer.R
 import osp.leobert.android.davinci.viewer.databinding.AppVhStyleBinding
 import osp.leobert.androidkt.pandora.rv.*
@@ -81,7 +81,7 @@ class StyleVH(val binding: AppVhStyleBinding) :
         mData = data
         binding.vo = data
 
-        binding.sample.daVinCiBgStyle(data.name)
+        binding.sample.daVinCiStyle(data.name)
 
         binding.sample.isEnabled = data.sampleEnabled
         binding.sample.isChecked = data.sampleChecked
