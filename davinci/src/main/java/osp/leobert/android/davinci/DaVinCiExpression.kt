@@ -4,10 +4,13 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
 import android.util.Log
+import android.util.SparseArray
+import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.ColorInt
 import androidx.annotation.Px
 import androidx.core.content.ContextCompat
+import osp.leobert.android.davinci.Applier.Companion.viewBackground
 import java.util.*
 
 @Suppress("WeakerAccess", "unused")
@@ -23,6 +26,14 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
 
     // 文本内容
     protected var text: String? = null
+        set(value) {
+            field = value
+            onTextContentSet(value)
+        }
+
+    protected open fun onTextContentSet(text: String?) {
+
+    }
 
     //实际属性是否需要从text解析，手动创建并给了专有属性的，设为false，就不会被覆盖了
     protected var parseFromText = true
@@ -36,6 +47,11 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
     abstract fun interpret()
 
     open fun startTag(): String = ""
+
+
+    protected open fun containsState(dState: DState): Boolean {
+        return false
+    }
 
     companion object {
 
@@ -233,15 +249,13 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
 
         fun appendState(vararg states: State) {
             val dState = dState ?: DState(daVinCi)
-            dState.states.addAll(states) //ignore all check！
-            dState.text = dState.states.joinToString(CommandExpression.state_separator)
+            dState.appendStates(states)
             this.dState = dState
         }
 
         fun appendState1(states: Array<out State>) {
             val dState = dState ?: DState(daVinCi)
-            dState.states.addAll(states) //ignore all check！
-            dState.text = dState.states.joinToString(CommandExpression.state_separator)
+            dState.appendStates(states)
             this.dState = dState
         }
 
@@ -270,8 +284,10 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
                         it.next()
                     } else if (it.equalsWithCommand(DState.tag)) {
                         if (dState != null) {
-                            if (DaVinCi.enableDebugLog) Log.d(sLogTag,
-                                "only one state expression is permitted in one group, will override old one $dState")
+                            if (DaVinCi.enableDebugLog) Log.d(
+                                sLogTag,
+                                "only one state expression is permitted in one group, will override old one $dState"
+                            )
                         }
                         dState = DState(it)
 
@@ -315,6 +331,10 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
                 i++
             }
         }
+
+        override fun containsState(dState: DState): Boolean {
+            return (this.dState?.statesHash ?: 0) == dState.statesHash
+        }
     }
     //endregion
 
@@ -324,12 +344,11 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
         private var expressions: ShapeListExpression? = null
         override fun startTag(): String = tag
 
-        internal fun exps(): ShapeListExpression = expressions ?: ShapeListExpression(daVinCi, manual).apply {
+        internal fun shapeListExpression(): ShapeListExpression = expressions ?: ShapeListExpression(daVinCi, manual).apply {
             expressions = this
         }
 
         fun shape(exp: Shape): SldSyntactic {
-            // TODO: 2021/7/30 should be passed if it is't a manual parsed exp?
             return SldSyntactic.of(this, exp)
         }
 
@@ -346,7 +365,7 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
         override fun interpret() {
             daVinCi?.let {
                 if (manual) {
-                    this.expressions = exps().apply {
+                    this.expressions = shapeListExpression().apply {
                         this.injectThenParse(it)
                         this.interpret()
                     }
@@ -358,7 +377,7 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
                 } else {
                     //解析型
                     it.next()
-                    this.expressions = exps().apply {
+                    this.expressions = shapeListExpression().apply {
                         this.injectThenParse(it)
                         this.interpret()
                     }
@@ -369,6 +388,13 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
         override fun toString(): String {
             return "$tag $expressions $END"
         }
+
+        fun applyInto(view: View) {
+            val daVinCi = DaVinCi.of(null, view.viewBackground())
+            injectThenParse(daVinCi)
+            interpret()
+            daVinCi.release()
+        }
     }
     //endregion
 
@@ -378,6 +404,14 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
         private val list: ArrayList<DaVinCiExpression> = ArrayList()
 
         fun append(exp: DaVinCiExpression) {
+            list.add(exp)
+        }
+
+
+        fun setExpression(dState: DState, exp: DaVinCiExpression) {
+            list.removeAll {
+                it.containsState(dState)
+            }
             list.add(exp)
         }
 
@@ -392,8 +426,11 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
             // 在ListExpression解析表达式中,循环解释语句中的每一个单词,直到终结符表达式或者异常情况退出
             daVinCi?.let {
                 var i = 0
-                while (i < 100) { // true,语法错误时有点可怕，先上限100
-                    if (it.currentToken == null) { // 获取当前节点如果为 null 则表示缺少]表达式
+                while (i < 100) {
+                    // true,语法错误时有点可怕，先上限100
+
+                    if (it.currentToken == null) {
+                        // 获取当前节点如果为 null 则表示缺少]表达式
                         println("Error: The Expression Missing ']'! ")
                         break
                     } else if (it.equalsWithCommand(END)) {
@@ -447,13 +484,14 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
         }
     }
 
+
     //region Shape
     class Shape internal constructor(private val manual: Boolean = false) : DaVinCiExpression(null) {
 
         private var expressions: ListExpression? = null
         override fun startTag(): String = tag
 
-        internal fun exps(): ListExpression {
+        internal fun listExpression(): ListExpression {
             return expressions ?: ListExpression(daVinCi, manual).apply {
                 expressions = this
             }
@@ -462,7 +500,7 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
         //region apis
         @Deprecated("为了迁移旧版本正确性的保留API，不建议常规使用", replaceWith = ReplaceWith("ShapeListExpression"))
         fun appendState(vararg states: State): Shape {
-            val exp: ListExpression = exps()
+            val exp: ListExpression = listExpression()
             exp.appendState1(states)
             return this
         }
@@ -470,7 +508,7 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
         fun type(str: String): Shape {
             ShapeType(manual = true).apply {
                 this.text = str
-                exps().append(this)
+                listExpression().append(this)
             }
             return this
         }
@@ -479,7 +517,7 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
             ShapeType(manual = true).apply {
                 this.text = ShapeType.Rectangle
                 parseFromText = false
-                exps().append(this)
+                listExpression().append(this)
             }
             return this
         }
@@ -488,7 +526,7 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
             ShapeType(manual = true).apply {
                 this.text = ShapeType.Oval
                 parseFromText = false
-                exps().append(this)
+                listExpression().append(this)
             }
             return this
         }
@@ -497,7 +535,7 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
             ShapeType(manual = true).apply {
                 this.text = ShapeType.Ring
                 parseFromText = false
-                exps().append(this)
+                listExpression().append(this)
             }
             return this
         }
@@ -506,7 +544,7 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
             ShapeType(manual = true).apply {
                 this.text = ShapeType.Line
                 parseFromText = false
-                exps().append(this)
+                listExpression().append(this)
             }
             return this
         }
@@ -516,7 +554,7 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
             Corners(manual = true).apply {
                 this.conners = arrayListOf(r, r, r, r)
                 parseFromText = false
-                exps().append(this)
+                listExpression().append(this)
             }
             return this
         }
@@ -525,7 +563,7 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
             Corners(manual = true).apply {
                 this.text = str
                 parseFromText = true
-                exps().append(this)
+                listExpression().append(this)
             }
             return this
         }
@@ -534,7 +572,7 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
             Corners(manual = true).apply {
                 this.conners = arrayListOf(lt, rt, rb, lb)
                 parseFromText = false
-                exps().append(this)
+                listExpression().append(this)
             }
             return this
         }
@@ -543,7 +581,7 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
         fun solid(str: String): Shape {
             Solid(manual = true).apply {
                 text = str
-                exps().append(this)
+                listExpression().append(this)
             }
             return this
         }
@@ -553,7 +591,7 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
                 text = "#" + String.format("%8x", color)
                 this.colorInt = color
                 parseFromText = false
-                exps().append(this)
+                listExpression().append(this)
             }
             return this
         }
@@ -563,7 +601,7 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
         fun stroke(width: String, color: String): Shape {
             Stroke(manual = true).apply {
                 text = Stroke.prop_width + width + ";" + Stroke.prop_color + color
-                exps().append(this)
+                listExpression().append(this)
             }
             return this
         }
@@ -572,7 +610,7 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
             Stroke(manual = true).apply {
                 text =
                     "${Stroke.prop_width}$width;${Stroke.prop_color}$color;${Stroke.prop_dash_gap}$dashGap;${Stroke.prop_dash_width}$dashWidth"
-                exps().append(this)
+                listExpression().append(this)
             }
             return this
         }
@@ -586,7 +624,7 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
                     "%8x",
                     colorInt
                 )
-                exps().append(this)
+                listExpression().append(this)
             }
             return this
         }
@@ -618,7 +656,7 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
 
                 parseFromText = false
                 //犯懒了，不想手拼了
-                exps().append(this)
+                listExpression().append(this)
             }
             return this
         }
@@ -648,7 +686,7 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
                         centerX.run { ";${Gradient.prop_center_x}$this" } +
                         centerY.run { ";${Gradient.prop_center_y}$this" } +
                         angle.run { ";${Gradient.prop_angle}$this" }
-                exps().append(this)
+                listExpression().append(this)
             }
             return this
         }
@@ -668,7 +706,7 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
         override fun interpret() {
             daVinCi?.let {
                 if (manual) {
-                    this.expressions = exps().apply {
+                    this.expressions = listExpression().apply {
                         this.injectThenParse(it)
                         this.interpret()
                     }
@@ -680,7 +718,7 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
                 } else {
                     //解析型
                     it.next()
-                    this.expressions = exps().apply {
+                    this.expressions = listExpression().apply {
                         this.injectThenParse(it)
                         this.interpret()
                     }
@@ -1345,11 +1383,29 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
     //region state
     class DState(daVinCi: DaVinCi? = null, manual: Boolean = false) : CommandExpression(daVinCi, manual) {
 
-        val states: MutableList<State> by lazy { arrayListOf() }
+        private val states: MutableSet<State> by lazy { linkedSetOf() }
+
+        //caution: 可能尚未解析出实质的State,务必注意
+        var statesHash: Int = states.hashCode()
+            private set
+
+
+        fun appendStates(states: Array<out State>) {
+            //ignore all check！
+            this.states.addAll(states)
+            text = states.joinToString(CommandExpression.state_separator)
+        }
+
+        override fun onTextContentSet(text: String?) {
+            super.onTextContentSet(text)
+            //state hash
+            statesHash = text?.split(CommandExpression.state_separator)?.sorted()?.hashCode() ?: 0
+        }
+
 
         companion object {
             const val tag = "state:["
-            private val state_separator = CommandExpression.state_separator
+            private const val state_separator = CommandExpression.state_separator
         }
 
         init {
@@ -1390,6 +1446,10 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
 
         override fun toString(): String {
             return "$tag ${if (parseFromText) text else states.joinToString(state_separator)} $END"
+        }
+
+        fun collect(): MutableList<State> {
+            return states.toCollection(arrayListOf())
         }
     }
 
@@ -1593,13 +1653,15 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
 
             val host = requireNotNull(host)
             val exp = requireNotNull(exp)
-            exp.exps().dState = DState(manual = true).apply {
+            val dState = DState(manual = true).apply {
                 parseFromText = false
-                this.states.addAll(states)
-                this.text = states.joinToString(CommandExpression.state_separator)
+                this.appendStates(states)
             }
 
-            host.exps().append(exp)
+            exp.listExpression().dState = dState
+
+            host.shapeListExpression().setExpression(dState, exp)
+//            host.shapeListExpression().append(exp)
 
             DPools.sldSyntacticPool.release(this)
             return host
@@ -1608,12 +1670,12 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
         override fun states(vararg states: String): StateListDrawable {
             val host = requireNotNull(host)
             val exp = requireNotNull(exp)
-            exp.exps().dState = DState(manual = true).apply {
+            exp.listExpression().dState = DState(manual = true).apply {
                 parseFromText = true
                 this.text = states.joinToString(CommandExpression.state_separator)
             }
 
-            host.exps().append(exp)
+            host.shapeListExpression().append(exp)
 
             DPools.sldSyntacticPool.release(this)
             return host
@@ -1674,7 +1736,7 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
         private fun strColor(): String? {
             return when (colorTag) {
                 1 -> color
-                2 -> "#"+String.format("%8x", colorInt)
+                2 -> "#" + String.format("%8x", colorInt)
                 else -> null
             }
         }

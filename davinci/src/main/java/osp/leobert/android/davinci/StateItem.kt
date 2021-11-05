@@ -25,7 +25,7 @@ sealed class StateItem<T:StateItem<T>> {
 
     private val states: ArrayList<State> = arrayListOf()
 
-    fun applyState(states: List<State>): T {
+    fun applyState(states: Collection<State>): T {
         for (state in states) {
             this.states.takeUnless { it.contains(state) }?.add(state)
         }

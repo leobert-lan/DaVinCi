@@ -13,7 +13,7 @@ class DaVinCi private constructor() {
     companion object {
         var enableDebugLog = true
 
-        private inline fun <reified R> Any?.takeIfInstance(): R? {
+        internal inline fun <reified R> Any?.takeIfInstance(): R? {
             if (this is R) return this
             return null
         }

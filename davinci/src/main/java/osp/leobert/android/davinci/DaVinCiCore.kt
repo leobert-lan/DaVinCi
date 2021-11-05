@@ -564,7 +564,7 @@ class DaVinCiCore {
             return host
         }
 
-        fun states(states: List<State>): DaVinCiCore {
+        fun states(states: Collection<State>): DaVinCiCore {
             val host = requireNotNull(host)
             host.buildSimpleDrawable().let {
                 host.clearSimpleDrawable()

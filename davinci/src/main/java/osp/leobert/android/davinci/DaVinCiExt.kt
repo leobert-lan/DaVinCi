@@ -13,6 +13,7 @@ import androidx.databinding.BindingAdapter
 import osp.leobert.android.davinci.Applier.Companion.applier
 import osp.leobert.android.davinci.Applier.Companion.csl
 import osp.leobert.android.davinci.Applier.Companion.viewBackground
+import osp.leobert.android.davinci.DaVinCi.Companion.takeIfInstance
 
 
 ///////////////////////////////////////////////////////////////////////////
@@ -45,7 +46,6 @@ fun View.daVinCiSld(str: String) {
     daVinCi.applySld(expressions)
     daVinCi.release()
 }
-
 
 
 fun View.daVinCiShape(str: String) {
@@ -98,6 +98,22 @@ fun View.daVinCiStyle(styleName: String) {
     }
 }
 
+//@BindingAdapter("daVinCi_bg")
+//fun View.daVinCiBg(normal: DaVinCiExpression.Shape) {
+//    val stateListDrawable = this.getTag(R.id.davinci_sld)?.takeIfInstance<DaVinCiExpression.StateListDrawable>()
+//        ?: DaVinCiExpression.stateListDrawable().apply {
+//            setTag(R.id.davinci_sld, this)
+//        }
+//    val daVinCi = DaVinCi.of(null, this.viewBackground())
+//
+//    stateListDrawable.shape(normal).states(State.ENABLE_T, State.ENABLE_F)
+//        .injectThenParse(daVinCi)
+//    stateListDrawable.interpret()
+//    daVinCi.release()
+//
+//}
+
+
 /**
  * 2021/8/2 在原先的设计中，仅打算使用一对属性，但是这并不符合一般性需求，往往会出现组合情况，故而该API的表意是不恰当的，很容易导致误解,
  * 但是拆解开来作为多组API也会对原先的使用者造成影响（BindingAdapter的制约），
@@ -107,10 +123,12 @@ fun View.daVinCiStyle(styleName: String) {
     "daVinCi_bg_checkable", "daVinCi_bg_uncheckable", "daVinCi_bg_checked", "daVinCi_bg_unchecked",
     requireAll = false
 )
-@Deprecated("在原先的设计中，仅打算使用一对属性，但是这并不符合一般性需求，往往会出现组合情况，故而该API的表意是不恰当的，很容易导致误解。" +
-        "例如：enable_t/enable_f + checked_t/checked_f; 一般可以构建三组背景，对应 'enable_t+checked_t','enable_t+checked_f','enable_f'," +
-        "但是原始设计中并不包含这一意图。需要注意，如果直接使用StateListDrawable可以解决问题，但是会导致xml宽度很宽！" +
-        "下个版本会考虑添加最小成本的迁移方案")
+@Deprecated(
+    "在原先的设计中，仅打算使用一对属性，但是这并不符合一般性需求，往往会出现组合情况，故而该API的表意是不恰当的，很容易导致误解。" +
+            "例如：enable_t/enable_f + checked_t/checked_f; 一般可以构建三组背景，对应 'enable_t+checked_t','enable_t+checked_f','enable_f'," +
+            "但是原始设计中并不包含这一意图。需要注意，如果直接使用StateListDrawable可以解决问题，但是会导致xml宽度很宽！" +
+            "下个版本会考虑添加最小成本的迁移方案"
+)
 fun View.daVinCi(
     normal: DaVinCiExpression? = null,
     pressed: DaVinCiExpression? = null, unpressed: DaVinCiExpression? = null,
@@ -196,7 +214,7 @@ internal fun simplify(
         exp.interpret()
 
         return if (exp is DaVinCiExpression.Shape) {
-            exp.exps().dState?.states?.toCollection(arrayListOf()) ?: arrayListOf()
+            exp.listExpression().dState?.collect() ?: arrayListOf()
         } else {
             arrayListOf()
         }
