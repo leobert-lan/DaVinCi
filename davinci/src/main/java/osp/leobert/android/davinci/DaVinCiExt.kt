@@ -235,6 +235,7 @@ fun View.daVinCi(
 }
 
 @CheckResult
+@Deprecated("不建议使用")
 internal fun simplify(
     daVinCiLoop: DaVinCi,
     exp: DaVinCiExpression?,
