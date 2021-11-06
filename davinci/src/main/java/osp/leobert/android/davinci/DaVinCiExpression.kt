@@ -73,6 +73,9 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
             append(stateColor)
         }
 
+        @JvmStatic
+        fun stateArray(vararg state: State) = state
+
 
         const val sLogTag = "DaVinCi"
 
@@ -391,8 +394,7 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
 
         fun applyInto(view: View) {
             val daVinCi = DaVinCi.of(null, view.viewBackground())
-            injectThenParse(daVinCi)
-            interpret()
+            daVinCi.applySld(this)
             daVinCi.release()
         }
     }
@@ -1386,7 +1388,7 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
         private val states: MutableSet<State> by lazy { linkedSetOf() }
 
         //caution: 可能尚未解析出实质的State,务必注意
-        var statesHash: Int = states.hashCode()
+        var statesHash: Int = 0
             private set
 
 
@@ -1400,6 +1402,7 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
             super.onTextContentSet(text)
             //state hash
             statesHash = text?.split(CommandExpression.state_separator)?.sorted()?.hashCode() ?: 0
+            Log.e("lmsg","set stateHash:$statesHash")
         }
 
 
@@ -1670,12 +1673,14 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
         override fun states(vararg states: String): StateListDrawable {
             val host = requireNotNull(host)
             val exp = requireNotNull(exp)
-            exp.listExpression().dState = DState(manual = true).apply {
+            val dState = DState(manual = true).apply {
                 parseFromText = true
                 this.text = states.joinToString(CommandExpression.state_separator)
             }
+            exp.listExpression().dState = dState
 
-            host.shapeListExpression().append(exp)
+            host.shapeListExpression().setExpression(dState, exp)
+//            host.shapeListExpression().append(exp)
 
             DPools.sldSyntacticPool.release(this)
             return host
@@ -1777,8 +1782,6 @@ sealed class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
             DPools.cslSyntacticPool.release(this)
             return host
         }
-
-
     }
 
 

@@ -17,10 +17,10 @@ class DemoStyleFactory : StyleRegistry.Style.Factory() {
 
     override fun apply(style: StyleRegistry.Style) {
         style.register(
-            state = State.STATE_ENABLE_FALSE,
+            state = State.ENABLE_F,
             expression = DaVinCiExpression.shape().rectAngle().solid("#80ff3c08").corner("10dp")
         ).register(
-            state = State.STATE_ENABLE_TRUE,
+            state = State.ENABLE_T,
             expression = DaVinCiExpression.shape().rectAngle().corner("10dp")
                 .gradient("#ff3c08", "#ff653c", 0)
         )

@@ -72,11 +72,6 @@ class DaVinCi private constructor() {
         applier = (view.takeIfInstance<TextView>()?.csl()?.viewBackground()) ?: view.viewBackground()
     }
 
-//    constructor(text: String?, applier: Applier?) : this() {
-//        stringTokenizer = StringTokenizer(text ?: "")
-//        this.applier = applier
-//    }
-
     fun applySld(exp: DaVinCiExpression.StateListDrawable) {
         if (enableDebugLog && exp.manual) //手动创建的结构
             Log.d(DaVinCiExpression.sLogTag, "manual created,daVinCi sld:$exp")

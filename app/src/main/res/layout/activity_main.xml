@@ -6,7 +6,7 @@
 
         <import type="osp.leobert.android.davinci.DaVinCiExpression" />
 
-        <!--                <import type="com.example.simpletest." />-->
+        <import type="osp.leobert.android.davinci.State" />
 
     </data>
 
@@ -34,6 +34,27 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/demo1" />
+
+                <CheckBox
+                    daVinCi_bg1="@{DaVinCiExpression.shape().corner(60).solid(`@i1`).stroke(`4dp`,`@i2`)}"
+                    states1="@{State.array(State.CHECKED_T)}"
+                    daVinCi_bg2="@{DaVinCiExpression.shape().corner(60).solid(`@i2`).stroke(`4dp`,`@i1`)}"
+                    states2="@{State.array(State.CHECKED_F,State.ENABLE_T)}"
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center"
+                    android:text="new DataBinding Feature">
+
+                    <tag
+                        android:id="@id/i1"
+                        android:value="@color/colorPrimaryDark" />
+
+                    <tag
+                        android:id="@id/i2"
+                        android:value="@color/colorAccent" />
+
+                </CheckBox>
 
                 <TextView
                     android:id="@+id/test"
@@ -205,9 +226,9 @@
                     android:gravity="center"
                     android:text="@string/sample">
 
-                    <tag
-                        android:id="@id/log_tag"
-                        android:value="测试log tag" />
+                    <!--                    <tag-->
+                    <!--                        android:id="@id/log_tag"-->
+                    <!--                        android:value="测试log tag" />-->
 
                     <tag
                         android:id="@id/i1"

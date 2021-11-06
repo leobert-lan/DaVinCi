@@ -98,20 +98,57 @@ fun View.daVinCiStyle(styleName: String) {
     }
 }
 
-//@BindingAdapter("daVinCi_bg")
-//fun View.daVinCiBg(normal: DaVinCiExpression.Shape) {
-//    val stateListDrawable = this.getTag(R.id.davinci_sld)?.takeIfInstance<DaVinCiExpression.StateListDrawable>()
-//        ?: DaVinCiExpression.stateListDrawable().apply {
-//            setTag(R.id.davinci_sld, this)
-//        }
-//    val daVinCi = DaVinCi.of(null, this.viewBackground())
-//
-//    stateListDrawable.shape(normal).states(State.ENABLE_T, State.ENABLE_F)
-//        .injectThenParse(daVinCi)
-//    stateListDrawable.interpret()
-//    daVinCi.release()
-//
-//}
+@BindingAdapter("daVinCi_bg1", "states1", requireAll = true)
+fun View.daVinCiBg1(exp: DaVinCiExpression.Shape, states: Array<State>) {
+    this.helpXmlDaVinCiBg(exp, *states)
+}
+
+@BindingAdapter("daVinCi_bg2", "states2", requireAll = true)
+fun View.daVinCiBg2(exp: DaVinCiExpression.Shape, states: Array<State>) {
+    this.helpXmlDaVinCiBg(exp, *states)
+
+}
+
+@BindingAdapter("daVinCi_bg3", "states3", requireAll = true)
+fun View.daVinCiBg3(exp: DaVinCiExpression.Shape, states: Array<State>) {
+    this.helpXmlDaVinCiBg(exp, *states)
+}
+
+@BindingAdapter("daVinCi_bg4", "states4", requireAll = true)
+fun View.daVinCiBg4(exp: DaVinCiExpression.Shape, states: Array<State>) {
+    this.helpXmlDaVinCiBg(exp, *states)
+
+}
+
+@BindingAdapter("daVinCi_bg5", "states5", requireAll = true)
+fun View.daVinCiBg5(exp: DaVinCiExpression.Shape, states: Array<State>) {
+    this.helpXmlDaVinCiBg(exp, *states)
+}
+
+@BindingAdapter("daVinCi_bg6", "states6", requireAll = true)
+fun View.daVinCiBg6(exp: DaVinCiExpression.Shape, states: Array<State>) {
+    this.helpXmlDaVinCiBg(exp, *states)
+
+}
+
+@BindingAdapter("daVinCi_bg7", "states7", requireAll = true)
+fun View.daVinCiBg7(exp: DaVinCiExpression.Shape, states: Array<State>) {
+    this.helpXmlDaVinCiBg(exp, *states)
+
+}
+
+@BindingAdapter("daVinCi_bg8", "states8", requireAll = true)
+fun View.daVinCiBg8(exp: DaVinCiExpression.Shape, states: Array<State>) {
+    this.helpXmlDaVinCiBg(exp, *states)
+}
+
+private fun View.helpXmlDaVinCiBg(exp: DaVinCiExpression.Shape, vararg states: State) {
+    val stateListDrawable = this.getTag(R.id.davinci_sld)?.takeIfInstance<DaVinCiExpression.StateListDrawable>()
+        ?: DaVinCiExpression.stateListDrawable().apply {
+            this@helpXmlDaVinCiBg.setTag(R.id.davinci_sld, this)
+        }
+    stateListDrawable.shape(exp).states(*states).applyInto(this)
+}
 
 
 /**

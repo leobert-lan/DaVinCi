@@ -2,35 +2,42 @@ package osp.leobert.android.davinci
 
 enum class State(val attr: Int) {
 
-    @Deprecated("too long",replaceWith = ReplaceWith("CHECKABLE_T"))
-    STATE_CHECKABLE_TRUE(android.R.attr.state_checkable),
-    @Deprecated("too long",replaceWith = ReplaceWith("CHECKABLE_F"))
-    STATE_CHECKABLE_FALSE(-android.R.attr.state_checkable),
-
-    @Deprecated("too long",replaceWith = ReplaceWith("CHECKED_T"))
-    STATE_CHECKED_TRUE(android.R.attr.state_checked),
-    @Deprecated("too long",replaceWith = ReplaceWith("CHECKED_F"))
-    STATE_CHECKED_FALSE(-android.R.attr.state_checked),
-
-    @Deprecated("too long",replaceWith = ReplaceWith("ENABLE_T"))
-    STATE_ENABLE_TRUE(android.R.attr.state_enabled),
-    @Deprecated("too long",replaceWith = ReplaceWith("ENABLE_F"))
-    STATE_ENABLE_FALSE(-android.R.attr.state_enabled),
-
-    @Deprecated("too long",replaceWith = ReplaceWith("SELECTED_T"))
-    STATE_SELECTED_TRUE(android.R.attr.state_selected),
-    @Deprecated("too long",replaceWith = ReplaceWith("SELECTED_F"))
-    STATE_SELECTED_FALSE(-android.R.attr.state_selected),
-
-    @Deprecated("too long",replaceWith = ReplaceWith("PRESSED_T"))
-    STATE_PRESSED_TRUE(android.R.attr.state_pressed),
-    @Deprecated("too long",replaceWith = ReplaceWith("PRESSED_F"))
-    STATE_PRESSED_FALSE(-android.R.attr.state_pressed),
-
-    @Deprecated("too long",replaceWith = ReplaceWith("FOCUSED_T"))
-    STATE_FOCUSED_TRUE(android.R.attr.state_focused),
-    @Deprecated("too long",replaceWith = ReplaceWith("FOCUSED_F"))
-    STATE_FOCUSED_FALSE(-android.R.attr.state_focused),
+//
+//    @Deprecated("too long", replaceWith = ReplaceWith("CHECKABLE_T"))
+//    STATE_CHECKABLE_TRUE(android.R.attr.state_checkable),
+//
+//    @Deprecated("too long", replaceWith = ReplaceWith("CHECKABLE_F"))
+//    STATE_CHECKABLE_FALSE(-android.R.attr.state_checkable),
+//
+//    @Deprecated("too long", replaceWith = ReplaceWith("CHECKED_T"))
+//    STATE_CHECKED_TRUE(android.R.attr.state_checked),
+//
+//    @Deprecated("too long", replaceWith = ReplaceWith("CHECKED_F"))
+//    STATE_CHECKED_FALSE(-android.R.attr.state_checked),
+//
+//    @Deprecated("too long", replaceWith = ReplaceWith("ENABLE_T"))
+//    STATE_ENABLE_TRUE(android.R.attr.state_enabled),
+//
+//    @Deprecated("too long", replaceWith = ReplaceWith("ENABLE_F"))
+//    STATE_ENABLE_FALSE(-android.R.attr.state_enabled),
+//
+//    @Deprecated("too long", replaceWith = ReplaceWith("SELECTED_T"))
+//    STATE_SELECTED_TRUE(android.R.attr.state_selected),
+//
+//    @Deprecated("too long", replaceWith = ReplaceWith("SELECTED_F"))
+//    STATE_SELECTED_FALSE(-android.R.attr.state_selected),
+//
+//    @Deprecated("too long", replaceWith = ReplaceWith("PRESSED_T"))
+//    STATE_PRESSED_TRUE(android.R.attr.state_pressed),
+//
+//    @Deprecated("too long", replaceWith = ReplaceWith("PRESSED_F"))
+//    STATE_PRESSED_FALSE(-android.R.attr.state_pressed),
+//
+//    @Deprecated("too long", replaceWith = ReplaceWith("FOCUSED_T"))
+//    STATE_FOCUSED_TRUE(android.R.attr.state_focused),
+//
+//    @Deprecated("too long", replaceWith = ReplaceWith("FOCUSED_F"))
+//    STATE_FOCUSED_FALSE(-android.R.attr.state_focused),
 
     //region 新
 
@@ -57,4 +64,10 @@ enum class State(val attr: Int) {
     override fun toString(): String {
         return name
     }
+
+    companion object {
+        @JvmStatic
+        fun array(vararg state: State) = state
+    }
+
 }
