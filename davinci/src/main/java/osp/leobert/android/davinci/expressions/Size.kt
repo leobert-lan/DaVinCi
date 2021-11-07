@@ -2,13 +2,12 @@ package osp.leobert.android.davinci.expressions
 
 import androidx.annotation.Px
 import osp.leobert.android.davinci.DaVinCi
-import osp.leobert.android.davinci.DaVinCiExpression
 
 //region Size 一般不用
 //        <!--<size-->
 //        <!--android:width="integer"-->
 //        <!--android:height="integer" />-->
-internal class Size(daVinCi: DaVinCi? = null, manual: Boolean = false) : DaVinCiExpression.CommandExpression(daVinCi, manual) {
+internal class Size(daVinCi: DaVinCi? = null, manual: Boolean = false) : CommandExpression(daVinCi, manual) {
 
     override fun startTag(): String = tag
 

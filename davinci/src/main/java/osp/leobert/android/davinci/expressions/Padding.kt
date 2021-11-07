@@ -2,7 +2,6 @@ package osp.leobert.android.davinci.expressions
 
 import androidx.annotation.Px
 import osp.leobert.android.davinci.DaVinCi
-import osp.leobert.android.davinci.DaVinCiExpression
 
 //region Padding 一般不用
 //        <!--<padding-->
@@ -10,7 +9,7 @@ import osp.leobert.android.davinci.DaVinCiExpression
 //        <!--android:top="integer"-->
 //        <!--android:right="integer"-->
 //        <!--android:bottom="integer" />-->
-internal class Padding(daVinCi: DaVinCi? = null, manual: Boolean = false) : DaVinCiExpression.CommandExpression(daVinCi, manual) {
+internal class Padding(daVinCi: DaVinCi? = null, manual: Boolean = false) : CommandExpression(daVinCi, manual) {
 
     override fun startTag(): String = tag
 

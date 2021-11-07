@@ -2,11 +2,10 @@ package osp.leobert.android.davinci.expressions
 
 import osp.leobert.android.davinci.DaVinCi
 import osp.leobert.android.davinci.DaVinCiCore
-import osp.leobert.android.davinci.DaVinCiExpression
 
 // shape:[ st:[reactangle] ]
 // Rectangle(0), Oval(1), Line(2), Ring(3);
-internal class ShapeType(daVinCi: DaVinCi? = null, manual: Boolean = false) : DaVinCiExpression.CommandExpression(daVinCi, manual) {
+internal class ShapeType(daVinCi: DaVinCi? = null, manual: Boolean = false) : CommandExpression(daVinCi, manual) {
 
     companion object {
         const val tag = "st:["

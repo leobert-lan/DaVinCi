@@ -2,12 +2,11 @@ package osp.leobert.android.davinci.expressions
 
 import androidx.annotation.ColorInt
 import osp.leobert.android.davinci.DaVinCi
-import osp.leobert.android.davinci.DaVinCiExpression
 import osp.leobert.android.davinci.State
 import osp.leobert.android.davinci.StateItem
 
 internal class StatedColor internal constructor(daVinCi: DaVinCi? = null, manual: Boolean = false) :
-    DaVinCiExpression.CommandExpression(daVinCi, manual) {
+    CommandExpression(daVinCi, manual) {
     @ColorInt
     var colorInt: Int? = null //这是解析出来的，不要乱赋值
 
@@ -21,6 +20,34 @@ internal class StatedColor internal constructor(daVinCi: DaVinCi? = null, manual
         const val prop_color = "color:"
 
         const val separator = state_separator
+
+        internal inline fun create(
+            daVinCi: DaVinCi? = null, manual: Boolean = false, parseFromText: Boolean = true,
+            colorInt: Int? = null, colorStr: String?, states: Array<out State>
+        ): StatedColor {
+
+            val ret = StatedColor(daVinCi = daVinCi, manual = manual)
+            ret.colorInt = colorInt
+            ret.states.addAll(states)
+            ret.parseFromText = parseFromText
+            ret.text = "$prop_state${states.joinToString(separator)};$prop_color${colorStr}"
+
+            return ret
+        }
+
+        internal inline fun create(
+            daVinCi: DaVinCi? = null, manual: Boolean = false, parseFromText: Boolean = true,
+            colorInt: Int? = null, colorStr: String?, states: Array<out String>
+        ): StatedColor {
+
+            val ret = StatedColor(daVinCi = daVinCi, manual = manual)
+            ret.colorInt = colorInt
+            ret.parseFromText = parseFromText
+            ret.text = "$prop_state${states.joinToString(separator)};$prop_color${colorStr}"
+
+            return ret
+        }
+
     }
 
     init {

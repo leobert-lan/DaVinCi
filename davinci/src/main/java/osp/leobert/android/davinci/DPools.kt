@@ -2,6 +2,8 @@ package osp.leobert.android.davinci
 
 import androidx.core.util.Pools
 import org.jetbrains.annotations.NotNull
+import osp.leobert.android.davinci.syntactic.CslSyntactic
+import osp.leobert.android.davinci.syntactic.SldSyntactic
 
 /**
  * <p><b>Package:</b> osp.leobert.android.davinci </p>
@@ -13,9 +15,9 @@ object DPools {
 
     private const val DEFAULT_POOL_SIZE = 3
 
-    val cslSyntacticPool by lazy { simple(1, DaVinCiExpression.CslSyntactic.factory, DaVinCiExpression.CslSyntactic.resetter) }
+    val cslSyntacticPool by lazy { simple(1, CslSyntactic.factory, CslSyntactic.resetter) }
 
-    val sldSyntacticPool by lazy { simple(1, DaVinCiExpression.SldSyntactic.factory, DaVinCiExpression.SldSyntactic.resetter) }
+    val sldSyntacticPool by lazy { simple(1, SldSyntactic.factory, SldSyntactic.resetter) }
 
     val dvcCoreSyntacticPool by lazy { simple(1, DaVinCiCore.DaVinCiCoreSyntactic.factory, DaVinCiCore.DaVinCiCoreSyntactic.resetter) }
 

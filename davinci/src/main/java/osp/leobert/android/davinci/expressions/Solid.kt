@@ -2,10 +2,9 @@ package osp.leobert.android.davinci.expressions
 
 import androidx.annotation.ColorInt
 import osp.leobert.android.davinci.DaVinCi
-import osp.leobert.android.davinci.DaVinCiExpression
 
 //region Solid
-internal class Solid(daVinCi: DaVinCi? = null, manual: Boolean = false) : DaVinCiExpression.CommandExpression(daVinCi, manual) {
+internal class Solid(daVinCi: DaVinCi? = null, manual: Boolean = false) : CommandExpression(daVinCi, manual) {
     @ColorInt
     internal var colorInt: Int? = null //这是解析出来的，不要乱赋值
 

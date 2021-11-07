@@ -3,7 +3,6 @@ package osp.leobert.android.davinci
 /*
  * Created by leobert on 2021/5/31.
  */
-
 import android.util.Log
 import android.view.View
 import android.widget.TextView
@@ -117,7 +116,6 @@ fun View.daVinCiBg3(exp: DaVinCiExpression.Shape, states: Array<State>) {
 @BindingAdapter("daVinCi_bg4", "states4", requireAll = true)
 fun View.daVinCiBg4(exp: DaVinCiExpression.Shape, states: Array<State>) {
     this.helpXmlDaVinCiBg(exp, *states)
-
 }
 
 @BindingAdapter("daVinCi_bg5", "states5", requireAll = true)
@@ -128,13 +126,11 @@ fun View.daVinCiBg5(exp: DaVinCiExpression.Shape, states: Array<State>) {
 @BindingAdapter("daVinCi_bg6", "states6", requireAll = true)
 fun View.daVinCiBg6(exp: DaVinCiExpression.Shape, states: Array<State>) {
     this.helpXmlDaVinCiBg(exp, *states)
-
 }
 
 @BindingAdapter("daVinCi_bg7", "states7", requireAll = true)
 fun View.daVinCiBg7(exp: DaVinCiExpression.Shape, states: Array<State>) {
     this.helpXmlDaVinCiBg(exp, *states)
-
 }
 
 @BindingAdapter("daVinCi_bg8", "states8", requireAll = true)

@@ -2,13 +2,15 @@ package osp.leobert.android.davinci.expressions
 
 import android.util.Log
 import osp.leobert.android.davinci.DaVinCi
-import osp.leobert.android.davinci.DaVinCiExpression
 import osp.leobert.android.davinci.State
 
 /*
  * region state
  */
-internal class DState(daVinCi: DaVinCi? = null, manual: Boolean = false) : DaVinCiExpression.CommandExpression(daVinCi, manual) {
+internal class DState internal constructor(
+    daVinCi: DaVinCi? = null,
+    manual: Boolean = false
+) : CommandExpression(daVinCi, manual) {
 
     private val states: MutableSet<State> by lazy { linkedSetOf() }
 
@@ -34,6 +36,26 @@ internal class DState(daVinCi: DaVinCi? = null, manual: Boolean = false) : DaVin
     companion object {
         const val tag = "state:["
         private const val state_separator = CommandExpression.state_separator
+
+        internal fun create(
+            daVinCi: DaVinCi? = null, manual: Boolean = false, parseFromText: Boolean = true,
+            states: Array<out State>
+        ): DState {
+            val ret = DState(daVinCi = daVinCi, manual = manual)
+            ret.parseFromText = parseFromText
+            ret.appendStates(states)
+            return ret
+        }
+
+        internal fun create(
+            daVinCi: DaVinCi? = null, manual: Boolean = false, parseFromText: Boolean = true,
+            states: Array<out String>
+        ): DState {
+            val ret = DState(daVinCi = daVinCi, manual = manual)
+            ret.parseFromText = parseFromText
+            ret.text = states.joinToString(CommandExpression.state_separator)
+            return ret
+        }
     }
 
     init {

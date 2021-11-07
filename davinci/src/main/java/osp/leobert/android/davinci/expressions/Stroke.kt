@@ -3,7 +3,6 @@ package osp.leobert.android.davinci.expressions
 import androidx.annotation.ColorInt
 import androidx.annotation.Px
 import osp.leobert.android.davinci.DaVinCi
-import osp.leobert.android.davinci.DaVinCiExpression
 
 //region Stroke
 //        <!--<stroke-->
@@ -12,7 +11,7 @@ import osp.leobert.android.davinci.DaVinCiExpression
 //        <!--android:dashWidth="integer"-->
 //        <!--android:dashGap="integer" />-->
 //shape:[ stroke:[ width:1dp;color:#aaaaaa;dashWidth:4;dashGap:6dp ] ]
-internal class Stroke(daVinCi: DaVinCi? = null, manual: Boolean = false) : DaVinCiExpression.CommandExpression(daVinCi, manual) {
+internal class Stroke(daVinCi: DaVinCi? = null, manual: Boolean = false) : CommandExpression(daVinCi, manual) {
 
     override fun startTag(): String = tag
 
