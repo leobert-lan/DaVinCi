@@ -159,7 +159,7 @@ abstract class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
         @Deprecated("为了迁移旧版本正确性的保留API，不建议常规使用", replaceWith = ReplaceWith("ShapeListExpression"))
         fun appendState(vararg states: State): Shape {
             val exp: ListExpression = listExpression()
-            exp.appendState1(states)
+            exp.appendState(*states)
             return this
         }
 

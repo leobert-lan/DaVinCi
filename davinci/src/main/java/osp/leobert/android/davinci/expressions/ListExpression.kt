@@ -26,12 +26,6 @@ internal class ListExpression(daVinCi: DaVinCi? = null, private val manual: Bool
         this.dState = dState
     }
 
-    fun appendState1(states: Array<out State>) {
-        val dState = dState ?: DState(daVinCi)
-        dState.appendStates(states)
-        this.dState = dState
-    }
-
     @SuppressLint("all")
     override fun injectThenParse(daVinCi: DaVinCi?) {
         this.daVinCi = daVinCi
