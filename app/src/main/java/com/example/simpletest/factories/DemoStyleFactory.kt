@@ -16,13 +16,14 @@ class DemoStyleFactory : StyleRegistry.Style.Factory() {
     override val styleName: String = "btn_style.sub"
 
     override fun apply(style: StyleRegistry.Style) {
-        style.register(
-            state = State.ENABLE_F,
-            expression = DaVinCiExpression.shape().rectAngle().solid("#80ff3c08").corner("10dp")
-        ).register(
-            state = State.ENABLE_T,
-            expression = DaVinCiExpression.shape().rectAngle().corner("10dp")
-                .gradient("#ff3c08", "#ff653c", 0)
+        style.registerSld(
+            DaVinCiExpression.stateListDrawable()
+                .shape(DaVinCiExpression.shape().rectAngle().solid("#80ff3c08").corner("10dp"))
+                .states(State.ENABLE_F)
+                .shape(
+                    DaVinCiExpression.shape().rectAngle().corner("10dp")
+                        .gradient("#ff3c08", "#ff653c", 0)
+                ).states(State.ENABLE_T)
         )
     }
 }

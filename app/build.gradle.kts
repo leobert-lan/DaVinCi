@@ -87,22 +87,22 @@ dependencies {
 
     implementation("org.jetbrains.kotlin:kotlin-stdlib:${Dependencies.Kotlin.version}")
     implementation("androidx.appcompat:appcompat:1.3.0")
-    implementation("androidx.core:core-ktx:1.3.2")
+    implementation("androidx.core:core-ktx:1.6.0")
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.2")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.3.0")
 
     if (dev) {
-//    debugImplementation(project(":davinci_styles_viewer"))
+        debugImplementation(project(":davinci_styles_viewer"))
 //    ksp(project(":anno_ksp"))
 //    implementation(project(":annotation"))
         implementation(project(":davinci"))
     } else {
         implementation(Dependencies.DaVinCi.api)
+        debugImplementation(Dependencies.DaVinCi.viewer)
     }
 
-    debugImplementation(Dependencies.DaVinCi.viewer)
     implementation(Dependencies.DaVinCi.annotation)
 //    ksp(Dependencies.DaVinVi.ksp)
     kapt(Dependencies.DaVinCi.ksp)

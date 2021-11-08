@@ -11,12 +11,13 @@ import osp.leobert.android.davinci.annotation.StyleViewer
  * <p><b>Package:</b> com.example.simpletest.factories </p>
  * <p><b>Project:</b> DaVinCi </p>
  * <p><b>Classname:</b> DemoStyle </p>
- * <p><b>Description:</b> TODO </p>
  * Created by leobert on 2021/6/17.
  */
 @DaVinCiStyle(styleName = "btn_style.main")
-@StyleViewer(height = 40, width = ViewGroup.LayoutParams.MATCH_PARENT,
-    type = StyleViewer.FLAG_CSL or StyleViewer.FLAG_BG, background = "#ffffff")
+@StyleViewer(
+    height = 40, width = ViewGroup.LayoutParams.MATCH_PARENT,
+    type = StyleViewer.FLAG_CSL or StyleViewer.FLAG_BG, background = "#ffffff"
+)
 class DemoStyle : StyleRegistry.Style("btn_style.main") {
     init {
         this.registerSld(
@@ -39,17 +40,18 @@ class DemoStyle : StyleRegistry.Style("btn_style.main") {
 }
 
 @DaVinCiStyle(styleName = "btn_style.test")
-@StyleViewer(height = 48, width = 150,
-    type = StyleViewer.FLAG_CSL or StyleViewer.FLAG_BG, background = "#ffffff")
+@StyleViewer(
+    height = 48, width = 150,
+    type = StyleViewer.FLAG_CSL or StyleViewer.FLAG_BG, background = "#ffffff"
+)
 class DemoStyle2 : StyleRegistry.Style("btn_style.test") {
     init {
-        this.register(
-            state = State.ENABLE_F,
-            expression = DaVinCiExpression.shape().rectAngle().solid("#80ff3c08").corner("10dp")
-        ).register(
-            state = State.ENABLE_T,
-            expression = DaVinCiExpression.shape().rectAngle().corner("10dp")
-                .gradient("#ff3c08", "#ff653c", 0)
+        this.registerSld(
+            exp = DaVinCiExpression.stateListDrawable()
+                .shape(DaVinCiExpression.shape().rectAngle().solid("#80ff3c08").corner("10dp"))
+                .states(State.ENABLE_F)
+                .shape(DaVinCiExpression.shape().rectAngle().corner("10dp").gradient("#ff3c08", "#ff653c", 0))
+                .states(State.ENABLE_T)
         )
     }
 }

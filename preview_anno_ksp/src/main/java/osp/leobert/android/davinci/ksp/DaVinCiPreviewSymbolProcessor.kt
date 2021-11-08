@@ -18,7 +18,6 @@ import kotlin.concurrent.thread
  * <p><b>Package:</b> osp.leobert.android.davinci.ksp </p>
  * <p><b>Project:</b> DaVinCi </p>
  * <p><b>Classname:</b> DaVinCiPreviewSymbolProcessor </p>
- * <p><b>Description:</b> TODO </p>
  * Created by leobert on 2021/7/9.
  */
 public class DaVinCiPreviewSymbolProcessor(

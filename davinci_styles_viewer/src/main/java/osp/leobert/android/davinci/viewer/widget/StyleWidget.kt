@@ -149,7 +149,6 @@ class StyleVHCreator(private val itemInteract: StyleItemInteract?) : ViewHolderC
 }
 
 interface StyleItemInteract {
-    //TODO: define interact functions here
 }
 
 

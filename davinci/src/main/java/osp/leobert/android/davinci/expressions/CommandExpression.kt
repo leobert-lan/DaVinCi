@@ -8,6 +8,7 @@ import androidx.core.content.ContextCompat
 import osp.leobert.android.davinci.DaVinCi
 import osp.leobert.android.davinci.DaVinCiExpression
 import osp.leobert.android.davinci.State
+import osp.leobert.android.reporter.review.TODO
 import java.util.*
 
 //region CommandExp 用于解析构建实际子属性
@@ -31,7 +32,7 @@ open class CommandExpression(daVinCi: DaVinCi? = null, val manual: Boolean = fal
         onParse(daVinCi)
     }
 
-    //todo 迁移到DaVinCi中，修改为策略模式，添加PT等单位处理
+    @TODO(desc = "迁移到DaVinCi中，修改为策略模式，添加PT等单位处理")
     protected fun toPx(str: String, context: Context): Int? {
         return when {
             str.endsWith("dp") -> {
@@ -50,7 +51,7 @@ open class CommandExpression(daVinCi: DaVinCi? = null, val manual: Boolean = fal
 
     }
 
-    //todo 迁移到DaVinCi中，进一步考虑Theme
+    @TODO(desc = "迁移到DaVinCi中，进一步考虑Theme")
     protected fun parseColor(text: String?): Int? {
         if (text.isNullOrEmpty()) return null
         text.let { s ->
@@ -79,16 +80,12 @@ open class CommandExpression(daVinCi: DaVinCi? = null, val manual: Boolean = fal
 
     protected fun parseInt(text: String?, default: Int?): Int? {
         if (text.isNullOrEmpty()) return default
-        text.let {
-            return text.toIntOrNull() ?: default
-        }
+        return text.toIntOrNull() ?: default
     }
 
     protected fun parseFloat(text: String?, default: Float?): Float? {
         if (text.isNullOrEmpty()) return default
-        text.let {
-            return text.toFloatOrNull() ?: default
-        }
+        return text.toFloatOrNull() ?: default
     }
 
     protected fun getTag(context: Context?, resName: String): String? {

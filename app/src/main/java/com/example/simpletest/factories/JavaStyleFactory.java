@@ -9,7 +9,6 @@ import osp.leobert.android.davinci.annotation.DaVinCiStyleFactory;
  * <p><b>Package:</b> com.example.simpletest.factories </p>
  * <p><b>Project:</b> DaVinCi </p>
  * <p><b>Classname:</b> JavaStyleFactory </p>
- * <p><b>Description:</b> TODO </p>
  * Created by leobert on 2021/6/23.
  */
 @DaVinCiStyleFactory(styleName = "test_style.java")

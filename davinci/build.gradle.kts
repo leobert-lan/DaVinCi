@@ -19,8 +19,6 @@ android {
         versionCode = 1
         versionName = "1.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-//        consumerProguardFiles = "consumer-rules.pro"
-//        consumerProguardFiles.add()
     }
 
     buildTypes {
@@ -32,13 +30,27 @@ android {
     }
 }
 
+kapt {
+    arguments {
+//        arg("includeCompileClasspath", true)
+
+        arg("module", "DaVinCi-")
+        arg("mode", "mode_file")
+        arg("active_reporter", "on")
+    }
+}
+
 dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib:${Dependencies.Kotlin.version}")
     implementation("androidx.appcompat:appcompat:1.3.0")
-    implementation("androidx.core:core-ktx:1.3.2")
+    implementation("androidx.core:core-ktx:1.6.0")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.2")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.3.0")
+
+    implementation("io.github.leobert-lan:reporter-review:1.0.1")
+    kapt("io.github.leobert-lan:report-anno-compiler:1.1.4")
+    kapt("io.github.leobert-lan:reporter-review:1.0.1")
 }
 
 

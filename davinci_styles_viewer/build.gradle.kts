@@ -29,19 +29,21 @@ android {
 
 dependencies {
 
-    implementation("com.google.android.material:material:1.2.1")
+    implementation("com.google.android.material:material:1.3.0")
     compileOnly(project(":davinci"))
     compileOnly(project(":annotation"))
 
 
     compileOnly("org.jetbrains.kotlin:kotlin-stdlib:${Dependencies.Kotlin.version}")
-    compileOnly("androidx.core:core-ktx:1.3.2")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2")
+    compileOnly("androidx.core:core-ktx:1.6.0")
 
     implementation("io.github.leobert-lan:pandora:0.0.8")
     implementation("io.github.leobert-lan:pandorarv_kt:0.0.4")
-    implementation("androidx.recyclerview:recyclerview:1.1.0")
+    implementation("androidx.recyclerview:recyclerview:1.2.0")
 
-    implementation("androidx.appcompat:appcompat:1.2.0")
+    implementation("androidx.appcompat:appcompat:1.3.0")
 }
 
 EasyPublish {
@@ -70,7 +72,7 @@ EasyPublish {
 
     groupId = "io.github.leobert-lan"
     artifactId = "davinci-style-viewer"
-    version = "0.0.1"
+    version = "0.0.2"
     packaging = "aar"
     siteUrl = "https://github.com/leobert-lan/DaVinCi"
     gitUrl = "https://github.com/leobert-lan/DaVinCi.git"
