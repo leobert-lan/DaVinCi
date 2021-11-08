@@ -26,6 +26,14 @@ internal class ListExpression constructor(daVinCi: DaVinCi? = null, private val 
         this.dState = dState
     }
 
+    fun states():MutableCollection<State>? {
+        return dState?.collect()
+    }
+
+    fun statesArray():Array<State>? {
+        return dState?.collectToArray()
+    }
+
     @SuppressLint("all")
     override fun injectThenParse(daVinCi: DaVinCi?) {
         this.daVinCi = daVinCi

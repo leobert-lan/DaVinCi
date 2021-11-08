@@ -30,15 +30,11 @@
                 android:orientation="vertical"
                 android:padding="5dp">
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/demo1" />
 
                 <CheckBox
                     daVinCi_bg1="@{DaVinCiExpression.shape().corner(60).solid(`@i1`).stroke(`4dp`,`@i2`)}"
-                    states1="@{State.array(State.CHECKED_T)}"
                     daVinCi_bg2="@{DaVinCiExpression.shape().corner(60).solid(`@i2`).stroke(`4dp`,`@i1`)}"
+                    states1="@{State.array(State.CHECKED_T)}"
                     states2="@{State.array(State.CHECKED_F,State.ENABLE_T)}"
                     android:layout_width="match_parent"
                     android:layout_height="80dp"
@@ -55,6 +51,30 @@
                         android:value="@color/colorAccent" />
 
                 </CheckBox>
+
+                <CheckBox
+                    daVinCi_bg1="@{DaVinCiExpression.shape().states(State.CHECKED_T).corner(60).solid(`@i1`).stroke(`4dp`,`@i2`)}"
+                    daVinCi_bg2="@{DaVinCiExpression.shape().states(State.CHECKED_F,State.ENABLE_T).corner(60).solid(`@i2`).stroke(`4dp`,`@i1`)}"
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center"
+                    android:text="new DataBinding Feature">
+
+                    <tag
+                        android:id="@id/i1"
+                        android:value="@color/colorPrimaryDark" />
+
+                    <tag
+                        android:id="@id/i2"
+                        android:value="@color/colorAccent" />
+
+                </CheckBox>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/demo1" />
 
                 <TextView
                     android:id="@+id/test"
