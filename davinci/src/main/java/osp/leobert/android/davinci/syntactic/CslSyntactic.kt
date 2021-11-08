@@ -88,7 +88,7 @@ class CslSyntactic private constructor() : Statable<DaVinCiExpression.ColorState
 //                    "${StatedColor.prop_state}${states.joinToString(StatedColor.separator)};${StatedColor.prop_color}${this@CslSyntactic.strColor()}"
 //
 //            }
-        host.exps().append(statedColor)
+        host.listExpression().append(statedColor)
         DPools.cslSyntacticPool.release(this)
         return host
 
@@ -104,7 +104,7 @@ class CslSyntactic private constructor() : Statable<DaVinCiExpression.ColorState
             colorStr = this@CslSyntactic.strColor(),
             states = states
         )
-        host.exps().append(statedColor)
+        host.listExpression().append(statedColor)
 //            StatedColor(
 //                manual = true
 //            ).apply {

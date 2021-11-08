@@ -8,7 +8,7 @@ import osp.leobert.android.davinci.State
 import java.util.ArrayList
 
 //region ListExp 同级别多条目解析
-internal class ListExpression(daVinCi: DaVinCi? = null, private val manual: Boolean = false) : DaVinCiExpression(daVinCi) {
+internal class ListExpression constructor(daVinCi: DaVinCi? = null, private val manual: Boolean = false) : DaVinCiExpression(daVinCi) {
     private val list: ArrayList<DaVinCiExpression> = ArrayList()
 
     /**
