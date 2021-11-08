@@ -86,6 +86,20 @@ class DaVinCi private constructor() {
         applier?.applyDrawable(d)
     }
 
+    fun applyShape(exp: DaVinCiExpression.Shape) {
+        if (enableDebugLog && exp.manual) //手动创建的结构
+            Log.d(DaVinCiExpression.sLogTag, "manual created,daVinCi sld:$exp")
+
+        exp.injectThenParse(this)
+        exp.interpret()
+
+        if (enableDebugLog && !exp.manual) //利用DaVinCi内容解析的结构
+            Log.d(DaVinCiExpression.sLogTag, "parsed,daVinCi sld:$exp")
+
+        val d = core.buildDrawable()
+        applier?.applyDrawable(d)
+    }
+
     fun applyCsl(exp: DaVinCiExpression.ColorStateList) {
         if (enableDebugLog)
             Log.d(DaVinCiExpression.sLogTag, "daVinCi csl:$exp")

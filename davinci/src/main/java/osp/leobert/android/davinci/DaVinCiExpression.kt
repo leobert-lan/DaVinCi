@@ -2,8 +2,10 @@ package osp.leobert.android.davinci
 
 import android.util.Log
 import android.view.View
+import android.widget.TextView
 import androidx.annotation.ColorInt
 import androidx.annotation.Px
+import osp.leobert.android.davinci.Applier.Companion.csl
 import osp.leobert.android.davinci.Applier.Companion.viewBackground
 import osp.leobert.android.davinci.expressions.*
 import osp.leobert.android.davinci.syntactic.CslSyntactic
@@ -144,7 +146,7 @@ abstract class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
 
 
     //region Shape
-    class Shape internal constructor(private val manual: Boolean = false) : DaVinCiExpression(null) {
+    class Shape internal constructor(val manual: Boolean = false) : DaVinCiExpression(null) {
 
         private var expressions: ListExpression? = null
         override fun startTag(): String = tag
@@ -387,6 +389,12 @@ abstract class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
         override fun toString(): String {
             return "$tag $expressions $END"
         }
+
+        fun applyInto(view: View) {
+            val daVinCi = DaVinCi.of(null, view.viewBackground())
+            daVinCi.applyShape(this)
+            daVinCi.release()
+        }
     }
     //endregion
 
@@ -398,7 +406,7 @@ abstract class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
         override fun startTag(): String = tag
 
 
-        internal fun exps(): ListExpression = expressions ?: ListExpression(daVinCi, manual).apply {
+        internal fun listExpression(): ListExpression = expressions ?: ListExpression(daVinCi, manual).apply {
             expressions = this
         }
 
@@ -411,11 +419,9 @@ abstract class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
             return CslSyntactic.of(this, color)
         }
 
-
         fun color(@ColorInt color: Int): Statable<ColorStateList> {
             return CslSyntactic.of(this, color)
         }
-
 
         @Deprecated("表意不准确", ReplaceWith("color(color).states(state...)"))
         fun apply(state: State, color: String): ColorStateList {
@@ -432,7 +438,6 @@ abstract class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
             return color(color).states(state)
         }
 
-
         override fun injectThenParse(daVinCi: DaVinCi?) {
             this.daVinCi = daVinCi
             if (manual) return
@@ -442,7 +447,7 @@ abstract class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
         override fun interpret() {
             daVinCi?.let {
                 if (manual) {
-                    this.expressions = exps().apply {
+                    this.expressions = listExpression().apply {
                         this.injectThenParse(it)
                         this.interpret()
                     }
@@ -454,7 +459,7 @@ abstract class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
                 } else {
                     //解析型
                     it.next()
-                    this.expressions = exps().apply {
+                    this.expressions = listExpression().apply {
                         this.injectThenParse(it)
                         this.interpret()
                     }
@@ -464,6 +469,12 @@ abstract class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
 
         override fun toString(): String {
             return "$tag $expressions $END"
+        }
+
+        fun applyInto(view: TextView) {
+            val daVinCi = DaVinCi.of(null, view.csl())
+            daVinCi.applyCsl(this)
+            daVinCi.release()
         }
     }
     //endregion
