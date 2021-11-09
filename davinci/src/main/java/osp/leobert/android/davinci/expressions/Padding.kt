@@ -53,26 +53,26 @@ internal class Padding(daVinCi: DaVinCi? = null, manual: Boolean = false) : Comm
         text?.let { it ->
             left = null
             top = null
+
+            //避免无效逻辑
+            val dvc = daVinCi?:return@let
+
             it.split(";").forEach { e ->
                 when {
                     e.startsWith(prop_left) -> {
-                        if (daVinCi != null)
-                            left = toPx(e.replace(prop_left, ""), daVinCi.context)
+                        left = toPx(e.replace(prop_left, ""), dvc.context)
                     }
 
                     e.startsWith(prop_top) -> {
-                        if (daVinCi != null)
-                            top = toPx(e.replace(prop_top, ""), daVinCi.context)
+                        top = toPx(e.replace(prop_top, ""), dvc.context)
                     }
 
                     e.startsWith(prop_right) -> {
-                        if (daVinCi != null)
-                            right = toPx(e.replace(prop_right, ""), daVinCi.context)
+                        right = toPx(e.replace(prop_right, ""), dvc.context)
                     }
 
                     e.startsWith(prop_bottom) -> {
-                        if (daVinCi != null)
-                            bottom = toPx(e.replace(prop_bottom, ""), daVinCi.context)
+                        bottom = toPx(e.replace(prop_bottom, ""), dvc.context)
                     }
                 }
             }

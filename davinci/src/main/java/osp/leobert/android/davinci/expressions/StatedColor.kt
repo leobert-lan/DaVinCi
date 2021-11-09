@@ -21,7 +21,7 @@ internal class StatedColor internal constructor(daVinCi: DaVinCi? = null, manual
 
         const val separator = state_separator
 
-        internal inline fun create(
+        internal fun create(
             daVinCi: DaVinCi? = null, manual: Boolean = false, parseFromText: Boolean = true,
             colorInt: Int? = null, colorStr: String?, states: Array<out State>
         ): StatedColor {
@@ -35,7 +35,7 @@ internal class StatedColor internal constructor(daVinCi: DaVinCi? = null, manual
             return ret
         }
 
-        internal inline fun create(
+        internal fun create(
             daVinCi: DaVinCi? = null, manual: Boolean = false, parseFromText: Boolean = true,
             colorInt: Int? = null, colorStr: String?, states: Array<out String>
         ): StatedColor {

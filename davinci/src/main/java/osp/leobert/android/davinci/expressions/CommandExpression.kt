@@ -14,7 +14,7 @@ import java.util.*
 //region CommandExp 用于解析构建实际子属性
 //manual = true 认为是手动创建的，不会进入解析逻辑
 @Suppress("WeakerAccess", "unused")
-open class CommandExpression(daVinCi: DaVinCi? = null, val manual: Boolean = false) : DaVinCiExpression(daVinCi) {
+internal open class CommandExpression constructor(daVinCi: DaVinCi? = null, val manual: Boolean = false) : DaVinCiExpression(daVinCi) {
 
     companion object {
         const val state_separator = "|"

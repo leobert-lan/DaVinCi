@@ -1,5 +1,7 @@
 ## 移除废弃内容
 
+注意，这些是彻底移除了！
+
 ```kotlin
 //@Deprecated("", ReplaceWith("this.daVinCiShape(str)"))
 //fun View.daVinCi(str: String) {
@@ -34,8 +36,9 @@
 //        }
 //    }
 //}
-
 ```
+
+移除id： `<item name="log_tag" type="id"/>`
 
 ## 新增API
 

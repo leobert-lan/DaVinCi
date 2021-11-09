@@ -313,11 +313,6 @@
                 android:layout_marginBottom="10dp"
                 android:background="@android:color/white" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/explain" />
-
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>

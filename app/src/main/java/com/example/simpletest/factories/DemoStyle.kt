@@ -52,10 +52,6 @@ class DemoStyle : StyleRegistry.Style("btn_style.main") {
 class DemoStyle2 : StyleRegistry.Style("btn_style.test") {
     init {
 
-        Utils.timeCost("amazing 2") {
-            val a = osp.leobert.android.davinci.expressions.CommandExpression.state_separator
-        }
-
         val shape = Utils.timeCost("if first create shape") {
             DaVinCiExpression.shape().rectAngle().solid("#80ff3c08").corner("10dp")
         }
