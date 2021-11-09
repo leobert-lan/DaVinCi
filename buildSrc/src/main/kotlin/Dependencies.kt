@@ -1,3 +1,5 @@
+import org.gradle.kotlin.dsl.DependencyHandlerScope
+
 object Dependencies {
 
     const val guava = "com.google.guava:guava:30.1.1-jre"
@@ -40,5 +42,21 @@ object Dependencies {
         const val kspCompileTesting = "com.github.tschuchortdev:kotlin-compile-testing-ksp:1.4.0"
         const val junit = "junit:junit:4.13.2"
         const val truth = "com.google.truth:truth:1.1.2"
+    }
+
+    object Asm {
+        val asm6Bundle = arrayListOf(
+            "org.ow2.asm:asm:6.0",
+            "org.ow2.asm:asm-commons:6.0",
+            "org.ow2.asm:asm-analysis:6.0",
+            "org.ow2.asm:asm-util:6.0",
+            "org.ow2.asm:asm-tree:6.0"
+        )
+
+        fun implementAsm6(scope: DependencyHandlerScope) {
+            asm6Bundle.forEach { deps ->
+                scope.dependencies.add("implementation", deps)
+            }
+        }
     }
 }

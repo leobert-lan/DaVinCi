@@ -3,15 +3,25 @@ plugins {
     id("com.google.devtools.ksp") //version Dependencies.Kotlin.Ksp.version
     id("kotlin-android")
     kotlin("kapt")
+    id("cn.cxzheng.asmtraceman")
 }
 
-android {
+traceMan {
+    open = true//这里如果设置为false,则会关闭插桩
+    logTraceInfo = true //这里设置为true时可以在log日志里看到所有被插桩的类和方法
+    traceConfigFile = "${project.projectDir}/traceconfig.txt"
+}
+
 //configure<com.android.build.gradle.internal.dsl.BaseAppModuleExtension> {
+android {
     compileSdkVersion(30)
     buildToolsVersion("30.0.3")
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = "1.8"
     }
 
     defaultConfig {
@@ -109,4 +119,10 @@ dependencies {
     //kotlin注解
     //java注解
 //    implementation(project(":annotation-java"))
+
+
+    // 不适用
+    //    implementation("com.github.markzhai:blockcanary-android:1.5.0")
+    debugImplementation("com.github.zhengcx:MethodTraceMan:1.0.7")
+    releaseImplementation("com.github.zhengcx:MethodTraceMan:1.0.5-noop")
 }

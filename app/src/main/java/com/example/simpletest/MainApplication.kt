@@ -1,9 +1,6 @@
 package com.example.simpletest
 
 import android.app.Application
-import android.util.Log
-import com.example.simpletest.AppDaVinCiStylePreviewInjector
-import com.example.simpletest.AppDaVinCiStyles
 
 /**
  * <p><b>Package:</b> com.example.simpletest </p>
@@ -15,13 +12,16 @@ class MainApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        val nano1 = System.nanoTime()
-        AppDaVinCiStyles.register()
-        val cost = System.nanoTime() - nano1
+
+
+//        Handler(Looper.getMainLooper()).post {
+//
+//        }
+        Utils.timeCost("AppDaVinCiStyles.register()") {
+            AppDaVinCiStyles.register()
+        }
+
         AppDaVinCiStylePreviewInjector.register()
-
-        Log.d("davinci-app", "register styles cost: $cost ns, about ${cost / 1000_000} ms")
-
 
 //        StyleRegistry.registerFactory(DemoStyleFactory())
     }

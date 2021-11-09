@@ -3,22 +3,26 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinProjectExtension
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 buildscript {
-    val kotlin_version by extra("1.5.10")
+//    val kotlin_version by extra("1.5.10")
     dependencies {
         classpath(kotlin("gradle-plugin", version = Dependencies.Kotlin.version))
         classpath("com.android.tools.build:gradle:4.1.1")
         classpath("io.github.leobert-lan:easy-publish:1.2.1")
+
+        classpath("io.github.leobert-lan:traceman-plugin:1.0.6")
     }
     repositories {
         mavenLocal()
         mavenCentral()
+        maven { setUrl("https://jitpack.io") }
+        maven { setUrl("https://plugins.gradle.org/m2/") }
     }
 }
 
 plugins {
     id("com.google.devtools.ksp") version Dependencies.Kotlin.Ksp.version apply false
     kotlin("jvm") version Dependencies.Kotlin.version apply false
-    id("org.jetbrains.dokka") version Dependencies.Kotlin.dokkaVersion  apply false
+    id("org.jetbrains.dokka") version Dependencies.Kotlin.dokkaVersion apply false
 //    id("com.vanniktech.maven.publish") version "0.15.1" apply false
 }
 
@@ -27,6 +31,10 @@ subprojects {
         mavenLocal()
         mavenCentral()
         google()
+
+        maven { setUrl("https://jitpack.io") }
+        maven { setUrl("https://plugins.gradle.org/m2/") }
+
         // Required for Dokka
         exclusiveContent {
             forRepository {
