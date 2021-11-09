@@ -2,16 +2,29 @@ package osp.leobert.android.davinci
 
 import android.content.Context
 import android.util.Log
-import android.view.View
-import android.widget.TextView
-import osp.leobert.android.davinci.Applier.Companion.csl
-import osp.leobert.android.davinci.Applier.Companion.viewBackground
 import java.util.*
+import kotlin.concurrent.thread
 
 @Suppress("unused")
 class DaVinCi private constructor() {
     companion object {
         var enableDebugLog = true
+
+        /*
+        * 在Application静态块中调用一次，基本可以免去Application onCreate时加载样式，或者第一次使用DaVinCi的耗时
+        * */
+        fun fastLoad() {
+            thread {
+                val start = System.nanoTime()
+                DaVinCiExpression.stateListDrawable()
+                    .shape(DaVinCiExpression.shape().rectAngle().solid("#ffffffff").corner("0"))
+                    .states(State.ENABLE_F)
+                val cost = System.nanoTime() - start
+                if (enableDebugLog)
+                    Log.d(DaVinCiExpression.sLogTag, "davinci-timecost first load cost:$cost ns, about ${cost / 1000_000} ms, it will be faster next time")
+            }
+
+        }
 
         internal inline fun <reified R> Any?.takeIfInstance(): R? {
             if (this is R) return this

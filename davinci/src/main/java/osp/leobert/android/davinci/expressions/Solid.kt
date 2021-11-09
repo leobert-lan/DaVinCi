@@ -4,7 +4,7 @@ import androidx.annotation.ColorInt
 import osp.leobert.android.davinci.DaVinCi
 
 //region Solid
-internal class Solid private constructor(manual: Boolean = false) : CommandExpression(manual) {
+internal class Solid private constructor() : CommandExpression() {
     @ColorInt
     internal var colorInt: Int? = null //这是解析出来的，不要乱赋值
 
@@ -12,7 +12,8 @@ internal class Solid private constructor(manual: Boolean = false) : CommandExpre
         const val tag = "solid:["
 
         fun of(daVinCi: DaVinCi? = null, manual: Boolean = false):Solid {
-            return Solid(manual).apply {
+            return Solid().apply {
+                this.manual = manual
                 injectThenParse(daVinCi)
             }
         }

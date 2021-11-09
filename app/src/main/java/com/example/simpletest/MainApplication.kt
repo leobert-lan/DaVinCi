@@ -1,6 +1,7 @@
 package com.example.simpletest
 
 import android.app.Application
+import osp.leobert.android.davinci.DaVinCi
 
 /**
  * <p><b>Package:</b> com.example.simpletest </p>
@@ -10,13 +11,15 @@ import android.app.Application
  */
 class MainApplication : Application() {
 
+    companion object {
+        init {
+            DaVinCi.fastLoad()
+        }
+    }
+
     override fun onCreate() {
         super.onCreate()
 
-
-//        Handler(Looper.getMainLooper()).post {
-//
-//        }
         Utils.timeCost("AppDaVinCiStyles.register()") {
             AppDaVinCiStyles.register()
         }

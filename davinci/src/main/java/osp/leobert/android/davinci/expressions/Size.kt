@@ -7,7 +7,7 @@ import osp.leobert.android.davinci.DaVinCi
 //        <!--<size-->
 //        <!--android:width="integer"-->
 //        <!--android:height="integer" />-->
-internal class Size private constructor(manual: Boolean = false) : CommandExpression(manual) {
+internal class Size private constructor() : CommandExpression() {
 
     override fun startTag(): String = tag
 
@@ -18,7 +18,8 @@ internal class Size private constructor(manual: Boolean = false) : CommandExpres
         const val prop_height = "height:"
 
         fun of(daVinCi: DaVinCi? = null, manual: Boolean = false): Size {
-            return Size(manual).apply {
+            return Size().apply {
+                this.manual = manual
                 injectThenParse(daVinCi)
             }
         }

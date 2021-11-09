@@ -1,6 +1,7 @@
 package osp.leobert.android.davinci.expressions
 
 import android.util.Log
+import osp.leobert.android.davinci.DPools
 import osp.leobert.android.davinci.DaVinCi
 
 /*corners-->
@@ -10,15 +11,22 @@ import osp.leobert.android.davinci.DaVinCi
 <!--android:bottomLeftRadius="integer"-->
 <!--android:bottomRightRadius="integer" />-->
 shape:[ corners:[ 4 ] solid:[ #353538 ] ]*/
-internal class Corners private constructor(manual: Boolean = false) : CommandExpression(manual) {
+internal class Corners private constructor() : CommandExpression() {
 
     var conners: List<Int>? = null
 
     companion object {
         const val tag = "corners:["
 
+        val factory: DPools.Factory<Corners> = object : DPools.Factory<Corners> {
+            override fun create(): Corners {
+                return Corners()
+            }
+        }
+
         fun of(daVinCi: DaVinCi? = null, manual: Boolean = false):Corners {
-            return Corners(manual).apply {
+            return requireNotNull(DPools.cornersExpPool.acquire()).apply {
+                this.manual = manual
                 injectThenParse(daVinCi)
             }
         }
@@ -27,6 +35,16 @@ internal class Corners private constructor(manual: Boolean = false) : CommandExp
 //    init {
 //        injectThenParse(daVinCi)
 //    }
+
+    override fun reset() {
+        super.reset()
+        conners = null
+    }
+
+    override fun release() {
+        onRelease()
+        DPools.cornersExpPool.release(this)
+    }
 
     override fun injectThenParse(daVinCi: DaVinCi?) {
         this.daVinCi = daVinCi

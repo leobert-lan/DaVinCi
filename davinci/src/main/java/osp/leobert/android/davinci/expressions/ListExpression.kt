@@ -8,7 +8,16 @@ import osp.leobert.android.davinci.State
 import java.util.*
 
 //region ListExp 同级别多条目解析
-internal class ListExpression constructor(daVinCi: DaVinCi? = null, private val manual: Boolean = false) : DaVinCiExpression() {
+internal class ListExpression private constructor( private val manual: Boolean = false) : DaVinCiExpression() {
+
+    companion object {
+        fun of(daVinCi: DaVinCi? = null, manual: Boolean = false): ListExpression {
+            return ListExpression(manual).apply {
+                this.daVinCi = daVinCi
+            }
+        }
+    }
+
     private val list: ArrayList<DaVinCiExpression> = ArrayList()
 
     /**

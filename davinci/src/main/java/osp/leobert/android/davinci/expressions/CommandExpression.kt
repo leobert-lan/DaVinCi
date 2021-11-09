@@ -4,7 +4,9 @@ import android.content.Context
 import android.graphics.Color
 import android.util.Log
 import android.view.ViewGroup
+import androidx.annotation.CallSuper
 import androidx.core.content.ContextCompat
+import osp.leobert.android.davinci.DPools
 import osp.leobert.android.davinci.DaVinCi
 import osp.leobert.android.davinci.DaVinCiExpression
 import osp.leobert.android.davinci.State
@@ -14,20 +16,50 @@ import java.util.*
 //region CommandExp 用于解析构建实际子属性
 //manual = true 认为是手动创建的，不会进入解析逻辑
 @Suppress("WeakerAccess", "unused")
-internal open class CommandExpression(val manual: Boolean = false) : DaVinCiExpression() {
+internal open class CommandExpression internal constructor() : DaVinCiExpression() {
 
     companion object {
         const val state_separator = "|"
 
+        val factory: DPools.Factory<CommandExpression> = object : DPools.Factory<CommandExpression> {
+            override fun create(): CommandExpression {
+                return CommandExpression()
+            }
+        }
+
+
         fun of(daVinCi: DaVinCi? = null, manual: Boolean = false): CommandExpression {
-            return CommandExpression(manual).apply {
+           return requireNotNull(DPools.commandExpPool.acquire()).apply {
+                this.manual = manual
                 //取代了init中的逻辑 ：if (this::class == CommandExpression::class) onParse(daVinCi)
                 onParse(daVinCi)
             }
         }
     }
 
+    var manual: Boolean = false
+        internal set
+
     private var expressions: DaVinCiExpression? = null
+
+    @CallSuper
+    override fun reset() {
+        super.reset()
+//        expressions?.reset()// just set null is enough, it will be reset if it's released
+        expressions = null
+    }
+
+    @CallSuper
+    override fun onRelease() {
+        super.onRelease()
+        expressions?.release()
+    }
+
+    override fun release() {
+        onRelease()
+        DPools.commandExpPool.release(this)
+    }
+
 
     override fun injectThenParse(daVinCi: DaVinCi?) {
         onParse(daVinCi)

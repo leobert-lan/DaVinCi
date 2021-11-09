@@ -14,7 +14,6 @@ import osp.leobert.android.davinci.syntactic.SldSyntactic
 import osp.leobert.android.reporter.review.TODO
 
 @Suppress("WeakerAccess", "unused")
-@TODO(desc = "构造函数转为默构造函数，从来没有实际传过davinci的值")
 abstract class DaVinCiExpression {
 
     protected fun <T> log(str: String, any: T?): T? {
@@ -22,9 +21,7 @@ abstract class DaVinCiExpression {
         return any
     }
 
-
     protected var daVinCi: DaVinCi? = null
-
 
     // 节点名称
     protected var tokenName: String? = null
@@ -36,18 +33,31 @@ abstract class DaVinCiExpression {
             onTextContentSet(value)
         }
 
-    protected open fun onTextContentSet(text: String?) {
+    //属性是否需要从text中解析，一般手动创建的（manual == true，即非语法式解析）会直接赋予正确的属性值，不需要在此解析
+    protected var parseFromText = true
 
+    protected open fun onTextContentSet(text: String?) {
     }
 
     @CallSuper
     @TODO(desc = "实现reset 逻辑")
-    protected open fun reset() {
+    internal open fun reset() {
+        daVinCi = null
+        tokenName = null
+        text = null
+//        todo
+        parseFromText = true
+    }
+
+    open fun release() {
+        //let child realize it
+    }
+
+    @CallSuper
+    internal open fun onRelease() {
 
     }
 
-    //实际属性是否需要从text解析，手动创建并给了专有属性的，设为false，就不会被覆盖了
-    protected var parseFromText = true
 
     //一定会植入，手动创建的不解析
     abstract fun injectThenParse(daVinCi: DaVinCi?)
@@ -65,6 +75,16 @@ abstract class DaVinCiExpression {
 
     companion object {
 
+        val resetter: DPools.Resetter<DaVinCiExpression> = object : DPools.Resetter<DaVinCiExpression> {
+            override fun reset(target: DaVinCiExpression) {
+                target.reset()
+            }
+        }
+
+        fun <T : DaVinCiExpression> DPools.Resetter<DaVinCiExpression>.cast(): DPools.Resetter<T> {
+            return resetter as DPools.Resetter<T>
+        }
+
         @JvmStatic
         fun stateListDrawable(): StateListDrawable = StateListDrawable(manual = true)
 
@@ -78,7 +98,7 @@ abstract class DaVinCiExpression {
         fun shapeAndStateColor(
             shape: Shape,
             stateColor: ColorStateList,
-        ): DaVinCiExpression = ListExpression(manual = true).apply {
+        ): DaVinCiExpression = ListExpression.of(manual = true).apply {
             append(shape)
             append(stateColor)
         }
@@ -162,7 +182,7 @@ abstract class DaVinCiExpression {
         companion object {
             const val tag = "shape:["
 
-            fun of(daVinCi: DaVinCi? = null, manual: Boolean = false):Shape {
+            fun of(daVinCi: DaVinCi? = null, manual: Boolean = false): Shape {
                 return Shape(manual).apply {
                     this.daVinCi = daVinCi
                 }
@@ -173,7 +193,7 @@ abstract class DaVinCiExpression {
         override fun startTag(): String = tag
 
         internal fun listExpression(): ListExpression {
-            return expressions ?: ListExpression(daVinCi, manual).apply {
+            return expressions ?: ListExpression.of(daVinCi, manual).apply {
                 expressions = this
             }
         }
@@ -185,11 +205,11 @@ abstract class DaVinCiExpression {
             return this
         }
 
-        internal fun statesCollect():MutableCollection<State>? {
+        internal fun statesCollect(): MutableCollection<State>? {
             return listExpression().states()
         }
 
-        internal fun statesArray():Array<State>? {
+        internal fun statesArray(): Array<State>? {
             return listExpression().statesArray()
         }
 
@@ -430,7 +450,7 @@ abstract class DaVinCiExpression {
         override fun startTag(): String = tag
 
 
-        internal fun listExpression(): ListExpression = expressions ?: ListExpression(daVinCi, manual).apply {
+        internal fun listExpression(): ListExpression = expressions ?: ListExpression.of(daVinCi, manual).apply {
             expressions = this
         }
 

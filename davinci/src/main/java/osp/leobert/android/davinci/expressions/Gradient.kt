@@ -15,7 +15,7 @@ import osp.leobert.android.davinci.DaVinCiCore
 //    android:endColor="color"    //渐变结束点的颜色
 //    android:gradientRadius="float"  //渐变的半径，只有当渐变类型为radial时才能使用
 //    android:useLevel=["true" | "false"] />  //使用LevelListDrawable时就要设置为true。设为false时才有渐变效果
-internal class Gradient private constructor(manual: Boolean = false) : CommandExpression(manual) {
+internal class Gradient private constructor() : CommandExpression() {
 
     override fun startTag(): String = tag
 
@@ -40,7 +40,8 @@ internal class Gradient private constructor(manual: Boolean = false) : CommandEx
         const val TYPE_SWEEP = "sweep"
 
         fun of(daVinCi: DaVinCi? = null, manual: Boolean = false): Gradient {
-            return Gradient(manual).apply {
+            return Gradient().apply {
+                this.manual = manual
                 injectThenParse(daVinCi)
             }
         }

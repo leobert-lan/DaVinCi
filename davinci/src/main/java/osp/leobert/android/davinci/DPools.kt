@@ -2,6 +2,9 @@ package osp.leobert.android.davinci
 
 import androidx.core.util.Pools
 import org.jetbrains.annotations.NotNull
+import osp.leobert.android.davinci.DaVinCiExpression.Companion.cast
+import osp.leobert.android.davinci.expressions.CommandExpression
+import osp.leobert.android.davinci.expressions.Corners
 import osp.leobert.android.davinci.syntactic.CslSyntactic
 import osp.leobert.android.davinci.syntactic.SldSyntactic
 
@@ -15,13 +18,23 @@ object DPools {
 
     private const val DEFAULT_POOL_SIZE = 3
 
-    val cslSyntacticPool by lazy { simple(1, CslSyntactic.factory, CslSyntactic.resetter) }
+    internal val cslSyntacticPool by lazy { simple(DEFAULT_POOL_SIZE, CslSyntactic.factory, CslSyntactic.resetter) }
 
-    val sldSyntacticPool by lazy { simple(1, SldSyntactic.factory, SldSyntactic.resetter) }
+    internal val sldSyntacticPool by lazy { simple(DEFAULT_POOL_SIZE, SldSyntactic.factory, SldSyntactic.resetter) }
 
-    val dvcCoreSyntacticPool by lazy { simple(1, DaVinCiCore.DaVinCiCoreSyntactic.factory, DaVinCiCore.DaVinCiCoreSyntactic.resetter) }
+    internal val dvcCoreSyntacticPool by lazy {
+        simple(
+            DEFAULT_POOL_SIZE,
+            DaVinCiCore.DaVinCiCoreSyntactic.factory,
+            DaVinCiCore.DaVinCiCoreSyntactic.resetter
+        )
+    }
 
-    val daVinCiPool by lazy { simple(3, DaVinCi.factory, DaVinCi.resetter) }
+    val daVinCiPool by lazy { simple(DEFAULT_POOL_SIZE, DaVinCi.factory, DaVinCi.resetter) }
+
+    internal val commandExpPool by lazy { simple(DEFAULT_POOL_SIZE, CommandExpression.factory, DaVinCiExpression.resetter.cast()) }
+
+    internal val cornersExpPool by lazy { simple(10, Corners.factory, DaVinCiExpression.resetter.cast()) }
 
 
     private val EMPTY_RESETTER: Resetter<Any> = object : Resetter<Any> {
