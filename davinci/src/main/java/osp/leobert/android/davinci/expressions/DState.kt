@@ -101,4 +101,8 @@ internal class DState internal constructor(
     fun collect(): MutableList<State> {
         return states.toCollection(arrayListOf())
     }
+
+    fun collectToArray():Array<State> {
+        return states.toTypedArray()
+    }
 }

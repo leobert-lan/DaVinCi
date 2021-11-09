@@ -26,10 +26,12 @@ internal class ListExpression constructor(daVinCi: DaVinCi? = null, private val 
         this.dState = dState
     }
 
-    fun appendState1(states: Array<out State>) {
-        val dState = dState ?: DState(daVinCi)
-        dState.appendStates(states)
-        this.dState = dState
+    fun states():MutableCollection<State>? {
+        return dState?.collect()
+    }
+
+    fun statesArray():Array<State>? {
+        return dState?.collectToArray()
     }
 
     @SuppressLint("all")
