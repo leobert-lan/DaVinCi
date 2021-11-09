@@ -14,19 +14,20 @@ import java.util.*
 //region CommandExp 用于解析构建实际子属性
 //manual = true 认为是手动创建的，不会进入解析逻辑
 @Suppress("WeakerAccess", "unused")
-internal open class CommandExpression constructor(daVinCi: DaVinCi? = null, val manual: Boolean = false) : DaVinCiExpression(daVinCi) {
+internal open class CommandExpression constructor(daVinCi: DaVinCi? = null, val manual: Boolean = false) : DaVinCiExpression() {
 
     companion object {
         const val state_separator = "|"
+
+        fun of(daVinCi: DaVinCi? = null, manual: Boolean = false): CommandExpression {
+            return CommandExpression(daVinCi, manual).apply {
+                //取代了init中的逻辑 ：if (this::class == CommandExpression::class) onParse(daVinCi)
+                onParse(daVinCi)
+            }
+        }
     }
 
     private var expressions: DaVinCiExpression? = null
-
-    init {
-        //因为是嵌套层，且作为父类了，避免递归
-        if (this::class == CommandExpression::class)
-            onParse(daVinCi)
-    }
 
     override fun injectThenParse(daVinCi: DaVinCi?) {
         onParse(daVinCi)
@@ -123,14 +124,14 @@ internal open class CommandExpression constructor(daVinCi: DaVinCi? = null, val 
         if (manual) return
         daVinCi?.let {
             expressions = when (it.currentToken) {
-                Corners.tag -> Corners(it)
-                Solid.tag -> Solid(it)
+                Corners.tag -> Corners.of(it)
+                Solid.tag -> Solid.of(it)
                 ShapeType.tag -> ShapeType(it)
                 Stroke.tag -> Stroke(it)
                 Size.tag -> Size(it)
                 Padding.tag -> Padding(it)
                 Gradient.tag -> Gradient(it)
-                StatedColor.tag -> StatedColor(it)
+                StatedColor.tag -> StatedColor()
                 else -> throw Exception("cannot parse ${it.currentToken}")
             }
         }

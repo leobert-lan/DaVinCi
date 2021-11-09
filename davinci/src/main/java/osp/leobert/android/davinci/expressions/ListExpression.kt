@@ -8,7 +8,7 @@ import osp.leobert.android.davinci.State
 import java.util.*
 
 //region ListExp 同级别多条目解析
-internal class ListExpression constructor(daVinCi: DaVinCi? = null, private val manual: Boolean = false) : DaVinCiExpression(daVinCi) {
+internal class ListExpression constructor(daVinCi: DaVinCi? = null, private val manual: Boolean = false) : DaVinCiExpression() {
     private val list: ArrayList<DaVinCiExpression> = ArrayList()
 
     /**
@@ -72,7 +72,7 @@ internal class ListExpression constructor(daVinCi: DaVinCi? = null, private val 
 
                 } else { // 建立Command 表达式
                     try {
-                        val expressions: DaVinCiExpression = CommandExpression(it)
+                        val expressions: DaVinCiExpression = CommandExpression.of(it)
                         list.add(expressions)
                     } catch (e: Exception) {
                         if (DaVinCi.enableDebugLog) Log.e(sLogTag, "语法解析有误", e)

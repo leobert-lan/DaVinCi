@@ -3,6 +3,7 @@ package osp.leobert.android.davinci
 import android.util.Log
 import android.view.View
 import android.widget.TextView
+import androidx.annotation.CallSuper
 import androidx.annotation.ColorInt
 import androidx.annotation.Px
 import osp.leobert.android.davinci.Applier.Companion.csl
@@ -10,14 +11,20 @@ import osp.leobert.android.davinci.Applier.Companion.viewBackground
 import osp.leobert.android.davinci.expressions.*
 import osp.leobert.android.davinci.syntactic.CslSyntactic
 import osp.leobert.android.davinci.syntactic.SldSyntactic
+import osp.leobert.android.reporter.review.TODO
 
 @Suppress("WeakerAccess", "unused")
-abstract class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
+@TODO(desc = "构造函数转为默构造函数，从来没有实际传过davinci的值")
+abstract class DaVinCiExpression constructor() {
 
     protected fun <T> log(str: String, any: T?): T? {
         if (DaVinCi.enableDebugLog) Log.d(sLogTag, "${javaClass.simpleName}:$str")
         return any
     }
+
+
+    protected var daVinCi: DaVinCi? = null
+
 
     // 节点名称
     protected var tokenName: String? = null
@@ -33,6 +40,12 @@ abstract class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
 
     }
 
+    @CallSuper
+    @TODO(desc = "实现reset 逻辑")
+    protected open fun reset() {
+
+    }
+
     //实际属性是否需要从text解析，手动创建并给了专有属性的，设为false，就不会被覆盖了
     protected var parseFromText = true
 
@@ -45,7 +58,6 @@ abstract class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
     abstract fun interpret()
 
     open fun startTag(): String = ""
-
 
     internal open fun containsState(dState: DState): Boolean {
         return false
@@ -85,7 +97,7 @@ abstract class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
 
 
     //region StateListDrawable
-    class StateListDrawable internal constructor(val manual: Boolean = false) : DaVinCiExpression(null) {
+    class StateListDrawable internal constructor(val manual: Boolean = false) : DaVinCiExpression() {
 
         private var expressions: ShapeListExpression? = null
         override fun startTag(): String = tag
@@ -145,7 +157,7 @@ abstract class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
 
 
     //region Shape
-    class Shape internal constructor(val manual: Boolean = false) : DaVinCiExpression(null) {
+    class Shape internal constructor(val manual: Boolean = false) : DaVinCiExpression() {
 
         private var expressions: ListExpression? = null
         override fun startTag(): String = tag
@@ -217,7 +229,7 @@ abstract class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
 
 
         fun corner(@Px r: Int): Shape {
-            Corners(manual = true).apply {
+            Corners.of(manual = true).apply {
                 this.conners = arrayListOf(r, r, r, r)
                 parseFromText = false
                 listExpression().append(this)
@@ -226,7 +238,7 @@ abstract class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
         }
 
         fun corner(str: String): Shape {
-            Corners(manual = true).apply {
+            Corners.of(manual = true).apply {
                 this.text = str
                 parseFromText = true
                 listExpression().append(this)
@@ -235,7 +247,7 @@ abstract class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
         }
 
         fun corners(@Px lt: Int, @Px rt: Int, @Px rb: Int, @Px lb: Int): Shape {
-            Corners(manual = true).apply {
+            Corners.of(manual = true).apply {
                 this.conners = arrayListOf(lt, rt, rb, lb)
                 parseFromText = false
                 listExpression().append(this)
@@ -245,7 +257,7 @@ abstract class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
 
         //e.g. "@tagid","#e5332c"
         fun solid(str: String): Shape {
-            Solid(manual = true).apply {
+            Solid.of(manual = true).apply {
                 text = str
                 listExpression().append(this)
             }
@@ -253,7 +265,7 @@ abstract class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
         }
 
         fun solid(@ColorInt color: Int): Shape {
-            Solid(manual = true).apply {
+            Solid.of(manual = true).apply {
                 text = "#" + String.format("%8x", color)
                 this.colorInt = color
                 parseFromText = false
@@ -406,7 +418,7 @@ abstract class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
 
 
     //region Color State List
-    class ColorStateList internal constructor(private val manual: Boolean = false) : DaVinCiExpression(null) {
+    class ColorStateList internal constructor(private val manual: Boolean = false) : DaVinCiExpression() {
 
         private var expressions: ListExpression? = null
         override fun startTag(): String = tag

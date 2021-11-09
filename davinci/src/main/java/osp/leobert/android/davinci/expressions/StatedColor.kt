@@ -5,8 +5,7 @@ import osp.leobert.android.davinci.DaVinCi
 import osp.leobert.android.davinci.State
 import osp.leobert.android.davinci.StateItem
 
-internal class StatedColor internal constructor(daVinCi: DaVinCi? = null, manual: Boolean = false) :
-    CommandExpression(daVinCi, manual) {
+internal class StatedColor internal constructor(manual: Boolean = false) : CommandExpression(null, manual) {
     @ColorInt
     var colorInt: Int? = null //这是解析出来的，不要乱赋值
 
@@ -22,11 +21,11 @@ internal class StatedColor internal constructor(daVinCi: DaVinCi? = null, manual
         const val separator = state_separator
 
         internal fun create(
-            daVinCi: DaVinCi? = null, manual: Boolean = false, parseFromText: Boolean = true,
+            manual: Boolean = false, parseFromText: Boolean = true,
             colorInt: Int? = null, colorStr: String?, states: Array<out State>
         ): StatedColor {
 
-            val ret = StatedColor(daVinCi = daVinCi, manual = manual)
+            val ret = StatedColor(manual = manual)
             ret.colorInt = colorInt
             ret.states.addAll(states)
             ret.parseFromText = parseFromText
@@ -36,11 +35,11 @@ internal class StatedColor internal constructor(daVinCi: DaVinCi? = null, manual
         }
 
         internal fun create(
-            daVinCi: DaVinCi? = null, manual: Boolean = false, parseFromText: Boolean = true,
+            manual: Boolean = false, parseFromText: Boolean = true,
             colorInt: Int? = null, colorStr: String?, states: Array<out String>
         ): StatedColor {
 
-            val ret = StatedColor(daVinCi = daVinCi, manual = manual)
+            val ret = StatedColor(manual = manual)
             ret.colorInt = colorInt
             ret.parseFromText = parseFromText
             ret.text = "$prop_state${states.joinToString(separator)};$prop_color${colorStr}"
@@ -51,7 +50,8 @@ internal class StatedColor internal constructor(daVinCi: DaVinCi? = null, manual
     }
 
     init {
-        injectThenParse(daVinCi)
+        injectThenParse(null)
+//        injectThenParse(daVinCi)
     }
 
     override fun injectThenParse(daVinCi: DaVinCi?) {

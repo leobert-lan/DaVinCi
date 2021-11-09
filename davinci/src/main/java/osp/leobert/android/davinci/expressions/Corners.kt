@@ -10,17 +10,23 @@ import osp.leobert.android.davinci.DaVinCi
 <!--android:bottomLeftRadius="integer"-->
 <!--android:bottomRightRadius="integer" />-->
 shape:[ corners:[ 4 ] solid:[ #353538 ] ]*/
-internal class Corners(daVinCi: DaVinCi? = null, manual: Boolean = false) : CommandExpression(daVinCi, manual) {
+internal class Corners private constructor(manual: Boolean = false) : CommandExpression(null, manual) {
 
     var conners: List<Int>? = null
 
     companion object {
         const val tag = "corners:["
+
+        fun of(daVinCi: DaVinCi? = null, manual: Boolean = false):Corners {
+            return Corners(manual).apply {
+                injectThenParse(daVinCi)
+            }
+        }
     }
 
-    init {
-        injectThenParse(daVinCi)
-    }
+//    init {
+//        injectThenParse(daVinCi)
+//    }
 
     override fun injectThenParse(daVinCi: DaVinCi?) {
         this.daVinCi = daVinCi

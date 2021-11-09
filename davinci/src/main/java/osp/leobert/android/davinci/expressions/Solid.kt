@@ -4,17 +4,23 @@ import androidx.annotation.ColorInt
 import osp.leobert.android.davinci.DaVinCi
 
 //region Solid
-internal class Solid(daVinCi: DaVinCi? = null, manual: Boolean = false) : CommandExpression(daVinCi, manual) {
+internal class Solid private constructor(manual: Boolean = false) : CommandExpression(null, manual) {
     @ColorInt
     internal var colorInt: Int? = null //这是解析出来的，不要乱赋值
 
     companion object {
         const val tag = "solid:["
+
+        fun of(daVinCi: DaVinCi? = null, manual: Boolean = false):Solid {
+            return Solid(manual).apply {
+                injectThenParse(daVinCi)
+            }
+        }
     }
 
-    init {
-        injectThenParse(daVinCi)
-    }
+//    init {
+//        injectThenParse(daVinCi)
+//    }
 
     override fun injectThenParse(daVinCi: DaVinCi?) {
         this.daVinCi = daVinCi

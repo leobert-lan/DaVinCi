@@ -69,7 +69,7 @@ class CslSyntactic private constructor() : Statable<DaVinCiExpression.ColorState
     override fun states(vararg states: State): DaVinCiExpression.ColorStateList {
         val host = requireNotNull(host)
 
-        val statedColor = StatedColor.Companion.create(
+        val statedColor = StatedColor.create(
             manual = true,
             //如果颜色也不需要解析，则无需从文本解析
             parseFromText = this@CslSyntactic.colorTag == 1,
