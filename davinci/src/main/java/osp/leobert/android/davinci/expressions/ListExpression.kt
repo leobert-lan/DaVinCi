@@ -1,5 +1,6 @@
 package osp.leobert.android.davinci.expressions
 
+import android.annotation.SuppressLint
 import android.util.Log
 import osp.leobert.android.davinci.DaVinCi
 import osp.leobert.android.davinci.DaVinCiExpression
@@ -33,7 +34,7 @@ internal class ListExpression constructor(daVinCi: DaVinCi? = null, private val 
         return dState?.collectToArray()
     }
 
-//    @SuppressLint("all")
+    @SuppressLint("all")
     override fun injectThenParse(daVinCi: DaVinCi?) {
         this.daVinCi = daVinCi
         if (manual) {
@@ -86,6 +87,7 @@ internal class ListExpression constructor(daVinCi: DaVinCi? = null, private val 
         }
     }
 
+    @SuppressLint("all")
     override fun interpret() {
         list.forEach { it.interpret() }
         dState?.interpret()
