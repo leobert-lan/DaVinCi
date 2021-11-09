@@ -4,7 +4,7 @@ import androidx.annotation.ColorInt
 import osp.leobert.android.davinci.DaVinCi
 
 //region Solid
-internal class Solid private constructor(manual: Boolean = false) : CommandExpression(null, manual) {
+internal class Solid private constructor(manual: Boolean = false) : CommandExpression(manual) {
     @ColorInt
     internal var colorInt: Int? = null //这是解析出来的，不要乱赋值
 

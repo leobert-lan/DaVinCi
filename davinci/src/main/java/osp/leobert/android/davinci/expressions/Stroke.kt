@@ -11,7 +11,7 @@ import osp.leobert.android.davinci.DaVinCi
 //        <!--android:dashWidth="integer"-->
 //        <!--android:dashGap="integer" />-->
 //shape:[ stroke:[ width:1dp;color:#aaaaaa;dashWidth:4;dashGap:6dp ] ]
-internal class Stroke private constructor(manual: Boolean = false) : CommandExpression(null, manual) {
+internal class Stroke private constructor(manual: Boolean = false) : CommandExpression(manual) {
 
     override fun startTag(): String = tag
 

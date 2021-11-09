@@ -5,7 +5,7 @@ import osp.leobert.android.davinci.DaVinCi
 import osp.leobert.android.davinci.State
 import osp.leobert.android.davinci.StateItem
 
-internal class StatedColor private constructor(manual: Boolean = false) : CommandExpression(null, manual) {
+internal class StatedColor private constructor(manual: Boolean = false) : CommandExpression(manual) {
     @ColorInt
     var colorInt: Int? = null //这是解析出来的，不要乱赋值
 

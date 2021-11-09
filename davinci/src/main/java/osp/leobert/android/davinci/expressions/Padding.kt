@@ -9,7 +9,7 @@ import osp.leobert.android.davinci.DaVinCi
 //        <!--android:top="integer"-->
 //        <!--android:right="integer"-->
 //        <!--android:bottom="integer" />-->
-internal class Padding private constructor( manual: Boolean = false) : CommandExpression(null, manual) {
+internal class Padding private constructor(manual: Boolean = false) : CommandExpression(manual) {
 
     override fun startTag(): String = tag
 
@@ -21,7 +21,7 @@ internal class Padding private constructor( manual: Boolean = false) : CommandEx
         const val prop_right = "right:"
         const val prop_bottom = "bottom:"
 
-        fun of(daVinCi: DaVinCi? = null, manual: Boolean = false):Padding {
+        fun of(daVinCi: DaVinCi? = null, manual: Boolean = false): Padding {
             return Padding(manual).apply {
                 injectThenParse(daVinCi)
             }
@@ -61,7 +61,7 @@ internal class Padding private constructor( manual: Boolean = false) : CommandEx
             top = null
 
             //避免无效逻辑
-            val dvc = daVinCi?:return@let
+            val dvc = daVinCi ?: return@let
 
             it.split(";").forEach { e ->
                 when {

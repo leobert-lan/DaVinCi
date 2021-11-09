@@ -7,7 +7,7 @@ import osp.leobert.android.davinci.State
 /*
  * region state
  */
-internal class DState private constructor(manual: Boolean = false) : CommandExpression(null, manual) {
+internal class DState private constructor(manual: Boolean = false) : CommandExpression(manual) {
 
     private val states: MutableSet<State> by lazy { linkedSetOf() }
 

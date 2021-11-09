@@ -5,7 +5,7 @@ import osp.leobert.android.davinci.DaVinCiCore
 
 // shape:[ st:[reactangle] ]
 // Rectangle(0), Oval(1), Line(2), Ring(3);
-internal class ShapeType private constructor(manual: Boolean = false) : CommandExpression(null, manual) {
+internal class ShapeType private constructor(manual: Boolean = false) : CommandExpression(manual) {
 
     companion object {
         const val tag = "st:["

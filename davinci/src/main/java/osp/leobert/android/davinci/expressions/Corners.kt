@@ -10,7 +10,7 @@ import osp.leobert.android.davinci.DaVinCi
 <!--android:bottomLeftRadius="integer"-->
 <!--android:bottomRightRadius="integer" />-->
 shape:[ corners:[ 4 ] solid:[ #353538 ] ]*/
-internal class Corners private constructor(manual: Boolean = false) : CommandExpression(null, manual) {
+internal class Corners private constructor(manual: Boolean = false) : CommandExpression(manual) {
 
     var conners: List<Int>? = null
 

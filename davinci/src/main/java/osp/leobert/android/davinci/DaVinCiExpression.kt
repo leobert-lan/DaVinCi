@@ -15,7 +15,7 @@ import osp.leobert.android.reporter.review.TODO
 
 @Suppress("WeakerAccess", "unused")
 @TODO(desc = "构造函数转为默构造函数，从来没有实际传过davinci的值")
-abstract class DaVinCiExpression constructor() {
+abstract class DaVinCiExpression {
 
     protected fun <T> log(str: String, any: T?): T? {
         if (DaVinCi.enableDebugLog) Log.d(sLogTag, "${javaClass.simpleName}:$str")
