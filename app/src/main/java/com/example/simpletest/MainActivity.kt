@@ -36,13 +36,10 @@ class MainActivity : AppCompatActivity() {
 
 
         binding.test.setOnClickListener {
-            it.daVinCi(
-                normal = DaVinCiExpression.shape().oval()
-                    .corner("40dp") //这个就没啥用了
-                    .solid(resources.getColor(R.color.colorPrimaryDark))
-                    .stroke(12, Color.parseColor("#26262a"))
-            )
-
+            DaVinCiExpression.shape().oval()
+                .corner("40dp") //这个就没啥用了
+                .solid(resources.getColor(R.color.colorPrimaryDark))
+                .stroke(12, Color.parseColor("#26262a")).applyInto(it)
         }
 
         //这种方式不推荐使用，手写语法式很容易出错，但这是一个保留功能，日志将以此语法形式输出，
