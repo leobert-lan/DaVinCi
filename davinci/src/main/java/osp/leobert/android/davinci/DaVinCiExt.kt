@@ -52,7 +52,7 @@ fun View.daVinCiShape(str: String) {
 
     val daVinCi = DaVinCi.of(str, this.applier())
 
-    val expressions: DaVinCiExpression = DaVinCiExpression.Shape()
+    val expressions: DaVinCiExpression = DaVinCiExpression.Shape.of()
 
     expressions.injectThenParse(daVinCi)
     expressions.interpret()

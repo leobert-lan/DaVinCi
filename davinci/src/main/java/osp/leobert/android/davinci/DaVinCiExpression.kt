@@ -69,7 +69,7 @@ abstract class DaVinCiExpression constructor() {
         fun stateListDrawable(): StateListDrawable = StateListDrawable(manual = true)
 
         @JvmStatic
-        fun shape(): Shape = Shape(manual = true)
+        fun shape(): Shape = Shape.of(manual = true)
 
         @JvmStatic
         fun stateColor(): ColorStateList = ColorStateList(manual = true)
@@ -102,7 +102,7 @@ abstract class DaVinCiExpression constructor() {
         private var expressions: ShapeListExpression? = null
         override fun startTag(): String = tag
 
-        internal fun shapeListExpression(): ShapeListExpression = expressions ?: ShapeListExpression(daVinCi, manual).apply {
+        internal fun shapeListExpression(): ShapeListExpression = expressions ?: ShapeListExpression.of(daVinCi, manual).apply {
             expressions = this
         }
 
@@ -158,6 +158,16 @@ abstract class DaVinCiExpression constructor() {
 
     //region Shape
     class Shape internal constructor(val manual: Boolean = false) : DaVinCiExpression() {
+
+        companion object {
+            const val tag = "shape:["
+
+            fun of(daVinCi: DaVinCi? = null, manual: Boolean = false):Shape {
+                return Shape(manual).apply {
+                    this.daVinCi = daVinCi
+                }
+            }
+        }
 
         private var expressions: ListExpression? = null
         override fun startTag(): String = tag
@@ -370,10 +380,6 @@ abstract class DaVinCiExpression constructor() {
         }
         //endregion
 
-
-        companion object {
-            const val tag = "shape:["
-        }
 
         override fun injectThenParse(daVinCi: DaVinCi?) {
             this.daVinCi = daVinCi

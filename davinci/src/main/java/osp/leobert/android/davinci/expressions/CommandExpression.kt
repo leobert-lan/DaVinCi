@@ -131,7 +131,7 @@ internal open class CommandExpression constructor(daVinCi: DaVinCi? = null, val 
                 Size.tag -> Size.of(it)
                 Padding.tag -> Padding.of(it)
                 Gradient.tag -> Gradient.of(it)
-                StatedColor.tag -> StatedColor()
+                StatedColor.tag -> StatedColor.of()
                 else -> throw Exception("cannot parse ${it.currentToken}")
             }
         }

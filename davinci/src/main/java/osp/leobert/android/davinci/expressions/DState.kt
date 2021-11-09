@@ -7,10 +7,7 @@ import osp.leobert.android.davinci.State
 /*
  * region state
  */
-internal class DState internal constructor(
-    daVinCi: DaVinCi? = null,
-    manual: Boolean = false
-) : CommandExpression(daVinCi, manual) {
+internal class DState private constructor(manual: Boolean = false) : CommandExpression(null, manual) {
 
     private val states: MutableSet<State> by lazy { linkedSetOf() }
 
@@ -37,11 +34,17 @@ internal class DState internal constructor(
         const val tag = "state:["
         private const val state_separator = CommandExpression.state_separator
 
+        fun of(daVinCi: DaVinCi? = null, manual: Boolean = false):DState {
+            return DState(manual).apply {
+                injectThenParse(daVinCi)
+            }
+        }
+
         internal fun create(
             daVinCi: DaVinCi? = null, manual: Boolean = false, parseFromText: Boolean = true,
             states: Array<out State>
         ): DState {
-            val ret = DState(daVinCi = daVinCi, manual = manual)
+            val ret = of(daVinCi = daVinCi, manual = manual)
             ret.parseFromText = parseFromText
             ret.appendStates(states)
             return ret
@@ -51,7 +54,7 @@ internal class DState internal constructor(
             daVinCi: DaVinCi? = null, manual: Boolean = false, parseFromText: Boolean = true,
             states: Array<out String>
         ): DState {
-            val ret = DState(daVinCi = daVinCi, manual = manual)
+            val ret = of(daVinCi = daVinCi, manual = manual)
             ret.parseFromText = parseFromText
             ret.text = states.joinToString(CommandExpression.state_separator)
             return ret

@@ -21,7 +21,7 @@ internal class ListExpression constructor(daVinCi: DaVinCi? = null, private val 
     }
 
     fun appendState(vararg states: State) {
-        val dState = dState ?: DState(daVinCi)
+        val dState = dState ?: DState.of(daVinCi)
         dState.appendStates(states)
         this.dState = dState
     }
@@ -68,7 +68,7 @@ internal class ListExpression constructor(daVinCi: DaVinCi? = null, private val 
                             "only one state expression is permitted in one group, will override old one $dState"
                         )
                     }
-                    dState = DState(it)
+                    dState = DState.of(it)
 
                 } else { // 建立Command 表达式
                     try {

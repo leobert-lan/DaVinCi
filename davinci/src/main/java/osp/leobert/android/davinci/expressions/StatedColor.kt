@@ -5,7 +5,7 @@ import osp.leobert.android.davinci.DaVinCi
 import osp.leobert.android.davinci.State
 import osp.leobert.android.davinci.StateItem
 
-internal class StatedColor internal constructor(manual: Boolean = false) : CommandExpression(null, manual) {
+internal class StatedColor private constructor(manual: Boolean = false) : CommandExpression(null, manual) {
     @ColorInt
     var colorInt: Int? = null //这是解析出来的，不要乱赋值
 
@@ -20,12 +20,19 @@ internal class StatedColor internal constructor(manual: Boolean = false) : Comma
 
         const val separator = state_separator
 
+        fun of(daVinCi: DaVinCi? = null, manual: Boolean = false):StatedColor {
+            return StatedColor(manual).apply {
+                this.daVinCi = daVinCi
+                injectThenParse(null)
+            }
+        }
+
         internal fun create(
             manual: Boolean = false, parseFromText: Boolean = true,
             colorInt: Int? = null, colorStr: String?, states: Array<out State>
         ): StatedColor {
 
-            val ret = StatedColor(manual = manual)
+            val ret = of(manual = manual)
             ret.colorInt = colorInt
             ret.states.addAll(states)
             ret.parseFromText = parseFromText
@@ -39,7 +46,7 @@ internal class StatedColor internal constructor(manual: Boolean = false) : Comma
             colorInt: Int? = null, colorStr: String?, states: Array<out String>
         ): StatedColor {
 
-            val ret = StatedColor(manual = manual)
+            val ret = of(manual = manual)
             ret.colorInt = colorInt
             ret.parseFromText = parseFromText
             ret.text = "$prop_state${states.joinToString(separator)};$prop_color${colorStr}"

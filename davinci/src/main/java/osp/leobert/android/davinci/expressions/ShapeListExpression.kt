@@ -7,8 +7,16 @@ import osp.leobert.android.davinci.DaVinCiExpression
 import java.util.ArrayList
 
 //专门用于解析一串shape
-internal class ShapeListExpression constructor(daVinCi: DaVinCi? = null, private val manual: Boolean = false) :
-    DaVinCiExpression(daVinCi) {
+internal class ShapeListExpression private constructor(private val manual: Boolean = false) : DaVinCiExpression() {
+
+    companion object {
+        fun of(daVinCi: DaVinCi? = null, manual: Boolean = false): ShapeListExpression {
+            return ShapeListExpression(manual).apply {
+                this.daVinCi = daVinCi
+            }
+        }
+    }
+
     private val list: ArrayList<DaVinCiExpression> = ArrayList()
 
     fun append(exp: DaVinCiExpression) {
@@ -48,8 +56,7 @@ internal class ShapeListExpression constructor(daVinCi: DaVinCi? = null, private
                     //进入同级别下一个解析
                     it.next()
                 } else if (it.equalsWithCommand(Shape.tag)) {
-                    list.add(Shape().apply {
-                        this.daVinCi = it
+                    list.add(Shape.of(daVinCi = it).apply {
                         //injectThenParse(it) //should not call this method, in autoParse mode, it will invoke nextToken to fetch the specified tag, but now it has moved to
                         interpret()
                     })
