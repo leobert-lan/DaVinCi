@@ -184,7 +184,7 @@ abstract class DaVinCiExpression constructor() {
         }
 
         fun type(str: String): Shape {
-            ShapeType(manual = true).apply {
+            ShapeType.of(manual = true).apply {
                 this.text = str
                 listExpression().append(this)
             }
@@ -192,7 +192,7 @@ abstract class DaVinCiExpression constructor() {
         }
 
         fun rectAngle(): Shape {
-            ShapeType(manual = true).apply {
+            ShapeType.of(manual = true).apply {
                 this.text = ShapeType.Rectangle
                 parseFromText = false
                 listExpression().append(this)
@@ -201,7 +201,7 @@ abstract class DaVinCiExpression constructor() {
         }
 
         fun oval(): Shape {
-            ShapeType(manual = true).apply {
+            ShapeType.of(manual = true).apply {
                 this.text = ShapeType.Oval
                 parseFromText = false
                 listExpression().append(this)
@@ -210,7 +210,7 @@ abstract class DaVinCiExpression constructor() {
         }
 
         fun ring(): Shape {
-            ShapeType(manual = true).apply {
+            ShapeType.of(manual = true).apply {
                 this.text = ShapeType.Ring
                 parseFromText = false
                 listExpression().append(this)
@@ -219,7 +219,7 @@ abstract class DaVinCiExpression constructor() {
         }
 
         fun line(): Shape {
-            ShapeType(manual = true).apply {
+            ShapeType.of(manual = true).apply {
                 this.text = ShapeType.Line
                 parseFromText = false
                 listExpression().append(this)
@@ -277,7 +277,7 @@ abstract class DaVinCiExpression constructor() {
         //e.g. color "@tagid","#e5332c"
         //width "4"->4px "3dp"->3dp
         fun stroke(width: String, color: String): Shape {
-            Stroke(manual = true).apply {
+            Stroke.of(manual = true).apply {
                 text = Stroke.prop_width + width + ";" + Stroke.prop_color + color
                 listExpression().append(this)
             }
@@ -285,7 +285,7 @@ abstract class DaVinCiExpression constructor() {
         }
 
         fun stroke(width: String, color: String, dashGap: String, dashWidth: String): Shape {
-            Stroke(manual = true).apply {
+            Stroke.of(manual = true).apply {
                 text =
                     "${Stroke.prop_width}$width;${Stroke.prop_color}$color;${Stroke.prop_dash_gap}$dashGap;${Stroke.prop_dash_width}$dashWidth"
                 listExpression().append(this)
@@ -294,7 +294,7 @@ abstract class DaVinCiExpression constructor() {
         }
 
         fun stroke(@Px width: Int, @ColorInt colorInt: Int): Shape {
-            Stroke(manual = true).apply {
+            Stroke.of(manual = true).apply {
                 color = colorInt
                 this.width = width
                 parseFromText = false
@@ -322,7 +322,7 @@ abstract class DaVinCiExpression constructor() {
             centerY: Float,
             angle: Int = 0,
         ): Shape {
-            Gradient(manual = true).apply {
+            Gradient.of(manual = true).apply {
                 this.type = type
                 this.startColor = startColor
                 this.centerColor = centerColor
@@ -356,7 +356,7 @@ abstract class DaVinCiExpression constructor() {
             type: String = Gradient.TYPE_LINEAR, startColor: String,
             centerColor: String?, endColor: String, centerX: Float, centerY: Float, angle: Int,
         ): Shape {
-            Gradient(manual = true).apply {
+            Gradient.of(manual = true).apply {
                 text = type.run { "${Gradient.prop_type}$this" } +
                         startColor.run { ";${Gradient.prop_start_color}$this" } +
                         centerColor.run { ";${Gradient.prop_center_color}$this" } +

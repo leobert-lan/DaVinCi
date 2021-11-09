@@ -11,7 +11,7 @@ import osp.leobert.android.davinci.DaVinCi
 //        <!--android:dashWidth="integer"-->
 //        <!--android:dashGap="integer" />-->
 //shape:[ stroke:[ width:1dp;color:#aaaaaa;dashWidth:4;dashGap:6dp ] ]
-internal class Stroke(daVinCi: DaVinCi? = null, manual: Boolean = false) : CommandExpression(daVinCi, manual) {
+internal class Stroke private constructor(manual: Boolean = false) : CommandExpression(null, manual) {
 
     override fun startTag(): String = tag
 
@@ -22,11 +22,17 @@ internal class Stroke(daVinCi: DaVinCi? = null, manual: Boolean = false) : Comma
         const val prop_color = "color:"
         const val prop_dash_width = "dashWidth:"
         const val prop_dash_gap = "dashGap:"
+
+        fun of(daVinCi: DaVinCi? = null, manual: Boolean = false):Stroke {
+            return Stroke(manual).apply {
+                injectThenParse(daVinCi)
+            }
+        }
     }
 
-    init {
-        injectThenParse(daVinCi)
-    }
+//    init {
+//        injectThenParse(daVinCi)
+//    }
 
     @Px
     var width: Int? = null

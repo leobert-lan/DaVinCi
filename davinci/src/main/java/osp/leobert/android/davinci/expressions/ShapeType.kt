@@ -5,7 +5,7 @@ import osp.leobert.android.davinci.DaVinCiCore
 
 // shape:[ st:[reactangle] ]
 // Rectangle(0), Oval(1), Line(2), Ring(3);
-internal class ShapeType(daVinCi: DaVinCi? = null, manual: Boolean = false) : CommandExpression(daVinCi, manual) {
+internal class ShapeType private constructor(manual: Boolean = false) : CommandExpression(null, manual) {
 
     companion object {
         const val tag = "st:["
@@ -14,11 +14,17 @@ internal class ShapeType(daVinCi: DaVinCi? = null, manual: Boolean = false) : Co
         const val Oval = "Oval"
         const val Line = "Line"
         const val Ring = "Ring"
+
+        fun of(daVinCi: DaVinCi? = null, manual: Boolean = false):ShapeType {
+            return ShapeType(manual).apply {
+                injectThenParse(daVinCi)
+            }
+        }
     }
 
-    init {
-        injectThenParse(daVinCi)
-    }
+//    init {
+//        injectThenParse(daVinCi)
+//    }
 
     override fun injectThenParse(daVinCi: DaVinCi?) {
         this.daVinCi = daVinCi

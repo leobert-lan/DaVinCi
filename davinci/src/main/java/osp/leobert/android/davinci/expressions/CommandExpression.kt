@@ -126,11 +126,11 @@ internal open class CommandExpression constructor(daVinCi: DaVinCi? = null, val 
             expressions = when (it.currentToken) {
                 Corners.tag -> Corners.of(it)
                 Solid.tag -> Solid.of(it)
-                ShapeType.tag -> ShapeType(it)
-                Stroke.tag -> Stroke(it)
-                Size.tag -> Size(it)
-                Padding.tag -> Padding(it)
-                Gradient.tag -> Gradient(it)
+                ShapeType.tag -> ShapeType.of(it)
+                Stroke.tag -> Stroke.of(it)
+                Size.tag -> Size.of(it)
+                Padding.tag -> Padding.of(it)
+                Gradient.tag -> Gradient.of(it)
                 StatedColor.tag -> StatedColor()
                 else -> throw Exception("cannot parse ${it.currentToken}")
             }

@@ -7,7 +7,7 @@ import osp.leobert.android.davinci.DaVinCi
 //        <!--<size-->
 //        <!--android:width="integer"-->
 //        <!--android:height="integer" />-->
-internal class Size(daVinCi: DaVinCi? = null, manual: Boolean = false) : CommandExpression(daVinCi, manual) {
+internal class Size private constructor( manual: Boolean = false) : CommandExpression(null, manual) {
 
     override fun startTag(): String = tag
 
@@ -16,11 +16,17 @@ internal class Size(daVinCi: DaVinCi? = null, manual: Boolean = false) : Command
 
         const val prop_width = "width:"
         const val prop_height = "height:"
+
+        fun of(daVinCi: DaVinCi? = null, manual: Boolean = false):Size {
+            return Size(manual).apply {
+                injectThenParse(daVinCi)
+            }
+        }
     }
 
-    init {
-        injectThenParse(daVinCi)
-    }
+//    init {
+//        injectThenParse(daVinCi)
+//    }
 
     @Px
     var width: Int? = null
