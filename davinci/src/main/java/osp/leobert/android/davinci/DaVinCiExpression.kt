@@ -74,7 +74,6 @@ abstract class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
         @JvmStatic
         fun stateArray(vararg state: State) = state
 
-
         const val sLogTag = "DaVinCi"
 
         const val END = "]"
@@ -164,11 +163,11 @@ abstract class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
             return this
         }
 
-        fun statesCollect():MutableCollection<State>? {
+        internal fun statesCollect():MutableCollection<State>? {
             return listExpression().states()
         }
 
-        fun statesArray():Array<State>? {
+        internal fun statesArray():Array<State>? {
             return listExpression().statesArray()
         }
 
@@ -428,21 +427,6 @@ abstract class DaVinCiExpression(var daVinCi: DaVinCi? = null) {
 
         fun color(@ColorInt color: Int): Statable<ColorStateList> {
             return CslSyntactic.of(this, color)
-        }
-
-        @Deprecated("表意不准确", ReplaceWith("color(color).states(state...)"))
-        fun apply(state: State, color: String): ColorStateList {
-            return color(color).states(state)
-        }
-
-        @Deprecated("表意不准确", ReplaceWith("color(color).states(state...)"))
-        fun apply(state: String, color: String): ColorStateList {
-            return color(color).states(state)
-        }
-
-        @Deprecated("表意不准确", ReplaceWith("color(color).states(state...)"))
-        fun apply(state: State, @ColorInt color: Int): ColorStateList {
-            return color(color).states(state)
         }
 
         override fun injectThenParse(daVinCi: DaVinCi?) {

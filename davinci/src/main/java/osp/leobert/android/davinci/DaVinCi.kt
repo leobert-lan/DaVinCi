@@ -46,7 +46,6 @@ class DaVinCi private constructor() {
         DPools.daVinCiPool.release(this)
     }
 
-
     val context: Context
         get() = requireNotNull(applier).context
 
@@ -65,12 +64,6 @@ class DaVinCi private constructor() {
 
     // 用来存储动态变化信息内容
     private val map: MutableMap<String, Any> = HashMap()
-
-    @Deprecated("和缓存池设计相悖", replaceWith = ReplaceWith("DaVinCi.Companion.of(text: String? = null, applier: Applier? = null)"))
-    constructor(text: String?, view: View) : this() {
-        stringTokenizer = StringTokenizer(text ?: "")
-        applier = (view.takeIfInstance<TextView>()?.csl()?.viewBackground()) ?: view.viewBackground()
-    }
 
     fun applySld(exp: DaVinCiExpression.StateListDrawable) {
         if (enableDebugLog && exp.manual) //手动创建的结构
@@ -118,7 +111,7 @@ class DaVinCi private constructor() {
     /*
      * 解析文本
      */
-    operator fun next(): String? {
+    internal operator fun next(): String? {
         currentToken = if (stringTokenizer?.hasMoreTokens() == true) {
             stringTokenizer?.nextToken()
         } else {
@@ -130,14 +123,14 @@ class DaVinCi private constructor() {
     /*
      * 判断命令是否正确
      */
-    fun equalsWithCommand(command: String?): Boolean {
+    internal fun equalsWithCommand(command: String?): Boolean {
         return command != null && command == currentToken
     }
 
     /*
      * 获得节点的内容
      */
-    fun getTokenContent(text: String?): String? {
+    internal fun getTokenContent(text: String?): String? {
         // 替换map中的动态变化内容后返回
         return text?.run {
             var a = this
@@ -156,7 +149,6 @@ class DaVinCi private constructor() {
     fun clear(key: String?) {
         map.remove(key)
     }
-
 
     fun clearAllVariable() {
         map.clear()

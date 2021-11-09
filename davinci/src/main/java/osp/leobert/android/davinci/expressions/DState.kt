@@ -98,11 +98,11 @@ internal class DState internal constructor(
         return "$tag ${if (parseFromText) text else states.joinToString(state_separator)} $END"
     }
 
-    fun collect(): MutableList<State> {
+    internal fun collect(): MutableList<State> {
         return states.toCollection(arrayListOf())
     }
 
-    fun collectToArray():Array<State> {
+    internal fun collectToArray():Array<State> {
         return states.toTypedArray()
     }
 }

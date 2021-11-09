@@ -1,11 +1,10 @@
 package osp.leobert.android.davinci.expressions
 
-import android.annotation.SuppressLint
 import android.util.Log
 import osp.leobert.android.davinci.DaVinCi
 import osp.leobert.android.davinci.DaVinCiExpression
 import osp.leobert.android.davinci.State
-import java.util.ArrayList
+import java.util.*
 
 //region ListExp 同级别多条目解析
 internal class ListExpression constructor(daVinCi: DaVinCi? = null, private val manual: Boolean = false) : DaVinCiExpression(daVinCi) {
@@ -26,15 +25,15 @@ internal class ListExpression constructor(daVinCi: DaVinCi? = null, private val 
         this.dState = dState
     }
 
-    fun states():MutableCollection<State>? {
+    internal fun states():MutableCollection<State>? {
         return dState?.collect()
     }
 
-    fun statesArray():Array<State>? {
+    internal fun statesArray():Array<State>? {
         return dState?.collectToArray()
     }
 
-    @SuppressLint("all")
+//    @SuppressLint("all")
     override fun injectThenParse(daVinCi: DaVinCi?) {
         this.daVinCi = daVinCi
         if (manual) {
@@ -48,7 +47,11 @@ internal class ListExpression constructor(daVinCi: DaVinCi? = null, private val 
             var i = 0
             while (i < 100) { // true,语法错误时有点可怕，先上限100
                 if (it.currentToken == null) { // 获取当前节点如果为 null 则表示缺少]表达式
-                    println("Error: The Expression Missing ']'! ")
+
+                    if (DaVinCi.enableDebugLog) Log.e(
+                        sLogTag,
+                        "Error: The Expression Missing ']'! ")
+
                     break
                 } else if (it.equalsWithCommand(END)) {
                     it.next()
@@ -83,7 +86,6 @@ internal class ListExpression constructor(daVinCi: DaVinCi? = null, private val 
         }
     }
 
-    @SuppressLint("all")
     override fun interpret() {
         list.forEach { it.interpret() }
         dState?.interpret()
