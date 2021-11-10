@@ -6,7 +6,6 @@ import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
 import java.util.*
 import java.util.concurrent.Executors
-import kotlin.concurrent.thread
 
 @Suppress("unused")
 class DaVinCi private constructor() {
@@ -53,11 +52,12 @@ class DaVinCi private constructor() {
         * 在Application静态块中调用一次，基本可以免去Application onCreate时加载样式，或者第一次使用DaVinCi的耗时
         * */
         fun fastLoad() {
-            thread {
+            daVinCiExecute {
                 val start = System.nanoTime()
                 DaVinCiExpression.stateListDrawable()
-                    .shape(DaVinCiExpression.shape().rectAngle().solid("#ffffffff").corner("0"))
+                    .shape(DaVinCiExpression.shape().rectAngle().solid("#ffffffff").stroke("1","#ffffffff").corner("0"))
                     .states(State.ENABLE_F)
+
                 val cost = System.nanoTime() - start
                 if (enableDebugLog)
                     Log.d(
@@ -98,8 +98,10 @@ class DaVinCi private constructor() {
     }
 
     fun release() {
-        Log.e("lmsg", "release davinci, ${hashCode()}")
-        DPools.daVinCiPool.release(this)
+        daVinCiExecute {
+            Log.e("lmsg", "release davinci, ${hashCode()}")
+            DPools.daVinCiPool.release(this)
+        }
     }
 
     val context: Context

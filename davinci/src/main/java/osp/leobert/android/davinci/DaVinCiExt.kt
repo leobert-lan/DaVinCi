@@ -73,21 +73,23 @@ fun TextView.daVinCiColor(str: String) {
 
 @BindingAdapter("daVinCiTextColor")
 fun TextView.daVinCiColor(expressions: DaVinCiExpression.ColorStateList) {
-    if (DaVinCi.enableDebugLog) Log.d(DaVinCiExpression.sLogTag, "daVinCiColor:$expressions")
-    val daVinCi = DaVinCi.of(null, this.csl())
-
-    daVinCi.applyCsl(expressions) {
-        daVinCi.release()
-    }
+    expressions.applyInto(this)
+//    if (DaVinCi.enableDebugLog) Log.d(DaVinCiExpression.sLogTag, "daVinCiColor:$expressions")
+//    val daVinCi = DaVinCi.of(null, this.csl())
+//
+//    daVinCi.applyCsl(expressions) {
+//        daVinCi.release()
+//    }
 }
 
 fun View.daVinCiShape(expressions: DaVinCiExpression.StateListDrawable) {
-    if (DaVinCi.enableDebugLog) Log.d(DaVinCiExpression.sLogTag, "daVinCiShape:$expressions")
-    val daVinCi = DaVinCi.of(null, this.applier())
-
-    daVinCi.applySld(expressions) {
-        daVinCi.release()
-    }
+    expressions.applyInto(this)
+//    if (DaVinCi.enableDebugLog) Log.d(DaVinCiExpression.sLogTag, "daVinCiShape:$expressions")
+//    val daVinCi = DaVinCi.of(null, this.applier())
+//
+//    daVinCi.applySld(expressions) {
+//        daVinCi.release()
+//    }
 }
 
 @BindingAdapter("daVinCiStyle")
