@@ -27,7 +27,6 @@ internal class DState private constructor() : CommandExpression() {
         super.onTextContentSet(text)
         //state hash
         statesHash = text?.split(CommandExpression.state_separator)?.sorted()?.hashCode() ?: 0
-        Log.e("lmsg", "set stateHash:$statesHash")
     }
 
 
