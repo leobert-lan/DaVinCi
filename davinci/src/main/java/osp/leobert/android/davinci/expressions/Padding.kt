@@ -1,6 +1,7 @@
 package osp.leobert.android.davinci.expressions
 
 import androidx.annotation.Px
+import osp.leobert.android.davinci.DPools
 import osp.leobert.android.davinci.DaVinCi
 
 //region Padding 一般不用
@@ -21,12 +22,31 @@ internal class Padding private constructor() : CommandExpression() {
         const val prop_right = "right:"
         const val prop_bottom = "bottom:"
 
+        val factory: DPools.Factory<Padding> = object : DPools.Factory<Padding> {
+            override fun create(): Padding {
+                return Padding()
+            }
+        }
+
         fun of(daVinCi: DaVinCi? = null, manual: Boolean = false): Padding {
-            return Padding().apply {
+            return requireNotNull(DPools.paddingExpPool.acquire()).apply {
                 this.manual = manual
                 injectThenParse(daVinCi)
             }
         }
+    }
+
+    override fun reset() {
+        super.reset()
+        left = null
+        top = null
+        right = null
+        bottom = null
+    }
+
+    override fun release() {
+        onRelease()
+        DPools.paddingExpPool.release(this)
     }
 
 //    init {
@@ -60,6 +80,8 @@ internal class Padding private constructor() : CommandExpression() {
         text?.let { it ->
             left = null
             top = null
+            right = null
+            bottom = null
 
             //避免无效逻辑
             val dvc = daVinCi ?: return@let

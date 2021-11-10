@@ -29,7 +29,7 @@ internal open class CommandExpression internal constructor() : DaVinCiExpression
 
 
         fun of(daVinCi: DaVinCi? = null, manual: Boolean = false): CommandExpression {
-           return requireNotNull(DPools.commandExpPool.acquire()).apply {
+            return requireNotNull(DPools.commandExpPool.acquire()).apply {
                 this.manual = manual
                 //取代了init中的逻辑 ：if (this::class == CommandExpression::class) onParse(daVinCi)
                 onParse(daVinCi)
@@ -59,7 +59,6 @@ internal open class CommandExpression internal constructor() : DaVinCiExpression
         onRelease()
         DPools.commandExpPool.release(this)
     }
-
 
     override fun injectThenParse(daVinCi: DaVinCi?) {
         onParse(daVinCi)

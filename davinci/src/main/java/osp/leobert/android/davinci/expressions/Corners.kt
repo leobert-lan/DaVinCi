@@ -32,10 +32,6 @@ internal class Corners private constructor() : CommandExpression() {
         }
     }
 
-//    init {
-//        injectThenParse(daVinCi)
-//    }
-
     override fun reset() {
         super.reset()
         conners = null

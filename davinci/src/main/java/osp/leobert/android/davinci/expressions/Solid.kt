@@ -1,6 +1,7 @@
 package osp.leobert.android.davinci.expressions
 
 import androidx.annotation.ColorInt
+import osp.leobert.android.davinci.DPools
 import osp.leobert.android.davinci.DaVinCi
 
 //region Solid
@@ -11,8 +12,14 @@ internal class Solid private constructor() : CommandExpression() {
     companion object {
         const val tag = "solid:["
 
+        val factory: DPools.Factory<Solid> = object : DPools.Factory<Solid> {
+            override fun create(): Solid {
+                return Solid()
+            }
+        }
+
         fun of(daVinCi: DaVinCi? = null, manual: Boolean = false):Solid {
-            return Solid().apply {
+            return requireNotNull(DPools.solidExpPool.acquire()).apply {
                 this.manual = manual
                 injectThenParse(daVinCi)
             }
@@ -22,6 +29,16 @@ internal class Solid private constructor() : CommandExpression() {
 //    init {
 //        injectThenParse(daVinCi)
 //    }
+
+    override fun reset() {
+        super.reset()
+        colorInt = null
+    }
+
+    override fun release() {
+        onRelease()
+        DPools.solidExpPool.release(this)
+    }
 
     override fun injectThenParse(daVinCi: DaVinCi?) {
         this.daVinCi = daVinCi

@@ -1,5 +1,6 @@
 package osp.leobert.android.davinci.expressions
 
+import osp.leobert.android.davinci.DPools
 import osp.leobert.android.davinci.DaVinCi
 import osp.leobert.android.davinci.DaVinCiCore
 
@@ -15,17 +16,24 @@ internal class ShapeType private constructor() : CommandExpression() {
         const val Line = "Line"
         const val Ring = "Ring"
 
+        val factory: DPools.Factory<ShapeType> = object : DPools.Factory<ShapeType> {
+            override fun create(): ShapeType {
+                return ShapeType()
+            }
+        }
+
         fun of(daVinCi: DaVinCi? = null, manual: Boolean = false):ShapeType {
-            return ShapeType().apply {
+            return requireNotNull(DPools.shapeTypeExpPool.acquire()).apply {
                 this.manual = manual
                 injectThenParse(daVinCi)
             }
         }
     }
 
-//    init {
-//        injectThenParse(daVinCi)
-//    }
+    override fun release() {
+        onRelease()
+        DPools.shapeTypeExpPool.release(this)
+    }
 
     override fun injectThenParse(daVinCi: DaVinCi?) {
         this.daVinCi = daVinCi

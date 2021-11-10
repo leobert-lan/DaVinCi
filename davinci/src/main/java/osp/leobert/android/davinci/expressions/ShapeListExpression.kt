@@ -2,22 +2,49 @@ package osp.leobert.android.davinci.expressions
 
 import android.annotation.SuppressLint
 import android.util.Log
+import osp.leobert.android.davinci.DPools
 import osp.leobert.android.davinci.DaVinCi
 import osp.leobert.android.davinci.DaVinCiExpression
 import java.util.ArrayList
 
 //专门用于解析一串shape
-internal class ShapeListExpression private constructor(private val manual: Boolean = false) : DaVinCiExpression() {
+internal class ShapeListExpression private constructor() : DaVinCiExpression() {
 
     companion object {
+
+        val factory: DPools.Factory<ShapeListExpression> = object : DPools.Factory<ShapeListExpression> {
+            override fun create(): ShapeListExpression {
+                return ShapeListExpression()
+            }
+        }
+
         fun of(daVinCi: DaVinCi? = null, manual: Boolean = false): ShapeListExpression {
-            return ShapeListExpression(manual).apply {
+            return requireNotNull(DPools.shapeListExpPool.acquire()).apply {
+                this.manual = manual
                 this.daVinCi = daVinCi
             }
         }
     }
 
+    private var manual: Boolean = false
+
     private val list: ArrayList<DaVinCiExpression> = ArrayList()
+
+    override fun reset() {
+        super.reset()
+        manual = false
+        list.clear()
+    }
+
+    override fun onRelease() {
+        super.onRelease()
+        list.forEach { it.release() }
+    }
+
+    override fun release() {
+        onRelease()
+        DPools.shapeListExpPool.release(this)
+    }
 
     fun append(exp: DaVinCiExpression) {
         list.add(exp)

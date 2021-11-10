@@ -3,8 +3,12 @@ package osp.leobert.android.davinci
 import androidx.core.util.Pools
 import org.jetbrains.annotations.NotNull
 import osp.leobert.android.davinci.DaVinCiExpression.Companion.cast
+import osp.leobert.android.davinci.expressions.*
 import osp.leobert.android.davinci.expressions.CommandExpression
 import osp.leobert.android.davinci.expressions.Corners
+import osp.leobert.android.davinci.expressions.Padding
+import osp.leobert.android.davinci.expressions.Size
+import osp.leobert.android.davinci.expressions.Solid
 import osp.leobert.android.davinci.syntactic.CslSyntactic
 import osp.leobert.android.davinci.syntactic.SldSyntactic
 
@@ -35,6 +39,16 @@ object DPools {
     internal val commandExpPool by lazy { simple(DEFAULT_POOL_SIZE, CommandExpression.factory, DaVinCiExpression.resetter.cast()) }
 
     internal val cornersExpPool by lazy { simple(10, Corners.factory, DaVinCiExpression.resetter.cast()) }
+    internal val solidExpPool by lazy { simple(10, Solid.factory, DaVinCiExpression.resetter.cast()) }
+    internal val sizeExpPool by lazy { simple(10, Size.factory, DaVinCiExpression.resetter.cast()) }
+    internal val shapeTypeExpPool by lazy { simple(10, ShapeType.factory, DaVinCiExpression.resetter.cast()) }
+    internal val paddingExpPool by lazy { simple(10, Padding.factory, DaVinCiExpression.resetter.cast()) }
+    internal val strokeExpPool by lazy { simple(10, Stroke.factory, DaVinCiExpression.resetter.cast()) }
+    internal val gradientExpPool by lazy { simple(10, Gradient.factory, DaVinCiExpression.resetter.cast()) }
+    internal val dStateExpPool by lazy { simple(10, DState.factory, DaVinCiExpression.resetter.cast()) }
+    internal val listExpPool by lazy { simple(10, ListExpression.factory, DaVinCiExpression.resetter.cast()) }
+    internal val shapeListExpPool by lazy { simple(10, ShapeListExpression.factory, DaVinCiExpression.resetter.cast()) }
+    internal val statedColorExpPool by lazy { simple(10, StatedColor.factory, DaVinCiExpression.resetter.cast()) }
 
 
     private val EMPTY_RESETTER: Resetter<Any> = object : Resetter<Any> {

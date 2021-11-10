@@ -2,6 +2,7 @@ package osp.leobert.android.davinci.expressions
 
 import androidx.annotation.ColorInt
 import androidx.annotation.Px
+import osp.leobert.android.davinci.DPools
 import osp.leobert.android.davinci.DaVinCi
 
 //region Stroke
@@ -23,8 +24,14 @@ internal class Stroke private constructor() : CommandExpression() {
         const val prop_dash_width = "dashWidth:"
         const val prop_dash_gap = "dashGap:"
 
-        fun of(daVinCi: DaVinCi? = null, manual: Boolean = false):Stroke {
-            return Stroke().apply {
+        val factory: DPools.Factory<Stroke> = object : DPools.Factory<Stroke> {
+            override fun create(): Stroke {
+                return Stroke()
+            }
+        }
+
+        fun of(daVinCi: DaVinCi? = null, manual: Boolean = false): Stroke {
+            return requireNotNull(DPools.strokeExpPool.acquire()).apply {
                 this.manual = manual
                 injectThenParse(daVinCi)
             }
@@ -46,6 +53,19 @@ internal class Stroke private constructor() : CommandExpression() {
 
     @Px
     var dash_gap: Int? = null
+
+    override fun reset() {
+        super.reset()
+        width = null
+        color = null
+        dash_gap = null
+        dash_width = null
+    }
+
+    override fun release() {
+        onRelease()
+        DPools.strokeExpPool.release(this)
+    }
 
     override fun injectThenParse(daVinCi: DaVinCi?) {
         this.daVinCi = daVinCi

@@ -1,6 +1,7 @@
 package osp.leobert.android.davinci.expressions
 
 import androidx.annotation.Px
+import osp.leobert.android.davinci.DPools
 import osp.leobert.android.davinci.DaVinCi
 
 //region Size 一般不用
@@ -17,8 +18,14 @@ internal class Size private constructor() : CommandExpression() {
         const val prop_width = "width:"
         const val prop_height = "height:"
 
+        val factory: DPools.Factory<Size> = object : DPools.Factory<Size> {
+            override fun create(): Size {
+                return Size()
+            }
+        }
+
         fun of(daVinCi: DaVinCi? = null, manual: Boolean = false): Size {
-            return Size().apply {
+            return requireNotNull(DPools.sizeExpPool.acquire()).apply {
                 this.manual = manual
                 injectThenParse(daVinCi)
             }
@@ -34,6 +41,17 @@ internal class Size private constructor() : CommandExpression() {
 
     @Px
     var height: Int? = null
+
+    override fun reset() {
+        super.reset()
+        width = null
+        height = null
+    }
+
+    override fun release() {
+        onRelease()
+        DPools.sizeExpPool.release(this)
+    }
 
     override fun injectThenParse(daVinCi: DaVinCi?) {
         this.daVinCi = daVinCi

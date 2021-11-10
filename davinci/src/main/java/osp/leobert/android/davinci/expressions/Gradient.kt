@@ -2,6 +2,7 @@ package osp.leobert.android.davinci.expressions
 
 import android.util.Log
 import androidx.annotation.ColorInt
+import osp.leobert.android.davinci.DPools
 import osp.leobert.android.davinci.DaVinCi
 import osp.leobert.android.davinci.DaVinCiCore
 
@@ -39,8 +40,14 @@ internal class Gradient private constructor() : CommandExpression() {
         const val TYPE_RADIAL = "radial"
         const val TYPE_SWEEP = "sweep"
 
+        val factory: DPools.Factory<Gradient> = object : DPools.Factory<Gradient> {
+            override fun create(): Gradient {
+                return Gradient()
+            }
+        }
+
         fun of(daVinCi: DaVinCi? = null, manual: Boolean = false): Gradient {
-            return Gradient().apply {
+            return requireNotNull(DPools.gradientExpPool.acquire()).apply {
                 this.manual = manual
                 injectThenParse(daVinCi)
             }
@@ -68,6 +75,24 @@ internal class Gradient private constructor() : CommandExpression() {
     var centerY: Float? = 0f
     var gradientRadius: Int? = null
     var useLevel: Boolean = false
+
+    override fun reset() {
+        super.reset()
+          startColor = null
+          centerColor = null
+          endColor = null
+          type= TYPE_LINEAR
+          angle= 0
+          centerX = 0f
+          centerY= 0f
+          gradientRadius= null
+          useLevel = false
+    }
+
+    override fun release() {
+        onRelease()
+        DPools.gradientExpPool.release(this)
+    }
 
     override fun injectThenParse(daVinCi: DaVinCi?) {
         this.daVinCi = daVinCi

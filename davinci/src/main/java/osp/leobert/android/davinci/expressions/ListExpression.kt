@@ -2,21 +2,32 @@ package osp.leobert.android.davinci.expressions
 
 import android.annotation.SuppressLint
 import android.util.Log
+import osp.leobert.android.davinci.DPools
 import osp.leobert.android.davinci.DaVinCi
 import osp.leobert.android.davinci.DaVinCiExpression
 import osp.leobert.android.davinci.State
 import java.util.*
 
 //region ListExp 同级别多条目解析
-internal class ListExpression private constructor( private val manual: Boolean = false) : DaVinCiExpression() {
+internal class ListExpression private constructor() : DaVinCiExpression() {
 
     companion object {
+
+        val factory: DPools.Factory<ListExpression> = object : DPools.Factory<ListExpression> {
+            override fun create(): ListExpression {
+                return ListExpression()
+            }
+        }
+        
         fun of(daVinCi: DaVinCi? = null, manual: Boolean = false): ListExpression {
-            return ListExpression(manual).apply {
+            return requireNotNull(DPools.listExpPool.acquire()).apply {
+                this.manual = manual
                 this.daVinCi = daVinCi
             }
         }
     }
+
+    private var manual: Boolean = false
 
     private val list: ArrayList<DaVinCiExpression> = ArrayList()
 
@@ -24,6 +35,24 @@ internal class ListExpression private constructor( private val manual: Boolean =
      * in rule: only one state expression is permitted
      * */
     var dState: DState? = null
+
+    override fun reset() {
+        super.reset()
+        manual = false
+        dState = null
+        list.clear()
+    }
+
+    override fun onRelease() {
+        super.onRelease()
+        dState?.release()
+        list.forEach { it.release() }
+    }
+
+    override fun release() {
+        onRelease()
+        DPools.listExpPool.release(this)
+    }
 
     fun append(exp: DaVinCiExpression) {
         list.add(exp)

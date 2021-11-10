@@ -1,6 +1,7 @@
 package osp.leobert.android.davinci.expressions
 
 import androidx.annotation.ColorInt
+import osp.leobert.android.davinci.DPools
 import osp.leobert.android.davinci.DaVinCi
 import osp.leobert.android.davinci.State
 import osp.leobert.android.davinci.StateItem
@@ -20,8 +21,14 @@ internal class StatedColor private constructor() : CommandExpression() {
 
         const val separator = state_separator
 
+        val factory: DPools.Factory<StatedColor> = object : DPools.Factory<StatedColor> {
+            override fun create(): StatedColor {
+                return StatedColor()
+            }
+        }
+
         fun of(daVinCi: DaVinCi? = null, manual: Boolean = false):StatedColor {
-            return StatedColor().apply {
+            return requireNotNull(DPools.statedColorExpPool.acquire()).apply {
                 this.manual = manual
                 this.daVinCi = daVinCi
                 injectThenParse(null)
@@ -57,9 +64,21 @@ internal class StatedColor private constructor() : CommandExpression() {
 
     }
 
-    init {
-        injectThenParse(null)
-//        injectThenParse(daVinCi)
+//    init {
+//        injectThenParse(null)
+////        injectThenParse(daVinCi)
+//    }
+
+    override fun reset() {
+        super.reset()
+        manual = false
+        colorInt = null
+        states.clear()
+    }
+
+    override fun release() {
+        onRelease()
+        DPools.statedColorExpPool.release(this)
     }
 
     override fun injectThenParse(daVinCi: DaVinCi?) {

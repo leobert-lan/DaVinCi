@@ -1,6 +1,7 @@
 package osp.leobert.android.davinci.expressions
 
 import android.util.Log
+import osp.leobert.android.davinci.DPools
 import osp.leobert.android.davinci.DaVinCi
 import osp.leobert.android.davinci.State
 
@@ -34,8 +35,14 @@ internal class DState private constructor() : CommandExpression() {
         const val tag = "state:["
         private const val state_separator = CommandExpression.state_separator
 
+        val factory: DPools.Factory<DState> = object : DPools.Factory<DState> {
+            override fun create(): DState {
+                return DState()
+            }
+        }
+
         fun of(daVinCi: DaVinCi? = null, manual: Boolean = false):DState {
-            return DState().apply {
+            return requireNotNull(DPools.dStateExpPool.acquire()).apply {
                 this.manual = manual
                 injectThenParse(daVinCi)
             }
@@ -62,8 +69,15 @@ internal class DState private constructor() : CommandExpression() {
         }
     }
 
-    init {
-        injectThenParse(daVinCi)
+    override fun reset() {
+        super.reset()
+        states.clear()
+        statesHash = 0
+    }
+
+    override fun release() {
+        onRelease()
+        DPools.dStateExpPool.release(this)
     }
 
     override fun injectThenParse(daVinCi: DaVinCi?) {
