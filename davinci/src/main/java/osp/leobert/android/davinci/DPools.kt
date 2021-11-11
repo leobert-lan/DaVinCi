@@ -91,7 +91,6 @@ object DPools {
         fun reset(target: T)
     }
 
-
     private class FactoryPool<T>(
         private val pool: Pools.Pool<T>, private val factory: Factory<T>, private val resetter: Resetter<T>,
     ) : Pools.Pool<T> {

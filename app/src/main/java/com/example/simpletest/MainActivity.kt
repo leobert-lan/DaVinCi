@@ -15,8 +15,9 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val binding =
+        val binding = Utils.timeCost("加载databinding") {
             DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main)
+        }
 
 
         DaVinCiExpression.stateColor()

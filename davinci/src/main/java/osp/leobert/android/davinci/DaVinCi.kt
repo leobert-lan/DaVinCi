@@ -64,6 +64,7 @@ class DaVinCi private constructor() {
                         DaVinCiExpression.sLogTag,
                         "davinci-timecost first load cost:$cost ns, about ${cost / 1000_000} ms, it will be faster next time"
                     )
+
             }
 
         }

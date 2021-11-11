@@ -11,7 +11,6 @@ import osp.leobert.android.davinci.Applier.Companion.viewBackground
 import osp.leobert.android.davinci.expressions.*
 import osp.leobert.android.davinci.syntactic.CslSyntactic
 import osp.leobert.android.davinci.syntactic.SldSyntactic
-import osp.leobert.android.reporter.review.TODO
 
 @Suppress("WeakerAccess", "unused")
 abstract class DaVinCiExpression {
@@ -40,12 +39,10 @@ abstract class DaVinCiExpression {
     }
 
     @CallSuper
-    @TODO(desc = "实现reset 逻辑")
     internal open fun reset() {
         daVinCi = null
         tokenName = null
         text = null
-//        todo
         parseFromText = true
     }
 
