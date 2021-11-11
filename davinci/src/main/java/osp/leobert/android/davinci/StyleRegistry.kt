@@ -115,6 +115,7 @@ object StyleRegistry {
         }
 
         fun applyTo(daVinCi: DaVinCi) {
+
             sldExp?.let {
                 daVinCi.applySld(it)
             }
@@ -125,9 +126,24 @@ object StyleRegistry {
         }
 
         fun applyTo(daVinCi: DaVinCi, releaseAfter: Boolean) {
-            applyTo(daVinCi)
-            if (releaseAfter)
-                daVinCi.release()
+            if (!releaseAfter) {
+                applyTo(daVinCi)
+            } else {
+
+                sldExp?.let { sld ->
+                    daVinCi.applySld(sld) {
+                        statedColorExp?.let {
+                            daVinCi.applyCsl(it) {
+                                daVinCi.release()
+                            }
+                        } ?: daVinCi.release()
+                    }
+                } ?: statedColorExp?.let {
+                    daVinCi.applyCsl(it) {
+                        daVinCi.release()
+                    }
+                }
+            }
         }
 
         override fun equals(other: Any?): Boolean {

@@ -3,6 +3,7 @@ package osp.leobert.android.davinci.expressions
 import android.util.Log
 import osp.leobert.android.davinci.DPools
 import osp.leobert.android.davinci.DaVinCi
+import osp.leobert.android.davinci.DaVinCi.Companion.daVinCiExecute
 
 /*corners-->
 <!--android:radius="integer"-->
@@ -24,7 +25,7 @@ internal class Corners private constructor() : CommandExpression() {
             }
         }
 
-        fun of(daVinCi: DaVinCi? = null, manual: Boolean = false):Corners {
+        fun of(daVinCi: DaVinCi? = null, manual: Boolean = false): Corners {
             return requireNotNull(DPools.cornersExpPool.acquire()).apply {
                 this.manual = manual
                 injectThenParse(daVinCi)

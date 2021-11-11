@@ -169,8 +169,9 @@ abstract class DaVinCiExpression {
 
         fun applyInto(view: View) {
             val daVinCi = DaVinCi.of(null, view.viewBackground())
-            daVinCi.applySld(this)
-            daVinCi.release()
+            daVinCi.applySld(this) {
+                daVinCi.release()
+            }
         }
     }
     //endregion
@@ -436,8 +437,9 @@ abstract class DaVinCiExpression {
 
         fun applyInto(view: View) {
             val daVinCi = DaVinCi.of(null, view.viewBackground())
-            daVinCi.applyShape(this)
-            daVinCi.release()
+            daVinCi.applyShape(this) {
+                daVinCi.release()
+            }
         }
     }
     //endregion
@@ -502,8 +504,9 @@ abstract class DaVinCiExpression {
 
         fun applyInto(view: TextView) {
             val daVinCi = DaVinCi.of(null, view.csl())
-            daVinCi.applyCsl(this)
-            daVinCi.release()
+            daVinCi.applyCsl(this) {
+                daVinCi.release()
+            }
         }
     }
     //endregion

@@ -2,26 +2,68 @@ package osp.leobert.android.davinci
 
 import android.content.Context
 import android.util.Log
+import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.*
 import java.util.*
-import kotlin.concurrent.thread
+import java.util.concurrent.Executors
 
 @Suppress("unused")
 class DaVinCi private constructor() {
     companion object {
         var enableDebugLog = true
 
+        private val sDaVinCiExecutor = Executors.newSingleThreadExecutor { r ->
+            Thread(r, "DaVinCi Execute Thread").apply {
+                // This thread is never stopped
+                isDaemon = true
+            }
+        }
+
+        internal val dispatcher = sDaVinCiExecutor.asCoroutineDispatcher()
+
+        internal val scopeMain = CoroutineScope(Dispatchers.Main)
+        internal val scopeExecutor = CoroutineScope(dispatcher)
+
+
+        internal fun <T> T.daVinCiExecute(runnable: T.() -> Unit): T {
+            scopeExecutor.launch {
+                runnable(this@daVinCiExecute)
+            }
+            return this
+        }
+
+        internal suspend fun <T, R> T.daVinCiExecute(runnable: T.() -> R, listen: suspend R.() -> Unit) {
+            flow {
+                this.emit(runnable(this@daVinCiExecute))
+            }.flowOn(dispatcher)
+                .onEach(listen)
+                .collect()
+        }
+
+        internal fun <T, R> T.daVinCiExecute(scope: CoroutineScope, runnable: T.() -> R, listen: suspend R.() -> Unit) {
+            flow {
+                this.emit(runnable(this@daVinCiExecute))
+            }.flowOn(dispatcher)
+                .onEach(listen)
+                .launchIn(scope)
+        }
+
         /*
         * 在Application静态块中调用一次，基本可以免去Application onCreate时加载样式，或者第一次使用DaVinCi的耗时
         * */
         fun fastLoad() {
-            thread {
+            daVinCiExecute {
                 val start = System.nanoTime()
                 DaVinCiExpression.stateListDrawable()
-                    .shape(DaVinCiExpression.shape().rectAngle().solid("#ffffffff").corner("0"))
+                    .shape(DaVinCiExpression.shape().rectAngle().solid("#ffffffff").stroke("1","#ffffffff").corner("0"))
                     .states(State.ENABLE_F)
+
                 val cost = System.nanoTime() - start
                 if (enableDebugLog)
-                    Log.d(DaVinCiExpression.sLogTag, "davinci-timecost first load cost:$cost ns, about ${cost / 1000_000} ms, it will be faster next time")
+                    Log.d(
+                        DaVinCiExpression.sLogTag,
+                        "davinci-timecost first load cost:$cost ns, about ${cost / 1000_000} ms, it will be faster next time"
+                    )
             }
 
         }
@@ -56,7 +98,10 @@ class DaVinCi private constructor() {
     }
 
     fun release() {
-        DPools.daVinCiPool.release(this)
+        daVinCiExecute {
+            Log.e("lmsg", "release davinci, ${hashCode()}")
+            DPools.daVinCiPool.release(this)
+        }
     }
 
     val context: Context
@@ -79,45 +124,69 @@ class DaVinCi private constructor() {
     private val map: MutableMap<String, Any> = HashMap()
 
     fun applySld(exp: DaVinCiExpression.StateListDrawable) {
-        if (enableDebugLog && exp.manual) //手动创建的结构
-            Log.d(DaVinCiExpression.sLogTag, "manual created,daVinCi sld:$exp")
-
-        exp.injectThenParse(this)
-        exp.interpret()
-
-        if (enableDebugLog && !exp.manual) //利用DaVinCi内容解析的结构
-            Log.d(DaVinCiExpression.sLogTag, "parsed,daVinCi sld:$exp")
-
-        val d = core.buildDrawable()
-        applier?.applyDrawable(d)
+        applySld(exp, null)
     }
 
-    fun applyShape(exp: DaVinCiExpression.Shape) {
-        if (enableDebugLog && exp.manual) //手动创建的结构
-            Log.d(DaVinCiExpression.sLogTag, "manual created,daVinCi sld:$exp")
+    fun applySld(exp: DaVinCiExpression.StateListDrawable, onComplete: (() -> Unit)? = null) {
+        daVinCiExecute(scope = scopeMain, runnable = {
+            if (enableDebugLog && exp.manual) //手动创建的结构
+                Log.d(DaVinCiExpression.sLogTag, "manual created,daVinCi sld:$exp")
 
-        exp.injectThenParse(this)
-        exp.interpret()
-
-        if (enableDebugLog && !exp.manual) //利用DaVinCi内容解析的结构
-            Log.d(DaVinCiExpression.sLogTag, "parsed,daVinCi sld:$exp")
-
-        val d = core.buildDrawable()
-        applier?.applyDrawable(d)
-    }
-
-    fun applyCsl(exp: DaVinCiExpression.ColorStateList) {
-        if (enableDebugLog)
-            Log.d(DaVinCiExpression.sLogTag, "daVinCi csl:$exp")
-
-        applier?.applyColorStateList(exp.run {
-            core.clear()
             exp.injectThenParse(this@DaVinCi)
             exp.interpret()
 
-            core.buildTextColor()
-        })
-        core.clear()
+            if (enableDebugLog && !exp.manual) //利用DaVinCi内容解析的结构
+                Log.d(DaVinCiExpression.sLogTag, "parsed,daVinCi sld:$exp")
+            core.buildDrawable()
+        }) {
+            applier?.applyDrawable(this)
+            onComplete?.invoke()
+        }
+    }
+
+    fun applyShape(exp: DaVinCiExpression.Shape) {
+        applyShape(exp, null)
+    }
+
+    fun applyShape(exp: DaVinCiExpression.Shape, onComplete: (() -> Unit)? = null) {
+        daVinCiExecute(scope = scopeMain, runnable = {
+            if (enableDebugLog && exp.manual) //手动创建的结构
+                Log.d(DaVinCiExpression.sLogTag, "manual created,${hashCode()},daVinCi sld:$exp")
+
+            exp.injectThenParse(this)
+            exp.interpret()
+
+            if (enableDebugLog && !exp.manual) //利用DaVinCi内容解析的结构
+                Log.d(DaVinCiExpression.sLogTag, "parsed,daVinCi sld:$exp")
+
+            core.buildSimpleDrawable()
+        }) {
+            applier?.applyDrawable(this)
+            onComplete?.invoke()
+        }
+    }
+
+    fun applyCsl(exp: DaVinCiExpression.ColorStateList) {
+        applyCsl(exp, null)
+    }
+
+    fun applyCsl(exp: DaVinCiExpression.ColorStateList, onComplete: (() -> Unit)? = null) {
+        daVinCiExecute(scope = scopeMain, runnable = {
+            if (enableDebugLog)
+                Log.d(DaVinCiExpression.sLogTag, "daVinCi csl:$exp")
+
+            Log.e("lmsg", "applyCsl,${hashCode()} ${this.applier == null}")
+            core.clear()
+            exp.injectThenParse(this@DaVinCi)
+            exp.interpret()
+            val ret = core.buildTextColor()
+            core.clear() //todo figure out why clear it, if exp is cycle-using?
+            ret
+
+        }) {
+            applier?.applyColorStateList(this)
+            onComplete?.invoke()
+        }
 
     }
 

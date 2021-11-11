@@ -42,9 +42,10 @@ fun View.daVinCiSld(str: String) {
     val daVinCi = DaVinCi.of(str, this.applier())
     val expressions = DaVinCiExpression.StateListDrawable()
 
-    daVinCi.applySld(expressions)
-    daVinCi.release()
-    expressions.release()
+    daVinCi.applySld(expressions) {
+        daVinCi.release()
+        expressions.release()
+    }
 }
 
 
@@ -53,13 +54,11 @@ fun View.daVinCiShape(str: String) {
 
     val daVinCi = DaVinCi.of(str, this.applier())
 
-    val expressions: DaVinCiExpression = DaVinCiExpression.Shape.of()
-
-    expressions.injectThenParse(daVinCi)
-    expressions.interpret()
-    ViewCompat.setBackground(this, daVinCi.core.buildSimpleDrawable())
-    daVinCi.release()
-    expressions.release()
+    val expressions: DaVinCiExpression.Shape = DaVinCiExpression.Shape.of()
+    daVinCi.applyShape(exp = expressions) {
+        daVinCi.release()
+        expressions.release()
+    }
 }
 
 fun TextView.daVinCiColor(str: String) {
@@ -67,28 +66,33 @@ fun TextView.daVinCiColor(str: String) {
     val daVinCi = DaVinCi.of(str, this.csl())
 
     val expressions = DaVinCiExpression.stateColor()
-    daVinCi.applyCsl(expressions)
-    daVinCi.release()
-    expressions.release()
+    daVinCi.applyCsl(expressions) {
+        daVinCi.release()
+        expressions.release()
+    }
 }
 //endregion
 
 
 @BindingAdapter("daVinCiTextColor")
 fun TextView.daVinCiColor(expressions: DaVinCiExpression.ColorStateList) {
-    if (DaVinCi.enableDebugLog) Log.d(DaVinCiExpression.sLogTag, "daVinCiColor:$expressions")
-    val daVinCi = DaVinCi.of(null, this.csl())
-
-    daVinCi.applyCsl(expressions)
-    daVinCi.release()
+    expressions.applyInto(this)
+//    if (DaVinCi.enableDebugLog) Log.d(DaVinCiExpression.sLogTag, "daVinCiColor:$expressions")
+//    val daVinCi = DaVinCi.of(null, this.csl())
+//
+//    daVinCi.applyCsl(expressions) {
+//        daVinCi.release()
+//    }
 }
 
 fun View.daVinCiShape(expressions: DaVinCiExpression.StateListDrawable) {
-    if (DaVinCi.enableDebugLog) Log.d(DaVinCiExpression.sLogTag, "daVinCiShape:$expressions")
-    val daVinCi = DaVinCi.of(null, this.applier())
-
-    daVinCi.applySld(expressions)
-    daVinCi.release()
+    expressions.applyInto(this)
+//    if (DaVinCi.enableDebugLog) Log.d(DaVinCiExpression.sLogTag, "daVinCiShape:$expressions")
+//    val daVinCi = DaVinCi.of(null, this.applier())
+//
+//    daVinCi.applySld(expressions) {
+//        daVinCi.release()
+//    }
 }
 
 @BindingAdapter("daVinCiStyle")
