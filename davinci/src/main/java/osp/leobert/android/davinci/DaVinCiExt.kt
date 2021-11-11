@@ -44,6 +44,7 @@ fun View.daVinCiSld(str: String) {
 
     daVinCi.applySld(expressions)
     daVinCi.release()
+    expressions.release()
 }
 
 
@@ -58,6 +59,7 @@ fun View.daVinCiShape(str: String) {
     expressions.interpret()
     ViewCompat.setBackground(this, daVinCi.core.buildSimpleDrawable())
     daVinCi.release()
+    expressions.release()
 }
 
 fun TextView.daVinCiColor(str: String) {
@@ -67,6 +69,7 @@ fun TextView.daVinCiColor(str: String) {
     val expressions = DaVinCiExpression.stateColor()
     daVinCi.applyCsl(expressions)
     daVinCi.release()
+    expressions.release()
 }
 //endregion
 
