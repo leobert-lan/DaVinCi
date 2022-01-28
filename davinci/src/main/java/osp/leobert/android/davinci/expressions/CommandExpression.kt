@@ -3,13 +3,10 @@ package osp.leobert.android.davinci.expressions
 import android.content.Context
 import android.graphics.Color
 import android.util.Log
-import android.view.ViewGroup
 import androidx.annotation.CallSuper
 import androidx.core.content.ContextCompat
-import osp.leobert.android.davinci.DPools
-import osp.leobert.android.davinci.DaVinCi
-import osp.leobert.android.davinci.DaVinCiExpression
-import osp.leobert.android.davinci.State
+import osp.leobert.android.davinci.*
+import osp.leobert.android.davinci.parser.IColorParser
 import osp.leobert.android.reporter.review.TODO
 import java.util.*
 
@@ -64,28 +61,15 @@ internal open class CommandExpression internal constructor() : DaVinCiExpression
         onParse(daVinCi)
     }
 
-    @TODO(desc = "迁移到DaVinCi中，修改为策略模式，添加PT等单位处理")
     protected fun toPx(str: String, context: Context): Int? {
-        return when {
-            str.endsWith("dp") -> {
-                val scale: Float = context.resources.displayMetrics.density
-                val dipValue = (str.substring(0, str.length - 2).toIntOrNull() ?: 0)
-                (dipValue * scale + 0.5f).toInt()
-            }
-            str == "w" -> {
-                ViewGroup.LayoutParams.WRAP_CONTENT
-            }
-            str == "m" -> {
-                ViewGroup.LayoutParams.MATCH_PARENT
-            }
-            else -> str.toIntOrNull()
-        }
-
+        return requireNotNull(daVinCi).parseDimension(str, context)
     }
 
     @TODO(desc = "迁移到DaVinCi中，进一步考虑Theme")
     protected fun parseColor(text: String?): Int? {
         if (text.isNullOrEmpty()) return null
+        //todo tag的解析方式耦合较高，目前尚不容易迁移，可以认为这是分两步走的：解析怎么定义的资源+解析（获取）资源对应的ColorInt
+        //先迁移第二步 getColor
         text.let { s ->
             return when {
                 s.startsWith("@") -> {
@@ -129,24 +113,12 @@ internal open class CommandExpression internal constructor() : DaVinCiExpression
         } else (daVinCi?.applier?.getTag(id) ?: "").toString()
     }
 
-    protected fun getColor(context: Context?, resName: String?): Int? {
-        try {
-            if (resName.isNullOrEmpty()) return null
-
-            if (resName.startsWith("#")) {
-                return Color.parseColor(resName)
-            }
-            if (context == null) return null
-            val resources = context.resources
-            val id = resources.getIdentifier(resName, "color", context.packageName)
-            return if (id == 0) {
-                if (DaVinCi.enableDebugLog) Log.d(sLogTag, "no color resource named $resName")
-                null
-            } else ContextCompat.getColor(context, id)
-        } catch (e: Exception) {
-            if (DaVinCi.enableDebugLog) Log.e(sLogTag, "parse color exception", e)
-            return null
+    private fun getColor(context: Context?, resName: String?): Int? {
+        val parser: IColorParser = daVinCi ?: DaVinCiConfig.apply {
+            if (DaVinCi.enableDebugLog) Log.e(sLogTag, "daVinCi is null.use default config to parse $resName")
         }
+
+        return parser.parseColor(resName,context)
     }
 
     @Throws(Exception::class)

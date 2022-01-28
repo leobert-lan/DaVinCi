@@ -27,11 +27,11 @@ internal class StatedColor private constructor() : CommandExpression() {
             }
         }
 
-        fun of(daVinCi: DaVinCi? = null, manual: Boolean = false):StatedColor {
+        fun of(daVinCi: DaVinCi? = null, manual: Boolean = false): StatedColor {
             return requireNotNull(DPools.statedColorExpPool.acquire()).apply {
                 this.manual = manual
                 this.daVinCi = daVinCi
-                injectThenParse(null)
+                injectThenParse(daVinCi)
             }
         }
 
