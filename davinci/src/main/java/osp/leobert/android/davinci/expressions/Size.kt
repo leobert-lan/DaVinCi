@@ -8,6 +8,7 @@ import osp.leobert.android.davinci.DaVinCi
 //        <!--<size-->
 //        <!--android:width="integer"-->
 //        <!--android:height="integer" />-->
+@NotTerminal
 internal class Size private constructor() : CommandExpression() {
 
     override fun startTag(): String = tag

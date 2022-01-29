@@ -10,9 +10,16 @@ import osp.leobert.android.davinci.parser.IColorParser
 import osp.leobert.android.reporter.review.TODO
 import java.util.*
 
-//region CommandExp 用于解析构建实际子属性
-//manual = true 认为是手动创建的，不会进入解析逻辑
+/**
+ * CommandExp 用于解析构建实际子属性
+ * manual = true 认为是手动创建的，不会进入字符串解析逻辑
+ * 在字符串解析中（构建语法树）的过程中，将作为一个"包装"，从代码角度看，将隔离解析过程，但这个做法值得商榷。
+ * 在继承体系中，作为 [Solid] 等非终结符的父类，
+ *
+ * */
 @Suppress("WeakerAccess", "unused")
+@NotTerminal
+@TODO(desc="分析解析过程，是否有必要套层")
 internal open class CommandExpression internal constructor() : DaVinCiExpression() {
 
     companion object {

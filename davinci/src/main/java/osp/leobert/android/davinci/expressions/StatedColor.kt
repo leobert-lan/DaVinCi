@@ -6,6 +6,7 @@ import osp.leobert.android.davinci.DaVinCi
 import osp.leobert.android.davinci.State
 import osp.leobert.android.davinci.StateItem
 
+@NotTerminal
 internal class StatedColor private constructor() : CommandExpression() {
     @ColorInt
     var colorInt: Int? = null //这是解析出来的，不要乱赋值
@@ -19,7 +20,7 @@ internal class StatedColor private constructor() : CommandExpression() {
 
         const val prop_color = "color:"
 
-        const val separator = state_separator
+        private const val separator = state_separator
 
         val factory: DPools.Factory<StatedColor> = object : DPools.Factory<StatedColor> {
             override fun create(): StatedColor {
@@ -30,6 +31,7 @@ internal class StatedColor private constructor() : CommandExpression() {
         fun of(daVinCi: DaVinCi? = null, manual: Boolean = false): StatedColor {
             return requireNotNull(DPools.statedColorExpPool.acquire()).apply {
                 this.manual = manual
+                //todo 检查是否此处就应该使用null
                 this.daVinCi = daVinCi
                 injectThenParse(daVinCi)
             }

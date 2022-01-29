@@ -10,6 +10,7 @@ import osp.leobert.android.davinci.DaVinCi
 //        <!--android:top="integer"-->
 //        <!--android:right="integer"-->
 //        <!--android:bottom="integer" />-->
+@NotTerminal
 internal class Padding private constructor() : CommandExpression() {
 
     override fun startTag(): String = tag
