@@ -7,7 +7,7 @@ import osp.leobert.android.davinci.State
 /**
  * short for DaVinCiState, expression for [State]
  */
-@Terminal
+@NotTerminal
 internal class DState private constructor() : CommandExpression() {
 
     private val states: MutableSet<State> by lazy { linkedSetOf() }

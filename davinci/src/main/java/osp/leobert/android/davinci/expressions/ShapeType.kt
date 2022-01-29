@@ -7,7 +7,7 @@ import osp.leobert.android.reporter.review.TODO
 
 // shape:[ st:[reactangle] ]
 // Rectangle(0), Oval(1), Line(2), Ring(3);
-@Terminal
+@NotTerminal
 @TODO(desc = "text的内容应当交由上下文lookUp，")
 internal class ShapeType private constructor() : CommandExpression() {
 
