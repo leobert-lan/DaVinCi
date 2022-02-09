@@ -3,31 +3,31 @@ package osp.leobert.android.davinci
 import android.content.Context
 import androidx.annotation.ColorInt
 import androidx.annotation.Dimension
-import osp.leobert.android.davinci.parser.IColorParser
-import osp.leobert.android.davinci.parser.IDimensionParser
+import osp.leobert.android.davinci.lookup.IColorLookup
+import osp.leobert.android.davinci.lookup.IDimensionLookup
 
 /**
  * Created by leobert on 2022/1/28.
  */
-object DaVinCiConfig : IDimensionParser, IColorParser {
+object DaVinCiConfig : IDimensionLookup, IColorLookup {
 
-    val customDimensionParsers = arrayListOf<IDimensionParser.Custom>()
+    val customDimensionParsers = arrayListOf<IDimensionLookup.Custom>()
 
-    val customColorParsers = arrayListOf<IColorParser.Custom>()
+    val customColorParsers = arrayListOf<IColorLookup.Custom>()
 
 
     @Dimension(unit = Dimension.PX)
-    override fun parseDimension(str: String, context: Context): Int? {
+    override fun lookupDimension(str: String, context: Context): Int? {
         return (customDimensionParsers.find {
-            it.canParse(str, context)
-        } ?: IDimensionParser.InternalParser).parseDimension(str, context)
+            it.canLookup(str, context)
+        } ?: IDimensionLookup.InternalLookup).lookupDimension(str, context)
     }
 
     @ColorInt
-    override fun parseColor(resName: String?, context: Context?): Int? {
+    override fun lookupColor(resName: String?, context: Context?): Int? {
         return (customColorParsers.find {
-            it.canParse(resName, context)
-        } ?: IColorParser.InternalParser).parseColor(resName, context)
+            it.canLookup(resName, context)
+        } ?: IColorLookup.InternalLookup).lookupColor(resName, context)
     }
 
 

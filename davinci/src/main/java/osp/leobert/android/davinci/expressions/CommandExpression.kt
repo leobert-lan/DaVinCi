@@ -1,12 +1,10 @@
 package osp.leobert.android.davinci.expressions
 
 import android.content.Context
-import android.graphics.Color
 import android.util.Log
 import androidx.annotation.CallSuper
-import androidx.core.content.ContextCompat
 import osp.leobert.android.davinci.*
-import osp.leobert.android.davinci.parser.IColorParser
+import osp.leobert.android.davinci.lookup.IColorLookup
 import osp.leobert.android.reporter.review.TODO
 import java.util.*
 
@@ -69,7 +67,7 @@ internal open class CommandExpression internal constructor() : DaVinCiExpression
     }
 
     protected fun toPx(str: String, context: Context): Int? {
-        return requireNotNull(daVinCi).parseDimension(str, context)
+        return requireNotNull(daVinCi).lookupDimension(str, context)
     }
 
     @TODO(desc = "迁移到DaVinCi中，进一步考虑Theme")
@@ -121,11 +119,11 @@ internal open class CommandExpression internal constructor() : DaVinCiExpression
     }
 
     private fun getColor(context: Context?, resName: String?): Int? {
-        val parser: IColorParser = daVinCi ?: DaVinCiConfig.apply {
+        val lookup: IColorLookup = daVinCi ?: DaVinCiConfig.apply {
             if (DaVinCi.enableDebugLog) Log.e(sLogTag, "daVinCi is null.use default config to parse $resName")
         }
 
-        return parser.parseColor(resName,context)
+        return lookup.lookupColor(resName,context)
     }
 
     @Throws(Exception::class)

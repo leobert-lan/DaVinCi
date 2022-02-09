@@ -4,15 +4,15 @@ import android.content.Context
 import android.util.Log
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
-import osp.leobert.android.davinci.parser.IColorParser
-import osp.leobert.android.davinci.parser.IDimensionParser
+import osp.leobert.android.davinci.lookup.IColorLookup
+import osp.leobert.android.davinci.lookup.IDimensionLookup
 import java.util.*
 import java.util.concurrent.Executors
 
 @Suppress("unused")
 class DaVinCi private constructor(
     private val config: DaVinCiConfig = DaVinCiConfig
-) : IDimensionParser by config, IColorParser by config {
+) : IDimensionLookup by config, IColorLookup by config {
     companion object {
         var enableDebugLog = true
 

@@ -1,4 +1,4 @@
-package osp.leobert.android.davinci.parser
+package osp.leobert.android.davinci.lookup
 
 import android.content.Context
 import android.graphics.Color
@@ -11,9 +11,9 @@ import osp.leobert.android.davinci.DaVinCiExpression
 /**
  * Created by leobert on 2022/1/28.
  */
-interface IColorParser {
+interface IColorLookup {
     @ColorInt
-    fun parseColor(resName: String?, context: Context?): Int?
+    fun lookupColor(resName: String?, context: Context?): Int?
 
     companion object {
         /**
@@ -25,8 +25,8 @@ interface IColorParser {
          *
          * 前置流程为解析资源定义类型和资源TOKEN
          * */
-        val InternalParser: IColorParser = object : IColorParser {
-            override fun parseColor(resName: String?, context: Context?): Int? {
+        val InternalLookup: IColorLookup = object : IColorLookup {
+            override fun lookupColor(resName: String?, context: Context?): Int? {
                 try {
                     if (resName.isNullOrEmpty()) return null
 
@@ -49,7 +49,7 @@ interface IColorParser {
         }
     }
 
-    interface Custom : IColorParser {
-        fun canParse(resName: String?, context: Context?): Boolean
+    interface Custom : IColorLookup {
+        fun canLookup(resName: String?, context: Context?): Boolean
     }
 }

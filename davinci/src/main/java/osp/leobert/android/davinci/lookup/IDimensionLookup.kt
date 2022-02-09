@@ -1,4 +1,4 @@
-package osp.leobert.android.davinci.parser
+package osp.leobert.android.davinci.lookup
 
 import android.content.Context
 import android.view.ViewGroup
@@ -10,14 +10,14 @@ import osp.leobert.android.reporter.review.TODO
  *
  * Created by leobert on 2022/1/28.
  */
-interface IDimensionParser {
+interface IDimensionLookup {
     @Dimension(unit = Dimension.PX)
-    fun parseDimension(str: String, context: Context): Int?
+    fun lookupDimension(str: String, context: Context): Int?
 
     companion object {
         @TODO(desc = "添加PT等单位处理")
-        val InternalParser: IDimensionParser = object : IDimensionParser {
-            override fun parseDimension(str: String, context: Context): Int? {
+        val InternalLookup: IDimensionLookup = object : IDimensionLookup {
+            override fun lookupDimension(str: String, context: Context): Int? {
                 return when {
                     str.endsWith("dp") -> {
                         val scale: Float = context.resources.displayMetrics.density
@@ -36,7 +36,7 @@ interface IDimensionParser {
         }
     }
 
-    interface Custom : IDimensionParser {
-        fun canParse(str: String, context: Context): Boolean
+    interface Custom : IDimensionLookup {
+        fun canLookup(str: String, context: Context): Boolean
     }
 }
