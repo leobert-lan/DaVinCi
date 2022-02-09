@@ -5,6 +5,7 @@ import osp.leobert.android.davinci.DPools
 import osp.leobert.android.davinci.DaVinCi
 
 //region Solid
+@NotTerminal
 internal class Solid private constructor() : CommandExpression() {
     @ColorInt
     internal var colorInt: Int? = null //这是解析出来的，不要乱赋值

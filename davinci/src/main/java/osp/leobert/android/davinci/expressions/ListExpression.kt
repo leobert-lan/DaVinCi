@@ -9,6 +9,7 @@ import osp.leobert.android.davinci.State
 import java.util.*
 
 //region ListExp 同级别多条目解析
+@NotTerminal
 internal class ListExpression private constructor() : DaVinCiExpression() {
 
     companion object {

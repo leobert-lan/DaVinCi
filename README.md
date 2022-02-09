@@ -67,4 +67,8 @@ debugImplementation "io.github.leobert-lan:davinci-style-viewer:0.0.1" //预览
 
 ## 重大变更版本的ReleaseNote
 
-* [DaVinCi-0.0.6](./release-note/rn-davinci-0.0.6.md) 
+* [DaVinCi-0.0.6](./release-note/rn-davinci-0.0.6.md) -- 让功能更加准确
+* [DaVinCi-0.0.7](./release-note/rn-davinci-0.0.7.md) -- 移除了了0.0.6中大部分标记废除的内容，提供了更多方便的API
+
+## TODO
+0.0.8 性能优化：对象池化，平滑内存使用，减少GC && 解析任务分离到工作线程，提高主线程利用率（大量的数组、集合、字符串操作确实耗时）

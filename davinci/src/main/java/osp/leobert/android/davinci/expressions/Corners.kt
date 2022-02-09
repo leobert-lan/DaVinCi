@@ -3,7 +3,6 @@ package osp.leobert.android.davinci.expressions
 import android.util.Log
 import osp.leobert.android.davinci.DPools
 import osp.leobert.android.davinci.DaVinCi
-import osp.leobert.android.davinci.DaVinCi.Companion.daVinCiExecute
 
 /*corners-->
 <!--android:radius="integer"-->
@@ -12,6 +11,7 @@ import osp.leobert.android.davinci.DaVinCi.Companion.daVinCiExecute
 <!--android:bottomLeftRadius="integer"-->
 <!--android:bottomRightRadius="integer" />-->
 shape:[ corners:[ 4 ] solid:[ #353538 ] ]*/
+@NotTerminal
 internal class Corners private constructor() : CommandExpression() {
 
     var conners: List<Int>? = null

@@ -13,25 +13,11 @@ import osp.leobert.android.davinci.Applier.Companion.applier
 import osp.leobert.android.davinci.Applier.Companion.csl
 import osp.leobert.android.davinci.Applier.Companion.viewBackground
 import osp.leobert.android.davinci.DaVinCi.Companion.takeIfInstance
+import osp.leobert.android.reporter.review.TODO
 
-
-///////////////////////////////////////////////////////////////////////////
-// deprecated and removed
-///////////////////////////////////////////////////////////////////////////
 
 //region deprecated
-
-//@Deprecated("", ReplaceWith("this.daVinCiShape(str)"))
-//fun View.daVinCi(str: String) {
-//    this.daVinCiShape(str)
-//}
-
-//@BindingAdapter("daVinCiBgStyle")
-//@Deprecated("含义不恰当", ReplaceWith("this.daVinCiStyle(styleName)"))
-//fun View.daVinCiBgStyle(styleName: String) {
-//    this.daVinCiStyle(styleName)
-//}
-
+//all deleted
 //endregion deprecated
 
 //region 利用符合语法的String设置相关内容
@@ -44,6 +30,7 @@ fun View.daVinCiSld(str: String) {
 
     daVinCi.applySld(expressions) {
         daVinCi.release()
+        expressions.release()
     }
 }
 
@@ -56,6 +43,7 @@ fun View.daVinCiShape(str: String) {
     val expressions: DaVinCiExpression.Shape = DaVinCiExpression.Shape.of()
     daVinCi.applyShape(exp = expressions) {
         daVinCi.release()
+        expressions.release()
     }
 }
 
@@ -66,6 +54,7 @@ fun TextView.daVinCiColor(str: String) {
     val expressions = DaVinCiExpression.stateColor()
     daVinCi.applyCsl(expressions) {
         daVinCi.release()
+        expressions.release()
     }
 }
 //endregion
@@ -74,22 +63,10 @@ fun TextView.daVinCiColor(str: String) {
 @BindingAdapter("daVinCiTextColor")
 fun TextView.daVinCiColor(expressions: DaVinCiExpression.ColorStateList) {
     expressions.applyInto(this)
-//    if (DaVinCi.enableDebugLog) Log.d(DaVinCiExpression.sLogTag, "daVinCiColor:$expressions")
-//    val daVinCi = DaVinCi.of(null, this.csl())
-//
-//    daVinCi.applyCsl(expressions) {
-//        daVinCi.release()
-//    }
 }
 
 fun View.daVinCiShape(expressions: DaVinCiExpression.StateListDrawable) {
     expressions.applyInto(this)
-//    if (DaVinCi.enableDebugLog) Log.d(DaVinCiExpression.sLogTag, "daVinCiShape:$expressions")
-//    val daVinCi = DaVinCi.of(null, this.applier())
-//
-//    daVinCi.applySld(expressions) {
-//        daVinCi.release()
-//    }
 }
 
 @BindingAdapter("daVinCiStyle")
@@ -142,6 +119,7 @@ fun View.daVinCiBg8(exp: DaVinCiExpression.Shape, states: Array<State>? = null) 
     this.helpXmlDaVinCiBg(exp, states)
 }
 
+@TODO(desc="很显然，目前的分布构建法，无法找到合适的切入点释放expression")
 private fun View.helpXmlDaVinCiBg(exp: DaVinCiExpression.Shape, states: Array<State>?) {
     val stateListDrawable = this.getTag(R.id.davinci_sld)?.takeIfInstance<DaVinCiExpression.StateListDrawable>()
         ?: DaVinCiExpression.stateListDrawable().apply {

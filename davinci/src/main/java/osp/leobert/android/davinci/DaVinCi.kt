@@ -4,11 +4,15 @@ import android.content.Context
 import android.util.Log
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
+import osp.leobert.android.davinci.parser.IColorParser
+import osp.leobert.android.davinci.parser.IDimensionParser
 import java.util.*
 import java.util.concurrent.Executors
 
 @Suppress("unused")
-class DaVinCi private constructor() {
+class DaVinCi private constructor(
+    private val config: DaVinCiConfig = DaVinCiConfig
+) : IDimensionParser by config, IColorParser by config {
     companion object {
         var enableDebugLog = true
 
@@ -19,10 +23,10 @@ class DaVinCi private constructor() {
             }
         }
 
-        internal val dispatcher = sDaVinCiExecutor.asCoroutineDispatcher()
+        private val dispatcher = sDaVinCiExecutor.asCoroutineDispatcher()
 
         internal val scopeMain = CoroutineScope(Dispatchers.Main)
-        internal val scopeExecutor = CoroutineScope(dispatcher)
+        private val scopeExecutor = CoroutineScope(dispatcher)
 
 
         internal fun <T> T.daVinCiExecute(runnable: T.() -> Unit): T {
@@ -55,7 +59,7 @@ class DaVinCi private constructor() {
             daVinCiExecute {
                 val start = System.nanoTime()
                 DaVinCiExpression.stateListDrawable()
-                    .shape(DaVinCiExpression.shape().rectAngle().solid("#ffffffff").stroke("1","#ffffffff").corner("0"))
+                    .shape(DaVinCiExpression.shape().rectAngle().solid("#ffffffff").stroke("1", "#ffffffff").corner("0"))
                     .states(State.ENABLE_F)
 
                 val cost = System.nanoTime() - start
@@ -64,6 +68,7 @@ class DaVinCi private constructor() {
                         DaVinCiExpression.sLogTag,
                         "davinci-timecost first load cost:$cost ns, about ${cost / 1000_000} ms, it will be faster next time"
                     )
+
             }
 
         }

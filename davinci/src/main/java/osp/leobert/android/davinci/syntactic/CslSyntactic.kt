@@ -77,17 +77,6 @@ class CslSyntactic private constructor() : Statable<DaVinCiExpression.ColorState
             colorStr = this@CslSyntactic.strColor(),
             states = states
         )
-//            StatedColor(
-//                manual = true
-//            ).apply {
-//                if (this@CslSyntactic.colorTag == 2)
-//                    this.colorInt = this@CslSyntactic.colorInt
-//                this.states.addAll(states)
-//                parseFromText = (this@CslSyntactic.colorTag == 1)
-//                text =
-//                    "${StatedColor.prop_state}${states.joinToString(StatedColor.separator)};${StatedColor.prop_color}${this@CslSyntactic.strColor()}"
-//
-//            }
         host.listExpression().append(statedColor)
         DPools.cslSyntacticPool.release(this)
         return host
@@ -105,19 +94,6 @@ class CslSyntactic private constructor() : Statable<DaVinCiExpression.ColorState
             states = states
         )
         host.listExpression().append(statedColor)
-//            StatedColor(
-//                manual = true
-//            ).apply {
-//                if (this@CslSyntactic.colorTag == 2)
-//                    this.colorInt = this@CslSyntactic.colorInt
-//
-//                // 默认从文本内容解析
-//
-//                text =
-//                    "${StatedColor.prop_state}${states.joinToString(StatedColor.separator)};${StatedColor.prop_color}${this@CslSyntactic.strColor()}"
-//
-//                host.exps().append(this)
-//            }
         DPools.cslSyntacticPool.release(this)
         return host
     }

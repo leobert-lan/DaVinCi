@@ -8,6 +8,7 @@ import osp.leobert.android.davinci.DaVinCiExpression
 import java.util.ArrayList
 
 //专门用于解析一串shape
+@NotTerminal
 internal class ShapeListExpression private constructor() : DaVinCiExpression() {
 
     companion object {
