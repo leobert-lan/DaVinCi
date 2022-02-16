@@ -3,6 +3,8 @@ package osp.leobert.android.davinci.expressions
 import android.util.Log
 import osp.leobert.android.davinci.DPools
 import osp.leobert.android.davinci.DaVinCi
+import osp.leobert.android.davinci.uml.ExpDiagram
+import osp.leobert.android.reporter.diagram.notation.GenerateClassDiagram
 
 /*corners-->
 <!--android:radius="integer"-->
@@ -12,6 +14,8 @@ import osp.leobert.android.davinci.DaVinCi
 <!--android:bottomRightRadius="integer" />-->
 shape:[ corners:[ 4 ] solid:[ #353538 ] ]*/
 @NotTerminal
+@ExpDiagram
+@GenerateClassDiagram
 internal class Corners private constructor() : CommandExpression() {
 
     var conners: List<Int>? = null

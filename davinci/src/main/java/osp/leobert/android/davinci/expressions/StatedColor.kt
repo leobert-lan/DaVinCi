@@ -5,8 +5,12 @@ import osp.leobert.android.davinci.DPools
 import osp.leobert.android.davinci.DaVinCi
 import osp.leobert.android.davinci.State
 import osp.leobert.android.davinci.StateItem
+import osp.leobert.android.davinci.uml.ExpDiagram
+import osp.leobert.android.reporter.diagram.notation.GenerateClassDiagram
 
 @NotTerminal
+@ExpDiagram
+@GenerateClassDiagram
 internal class StatedColor private constructor() : CommandExpression() {
     @ColorInt
     var colorInt: Int? = null //这是解析出来的，不要乱赋值

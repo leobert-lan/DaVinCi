@@ -3,12 +3,16 @@ package osp.leobert.android.davinci.expressions
 import osp.leobert.android.davinci.DPools
 import osp.leobert.android.davinci.DaVinCi
 import osp.leobert.android.davinci.DaVinCiCore
+import osp.leobert.android.davinci.uml.ExpDiagram
+import osp.leobert.android.reporter.diagram.notation.GenerateClassDiagram
 import osp.leobert.android.reporter.review.TODO
 
 // shape:[ st:[reactangle] ]
 // Rectangle(0), Oval(1), Line(2), Ring(3);
 @NotTerminal
 @TODO(desc = "text的内容应当交由上下文lookUp，")
+@ExpDiagram
+@GenerateClassDiagram
 internal class ShapeType private constructor() : CommandExpression() {
 
     companion object {

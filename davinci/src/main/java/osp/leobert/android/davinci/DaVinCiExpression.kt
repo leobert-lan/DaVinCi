@@ -11,8 +11,12 @@ import osp.leobert.android.davinci.Applier.Companion.viewBackground
 import osp.leobert.android.davinci.expressions.*
 import osp.leobert.android.davinci.syntactic.CslSyntactic
 import osp.leobert.android.davinci.syntactic.SldSyntactic
+import osp.leobert.android.davinci.uml.ExpDiagram
+import osp.leobert.android.reporter.diagram.notation.GenerateClassDiagram
 
 @Suppress("WeakerAccess", "unused")
+@ExpDiagram
+@GenerateClassDiagram
 abstract class DaVinCiExpression {
 
     protected fun <T> log(str: String, any: T?): T? {
@@ -114,6 +118,8 @@ abstract class DaVinCiExpression {
 
 
     //region StateListDrawable
+    @ExpDiagram
+    @GenerateClassDiagram
     class StateListDrawable internal constructor(val manual: Boolean = false) : DaVinCiExpression() {
 
         private var expressions: ShapeListExpression? = null
@@ -175,6 +181,8 @@ abstract class DaVinCiExpression {
 
 
     //region Shape
+    @ExpDiagram
+    @GenerateClassDiagram
     class Shape internal constructor(val manual: Boolean = false) : DaVinCiExpression() {
 
         companion object {
@@ -443,6 +451,8 @@ abstract class DaVinCiExpression {
 
 
     //region Color State List
+    @ExpDiagram
+    @GenerateClassDiagram
     class ColorStateList internal constructor(private val manual: Boolean = false) : DaVinCiExpression() {
 
         private var expressions: ListExpression? = null

@@ -3,11 +3,15 @@ package osp.leobert.android.davinci.expressions
 import osp.leobert.android.davinci.DPools
 import osp.leobert.android.davinci.DaVinCi
 import osp.leobert.android.davinci.State
+import osp.leobert.android.davinci.uml.ExpDiagram
+import osp.leobert.android.reporter.diagram.notation.GenerateClassDiagram
 
 /**
  * short for DaVinCiState, expression for [State]
  */
 @NotTerminal
+@ExpDiagram
+@GenerateClassDiagram
 internal class DState private constructor() : CommandExpression() {
 
     private val states: MutableSet<State> by lazy { linkedSetOf() }

@@ -58,6 +58,9 @@ dependencies {
     implementation("io.github.leobert-lan:reporter-review:1.0.1")
     kapt("io.github.leobert-lan:report-anno-compiler:1.1.4")
     kapt("io.github.leobert-lan:reporter-review:1.0.1")
+
+    implementation("io.github.leobert-lan:class-diagram-reporter:1.0.0")
+    kapt("io.github.leobert-lan:class-diagram-reporter:1.0.0")
 }
 
 

@@ -5,10 +5,14 @@ import android.util.Log
 import osp.leobert.android.davinci.DPools
 import osp.leobert.android.davinci.DaVinCi
 import osp.leobert.android.davinci.DaVinCiExpression
+import osp.leobert.android.davinci.uml.ExpDiagram
+import osp.leobert.android.reporter.diagram.notation.GenerateClassDiagram
 import java.util.ArrayList
 
 //专门用于解析一串shape
 @NotTerminal
+@ExpDiagram
+@GenerateClassDiagram
 internal class ShapeListExpression private constructor() : DaVinCiExpression() {
 
     companion object {

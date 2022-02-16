@@ -4,6 +4,8 @@ import androidx.annotation.ColorInt
 import androidx.annotation.Px
 import osp.leobert.android.davinci.DPools
 import osp.leobert.android.davinci.DaVinCi
+import osp.leobert.android.davinci.uml.ExpDiagram
+import osp.leobert.android.reporter.diagram.notation.GenerateClassDiagram
 
 //region Stroke
 //        <!--<stroke-->
@@ -14,6 +16,8 @@ import osp.leobert.android.davinci.DaVinCi
 //shape:[ stroke:[ width:1dp;color:#aaaaaa;dashWidth:4;dashGap:6dp ] ]
 
 @NotTerminal
+@ExpDiagram
+@GenerateClassDiagram
 internal class Stroke private constructor() : CommandExpression() {
 
     override fun startTag(): String = tag

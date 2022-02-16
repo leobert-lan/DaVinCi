@@ -5,6 +5,8 @@ import androidx.annotation.ColorInt
 import osp.leobert.android.davinci.DPools
 import osp.leobert.android.davinci.DaVinCi
 import osp.leobert.android.davinci.DaVinCiCore
+import osp.leobert.android.davinci.uml.ExpDiagram
+import osp.leobert.android.reporter.diagram.notation.GenerateClassDiagram
 
 //    <gradient
 //    android:type=["linear" | "radial" | "sweep"]    //共有3中渐变类型，线性渐变（默认）/放射渐变/扫描式渐变
@@ -17,6 +19,8 @@ import osp.leobert.android.davinci.DaVinCiCore
 //    android:gradientRadius="float"  //渐变的半径，只有当渐变类型为radial时才能使用
 //    android:useLevel=["true" | "false"] />  //使用LevelListDrawable时就要设置为true。设为false时才有渐变效果
 @NotTerminal
+@ExpDiagram
+@GenerateClassDiagram
 internal class Gradient private constructor() : CommandExpression() {
 
     override fun startTag(): String = tag

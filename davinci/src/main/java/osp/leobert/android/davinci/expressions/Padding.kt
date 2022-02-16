@@ -3,6 +3,8 @@ package osp.leobert.android.davinci.expressions
 import androidx.annotation.Px
 import osp.leobert.android.davinci.DPools
 import osp.leobert.android.davinci.DaVinCi
+import osp.leobert.android.davinci.uml.ExpDiagram
+import osp.leobert.android.reporter.diagram.notation.GenerateClassDiagram
 
 //region Padding 一般不用
 //        <!--<padding-->
@@ -11,6 +13,8 @@ import osp.leobert.android.davinci.DaVinCi
 //        <!--android:right="integer"-->
 //        <!--android:bottom="integer" />-->
 @NotTerminal
+@ExpDiagram
+@GenerateClassDiagram
 internal class Padding private constructor() : CommandExpression() {
 
     override fun startTag(): String = tag

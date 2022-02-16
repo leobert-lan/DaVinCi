@@ -3,12 +3,16 @@ package osp.leobert.android.davinci.expressions
 import androidx.annotation.Px
 import osp.leobert.android.davinci.DPools
 import osp.leobert.android.davinci.DaVinCi
+import osp.leobert.android.davinci.uml.ExpDiagram
+import osp.leobert.android.reporter.diagram.notation.GenerateClassDiagram
 
 //region Size 一般不用
 //        <!--<size-->
 //        <!--android:width="integer"-->
 //        <!--android:height="integer" />-->
 @NotTerminal
+@ExpDiagram
+@GenerateClassDiagram
 internal class Size private constructor() : CommandExpression() {
 
     override fun startTag(): String = tag

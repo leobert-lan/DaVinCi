@@ -5,6 +5,8 @@ import android.util.Log
 import androidx.annotation.CallSuper
 import osp.leobert.android.davinci.*
 import osp.leobert.android.davinci.lookup.IColorLookup
+import osp.leobert.android.davinci.uml.ExpDiagram
+import osp.leobert.android.reporter.diagram.notation.GenerateClassDiagram
 import osp.leobert.android.reporter.review.TODO
 import java.util.*
 
@@ -18,6 +20,8 @@ import java.util.*
 @Suppress("WeakerAccess", "unused")
 @NotTerminal
 @TODO(desc="分析解析过程，是否有必要套层")
+@ExpDiagram
+@GenerateClassDiagram
 internal open class CommandExpression internal constructor() : DaVinCiExpression() {
 
     companion object {

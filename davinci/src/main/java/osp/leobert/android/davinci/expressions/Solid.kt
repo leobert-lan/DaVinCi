@@ -3,9 +3,13 @@ package osp.leobert.android.davinci.expressions
 import androidx.annotation.ColorInt
 import osp.leobert.android.davinci.DPools
 import osp.leobert.android.davinci.DaVinCi
+import osp.leobert.android.davinci.uml.ExpDiagram
+import osp.leobert.android.reporter.diagram.notation.GenerateClassDiagram
 
 //region Solid
 @NotTerminal
+@ExpDiagram
+@GenerateClassDiagram
 internal class Solid private constructor() : CommandExpression() {
     @ColorInt
     internal var colorInt: Int? = null //这是解析出来的，不要乱赋值

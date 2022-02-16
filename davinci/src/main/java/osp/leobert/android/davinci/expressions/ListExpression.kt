@@ -6,10 +6,14 @@ import osp.leobert.android.davinci.DPools
 import osp.leobert.android.davinci.DaVinCi
 import osp.leobert.android.davinci.DaVinCiExpression
 import osp.leobert.android.davinci.State
+import osp.leobert.android.davinci.uml.ExpDiagram
+import osp.leobert.android.reporter.diagram.notation.GenerateClassDiagram
 import java.util.*
 
 //region ListExp 同级别多条目解析
 @NotTerminal
+@ExpDiagram
+@GenerateClassDiagram
 internal class ListExpression private constructor() : DaVinCiExpression() {
 
     companion object {
