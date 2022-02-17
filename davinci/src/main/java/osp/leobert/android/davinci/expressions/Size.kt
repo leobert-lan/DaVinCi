@@ -6,14 +6,16 @@ import osp.leobert.android.davinci.DaVinCi
 import osp.leobert.android.davinci.uml.ExpDiagram
 import osp.leobert.android.reporter.diagram.notation.GenerateClassDiagram
 
-//region Size 一般不用
-//        <!--<size-->
-//        <!--android:width="integer"-->
-//        <!--android:height="integer" />-->
+/**
+ * Size 一般不用, 当使用者View的宽/高为Wrap_Content时，此时设置的Size将生效
+ * <!--<size-->
+ * <!--android:width="integer"-->
+ * <!--android:height="integer" />-->
+ * */
 @NotTerminal
 @ExpDiagram
 @GenerateClassDiagram
-internal class Size private constructor() : CommandExpression() {
+internal class Size private constructor() : ShapeSpecExpression() {
 
     override fun startTag(): String = tag
 

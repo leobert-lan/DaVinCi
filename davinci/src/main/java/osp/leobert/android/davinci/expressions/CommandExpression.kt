@@ -2,8 +2,10 @@ package osp.leobert.android.davinci.expressions
 
 import android.content.Context
 import android.util.Log
-import androidx.annotation.CallSuper
-import osp.leobert.android.davinci.*
+import osp.leobert.android.davinci.DaVinCi
+import osp.leobert.android.davinci.DaVinCiConfig
+import osp.leobert.android.davinci.DaVinCiExpression
+import osp.leobert.android.davinci.State
 import osp.leobert.android.davinci.lookup.IColorLookup
 import osp.leobert.android.davinci.uml.ExpDiagram
 import osp.leobert.android.reporter.diagram.notation.GenerateClassDiagram
@@ -12,63 +14,89 @@ import java.util.*
 
 /**
  * CommandExp 用于解析构建实际子属性
- * manual = true 认为是手动创建的，不会进入字符串解析逻辑
+ * manual = true 认为是手动创建的（指，手动创建了树，而不是基于语法式自动解析构建树），不会进入字符串解析逻辑
  * 在字符串解析中（构建语法树）的过程中，将作为一个"包装"，从代码角度看，将隔离解析过程，但这个做法值得商榷。
- * 在继承体系中，作为 [Solid] 等非终结符的父类，
+ * 在继承体系中，作为 [Solid] 等非终结符的父类.
+ *
+ * 2022-02-17 目前，应当将其修改为抽象类更加合理，
  *
  * */
 @Suppress("WeakerAccess", "unused")
 @NotTerminal
-@TODO(desc="分析解析过程，是否有必要套层")
+@TODO(desc = "分析解析过程，是否有必要套层")
 @ExpDiagram
 @GenerateClassDiagram
-internal open class CommandExpression internal constructor() : DaVinCiExpression() {
+internal abstract class CommandExpression internal constructor() : DaVinCiExpression() {
 
     companion object {
         const val state_separator = "|"
 
-        val factory: DPools.Factory<CommandExpression> = object : DPools.Factory<CommandExpression> {
-            override fun create(): CommandExpression {
-                return CommandExpression()
-            }
-        }
+//        @Deprecated("CommandExpression 将修改为抽象类")
+//        val factory: DPools.Factory<CommandExpression> = object : DPools.Factory<CommandExpression> {
+//            override fun create(): CommandExpression {
+//                return CommandExpression()
+//            }
+//        }
 
 
-        fun of(daVinCi: DaVinCi? = null, manual: Boolean = false): CommandExpression {
-            return requireNotNull(DPools.commandExpPool.acquire()).apply {
-                this.manual = manual
-                //取代了init中的逻辑 ：if (this::class == CommandExpression::class) onParse(daVinCi)
-                onParse(daVinCi)
+        fun of(daVinCi: DaVinCi? = null): CommandExpression {
+
+            requireNotNull(daVinCi)
+
+            return daVinCi.run {
+                when (this.currentToken) {
+                    Corners.tag -> Corners.of(this)
+                    Solid.tag -> Solid.of(this)
+                    ShapeType.tag -> ShapeType.of(this)
+                    Stroke.tag -> Stroke.of(this)
+                    Size.tag -> Size.of(this)
+                    Padding.tag -> Padding.of(this)
+                    Gradient.tag -> Gradient.of(this)
+                    StatedColor.tag -> StatedColor.of()
+                    else -> throw Exception("cannot parse ${this.currentToken}")
+                }
             }
+
+
+//
+//            return requireNotNull(DPools.commandExpPool.acquire()).apply {
+//                this.manual = manual
+//                //取代了init中的逻辑 ：if (this::class == CommandExpression::class) onParse(daVinCi)
+//                onParse(daVinCi)
+//            }
         }
     }
 
+    /**
+     * true if this Expression-Tree is build by manual.
+     * false if it's parsed and build from the string-serialized-expression
+     * */
     var manual: Boolean = false
         internal set
 
-    private var expressions: DaVinCiExpression? = null
+//    private var expressions: DaVinCiExpression? = null
 
-    @CallSuper
-    override fun reset() {
-        super.reset()
-//        expressions?.reset()// just set null is enough, it will be reset if it's released
-        expressions = null
-    }
+//    @CallSuper
+//    override fun reset() {
+//        super.reset()
+////        expressions?.reset()// just set null is enough, it will be reset if it's released
+//        expressions = null
+//    }
+//
+//    @CallSuper
+//    override fun onRelease() {
+//        super.onRelease()
+//        expressions?.release()
+//    }
+//
+//    override fun release() {
+//        onRelease()
+////        DPools.commandExpPool.release(this)
+//    }
 
-    @CallSuper
-    override fun onRelease() {
-        super.onRelease()
-        expressions?.release()
-    }
-
-    override fun release() {
-        onRelease()
-        DPools.commandExpPool.release(this)
-    }
-
-    override fun injectThenParse(daVinCi: DaVinCi?) {
-        onParse(daVinCi)
-    }
+//    override fun injectThenParse(daVinCi: DaVinCi?) {
+//        onParse(daVinCi)
+//    }
 
     protected fun toPx(str: String, context: Context): Int? {
         return requireNotNull(daVinCi).lookupDimension(str, context)
@@ -127,27 +155,27 @@ internal open class CommandExpression internal constructor() : DaVinCiExpression
             if (DaVinCi.enableDebugLog) Log.e(sLogTag, "daVinCi is null.use default config to parse $resName")
         }
 
-        return lookup.lookupColor(resName,context)
+        return lookup.lookupColor(resName, context)
     }
 
-    @Throws(Exception::class)
-    private fun onParse(daVinCi: DaVinCi?) {
-        this.daVinCi = daVinCi
-        if (manual) return
-        daVinCi?.let {
-            expressions = when (it.currentToken) {
-                Corners.tag -> Corners.of(it)
-                Solid.tag -> Solid.of(it)
-                ShapeType.tag -> ShapeType.of(it)
-                Stroke.tag -> Stroke.of(it)
-                Size.tag -> Size.of(it)
-                Padding.tag -> Padding.of(it)
-                Gradient.tag -> Gradient.of(it)
-                StatedColor.tag -> StatedColor.of()
-                else -> throw Exception("cannot parse ${it.currentToken}")
-            }
-        }
-    }
+//    @Throws(Exception::class)
+//    private fun onParse(daVinCi: DaVinCi?) {
+//        this.daVinCi = daVinCi
+//        if (manual) return
+//        daVinCi?.let {
+//            expressions = when (it.currentToken) {
+//                Corners.tag -> Corners.of(it)
+//                Solid.tag -> Solid.of(it)
+//                ShapeType.tag -> ShapeType.of(it)
+//                Stroke.tag -> Stroke.of(it)
+//                Size.tag -> Size.of(it)
+//                Padding.tag -> Padding.of(it)
+//                Gradient.tag -> Gradient.of(it)
+//                StatedColor.tag -> StatedColor.of()
+//                else -> throw Exception("cannot parse ${it.currentToken}")
+//            }
+//        }
+//    }
 
     protected fun asPrimitiveParse(start: String, daVinCi: DaVinCi?) {
         this.daVinCi = daVinCi
@@ -163,11 +191,11 @@ internal open class CommandExpression internal constructor() : DaVinCiExpression
         }
     }
 
-    override fun interpret() {
-        expressions?.interpret()
-    }
+//    override fun interpret() {
+//        expressions?.interpret()
+//    }
 
-    override fun toString(): String {
-        return "$expressions"
-    }
+//    override fun toString(): String {
+//        return "$expressions"
+//    }
 }

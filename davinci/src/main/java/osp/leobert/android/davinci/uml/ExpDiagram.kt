@@ -12,6 +12,10 @@ import osp.leobert.android.reporter.diagram.notation.ClassDiagram
 @ClassDiagram(
     qualifier = "ExpDiagram",
     fieldVisible = [],
-    methodVisible = []
+    methodVisible = [],
+    ignore = [
+        ".Companion$",
+        "^kotlin."
+    ]
 )
 annotation class ExpDiagram()

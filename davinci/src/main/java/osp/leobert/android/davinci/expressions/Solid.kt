@@ -10,7 +10,7 @@ import osp.leobert.android.reporter.diagram.notation.GenerateClassDiagram
 @NotTerminal
 @ExpDiagram
 @GenerateClassDiagram
-internal class Solid private constructor() : CommandExpression() {
+internal class Solid private constructor() : ShapeSpecExpression() {
     @ColorInt
     internal var colorInt: Int? = null //这是解析出来的，不要乱赋值
 

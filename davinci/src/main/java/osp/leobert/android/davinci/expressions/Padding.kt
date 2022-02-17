@@ -6,16 +6,18 @@ import osp.leobert.android.davinci.DaVinCi
 import osp.leobert.android.davinci.uml.ExpDiagram
 import osp.leobert.android.reporter.diagram.notation.GenerateClassDiagram
 
-//region Padding 一般不用
-//        <!--<padding-->
-//        <!--android:left="integer"-->
-//        <!--android:top="integer"-->
-//        <!--android:right="integer"-->
-//        <!--android:bottom="integer" />-->
+/**
+ * Padding 一般不用, 使用它的View，在没有设置Padding的情况下，可使用此时设置的Padding
+ *  <!--<padding-->
+ *  <!--android:left="integer"-->
+ *  <!--android:top="integer"-->
+ *  <!--android:right="integer"-->
+ *  <!--android:bottom="integer" />-->
+ * */
 @NotTerminal
 @ExpDiagram
 @GenerateClassDiagram
-internal class Padding private constructor() : CommandExpression() {
+internal class Padding private constructor() : ShapeSpecExpression() {
 
     override fun startTag(): String = tag
 

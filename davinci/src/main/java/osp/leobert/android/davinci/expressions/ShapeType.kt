@@ -13,7 +13,7 @@ import osp.leobert.android.reporter.review.TODO
 @TODO(desc = "text的内容应当交由上下文lookUp，")
 @ExpDiagram
 @GenerateClassDiagram
-internal class ShapeType private constructor() : CommandExpression() {
+internal class ShapeType private constructor() : ShapeSpecExpression() {
 
     companion object {
         const val tag = "st:["

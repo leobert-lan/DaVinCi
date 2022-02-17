@@ -21,7 +21,7 @@ import osp.leobert.android.reporter.diagram.notation.GenerateClassDiagram
 @NotTerminal
 @ExpDiagram
 @GenerateClassDiagram
-internal class Gradient private constructor() : CommandExpression() {
+internal class Gradient private constructor() : ShapeSpecExpression() {
 
     override fun startTag(): String = tag
 

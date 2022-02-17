@@ -47,8 +47,8 @@ dependencies {
     implementation("androidx.appcompat:appcompat:1.4.0")
     implementation("androidx.core:core-ktx:1.6.0")
 
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.0-native-mt")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.0-native-mt")
 
 
     testImplementation("junit:junit:4.13.2")
@@ -59,8 +59,8 @@ dependencies {
     kapt("io.github.leobert-lan:report-anno-compiler:1.1.4")
     kapt("io.github.leobert-lan:reporter-review:1.0.1")
 
-    implementation("io.github.leobert-lan:class-diagram-reporter:1.0.0")
-    kapt("io.github.leobert-lan:class-diagram-reporter:1.0.0")
+    implementation("io.github.leobert-lan:class-diagram-reporter:1.0.1")
+    kapt("io.github.leobert-lan:class-diagram-reporter:1.0.1")
 }
 
 

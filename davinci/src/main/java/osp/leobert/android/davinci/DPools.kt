@@ -36,7 +36,8 @@ object DPools {
 
     val daVinCiPool by lazy { simple(DEFAULT_POOL_SIZE, DaVinCi.factory, DaVinCi.resetter) }
 
-    internal val commandExpPool by lazy { simple(DEFAULT_POOL_SIZE, CommandExpression.factory, DaVinCiExpression.resetter.cast()) }
+//    @Deprecated("CommandExpression 将修改为抽象类")
+//    internal val commandExpPool by lazy { simple(DEFAULT_POOL_SIZE, CommandExpression.factory, DaVinCiExpression.resetter.cast()) }
 
     internal val cornersExpPool by lazy { simple(10, Corners.factory, DaVinCiExpression.resetter.cast()) }
     internal val solidExpPool by lazy { simple(10, Solid.factory, DaVinCiExpression.resetter.cast()) }

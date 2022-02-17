@@ -16,7 +16,7 @@ shape:[ corners:[ 4 ] solid:[ #353538 ] ]*/
 @NotTerminal
 @ExpDiagram
 @GenerateClassDiagram
-internal class Corners private constructor() : CommandExpression() {
+internal class Corners private constructor() : ShapeSpecExpression() {
 
     var conners: List<Int>? = null
 

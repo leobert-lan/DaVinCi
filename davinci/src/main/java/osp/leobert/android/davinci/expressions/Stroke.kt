@@ -18,7 +18,7 @@ import osp.leobert.android.reporter.diagram.notation.GenerateClassDiagram
 @NotTerminal
 @ExpDiagram
 @GenerateClassDiagram
-internal class Stroke private constructor() : CommandExpression() {
+internal class Stroke private constructor() : ShapeSpecExpression() {
 
     override fun startTag(): String = tag
 
