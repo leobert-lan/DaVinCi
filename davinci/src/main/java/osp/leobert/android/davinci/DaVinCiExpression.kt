@@ -226,6 +226,10 @@ abstract class DaVinCiExpression : Poolable {
             return statedStub().statesArray()
         }
 
+        override fun containsState(dState: DState): Boolean {
+            return statedStub?.containsState(dState) == true
+        }
+
         fun type(str: String): Shape {
             ShapeType.of(manual = true).apply {
                 this.text = str

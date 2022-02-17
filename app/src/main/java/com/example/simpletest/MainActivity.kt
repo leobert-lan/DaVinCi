@@ -2,6 +2,7 @@ package com.example.simpletest
 
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.example.simpletest.databinding.ActivityMainBinding
@@ -48,6 +49,19 @@ class MainActivity : AppCompatActivity() {
             Utils.timeCost("exp 到设置到view") {
                 exp.applyInto(it)
             }
+
+//            val test = DaVinCiExpression.stateListDrawable()
+//                .shape(DaVinCiExpression.shape().stroke("1", "#ff653c").corner("2dp"))
+//                .states(State.CHECKED_F, State.ENABLE_T)
+//
+//                .shape(DaVinCiExpression.shape().solid("#ff653c").corner("2dp,2dp,0,0"))
+//                .states(State.CHECKED_T, State.ENABLE_T)
+//                .shape(DaVinCiExpression.shape().solid("#ff653c").corner("2dp,2dp,2dp,2dp"))
+//                .states(State.CHECKED_T, State.ENABLE_T)
+//
+//                .shape(DaVinCiExpression.shape().rectAngle().solid("#80ff3c08").corner("10dp")).states(State.ENABLE_F).toString()
+//
+//            Log.e("lmsg", test)
 
         }
 

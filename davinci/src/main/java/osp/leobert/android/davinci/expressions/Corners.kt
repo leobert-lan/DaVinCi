@@ -115,6 +115,6 @@ internal class Corners private constructor() : ShapeSpecExpression() {
 
 
     override fun toString(): String {
-        return "$tag $conners $END"
+        return "$tag ${conners?.joinToString(",") ?: text} $END"
     }
 }
