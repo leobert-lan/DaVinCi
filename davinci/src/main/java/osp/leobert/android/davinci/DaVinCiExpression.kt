@@ -101,7 +101,7 @@ abstract class DaVinCiExpression : Poolable {
         fun shapeAndStateColor(
             shape: Shape,
             stateColor: ColorStateList,
-        ): DaVinCiExpression = ListExpression.of(manual = true).apply {
+        ): DaVinCiExpression = ListExpression.of().apply {
             append(shape)
             append(stateColor)
         }
