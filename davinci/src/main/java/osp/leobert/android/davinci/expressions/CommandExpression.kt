@@ -18,26 +18,17 @@ import java.util.*
  * 在字符串解析中（构建语法树）的过程中，将作为一个"包装"，从代码角度看，将隔离解析过程，但这个做法值得商榷。
  * 在继承体系中，作为 [Solid] 等非终结符的父类.
  *
- * 2022-02-17 目前，应当将其修改为抽象类更加合理，
+ * 2022-02-17 目前，应当将其修改为抽象类更加合理，仅保留部分内部简便API
  *
  * */
 @Suppress("WeakerAccess", "unused")
 @NotTerminal
-@TODO(desc = "分析解析过程，是否有必要套层")
 @ExpDiagram
 @GenerateClassDiagram
 internal abstract class CommandExpression internal constructor() : DaVinCiExpression() {
 
     companion object {
         const val state_separator = "|"
-
-//        @Deprecated("CommandExpression 将修改为抽象类")
-//        val factory: DPools.Factory<CommandExpression> = object : DPools.Factory<CommandExpression> {
-//            override fun create(): CommandExpression {
-//                return CommandExpression()
-//            }
-//        }
-
 
         fun of(daVinCi: DaVinCi? = null): CommandExpression {
 
@@ -56,14 +47,6 @@ internal abstract class CommandExpression internal constructor() : DaVinCiExpres
                     else -> throw Exception("cannot parse ${this.currentToken}")
                 }
             }
-
-
-//
-//            return requireNotNull(DPools.commandExpPool.acquire()).apply {
-//                this.manual = manual
-//                //取代了init中的逻辑 ：if (this::class == CommandExpression::class) onParse(daVinCi)
-//                onParse(daVinCi)
-//            }
         }
     }
 
@@ -74,29 +57,6 @@ internal abstract class CommandExpression internal constructor() : DaVinCiExpres
     var manual: Boolean = false
         internal set
 
-//    private var expressions: DaVinCiExpression? = null
-
-//    @CallSuper
-//    override fun reset() {
-//        super.reset()
-////        expressions?.reset()// just set null is enough, it will be reset if it's released
-//        expressions = null
-//    }
-//
-//    @CallSuper
-//    override fun onRelease() {
-//        super.onRelease()
-//        expressions?.release()
-//    }
-//
-//    override fun release() {
-//        onRelease()
-////        DPools.commandExpPool.release(this)
-//    }
-
-//    override fun injectThenParse(daVinCi: DaVinCi?) {
-//        onParse(daVinCi)
-//    }
 
     protected fun toPx(str: String, context: Context): Int? {
         return requireNotNull(daVinCi).lookupDimension(str, context)
@@ -158,25 +118,6 @@ internal abstract class CommandExpression internal constructor() : DaVinCiExpres
         return lookup.lookupColor(resName, context)
     }
 
-//    @Throws(Exception::class)
-//    private fun onParse(daVinCi: DaVinCi?) {
-//        this.daVinCi = daVinCi
-//        if (manual) return
-//        daVinCi?.let {
-//            expressions = when (it.currentToken) {
-//                Corners.tag -> Corners.of(it)
-//                Solid.tag -> Solid.of(it)
-//                ShapeType.tag -> ShapeType.of(it)
-//                Stroke.tag -> Stroke.of(it)
-//                Size.tag -> Size.of(it)
-//                Padding.tag -> Padding.of(it)
-//                Gradient.tag -> Gradient.of(it)
-//                StatedColor.tag -> StatedColor.of()
-//                else -> throw Exception("cannot parse ${it.currentToken}")
-//            }
-//        }
-//    }
-
     protected fun asPrimitiveParse(start: String, daVinCi: DaVinCi?) {
         this.daVinCi = daVinCi
         daVinCi?.let {
@@ -190,12 +131,4 @@ internal abstract class CommandExpression internal constructor() : DaVinCiExpres
             }
         }
     }
-
-//    override fun interpret() {
-//        expressions?.interpret()
-//    }
-
-//    override fun toString(): String {
-//        return "$expressions"
-//    }
 }

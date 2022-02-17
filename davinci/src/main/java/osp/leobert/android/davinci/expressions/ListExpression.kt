@@ -14,6 +14,7 @@ import java.util.*
 @NotTerminal
 @ExpDiagram
 @GenerateClassDiagram
+@Deprecated("除了组合shape和statedcolorList外，目前无任何用途了")
 internal class ListExpression private constructor() : DaVinCiExpression() {
 
     companion object {
@@ -60,18 +61,8 @@ internal class ListExpression private constructor() : DaVinCiExpression() {
         list.add(exp)
     }
 
-    fun appendState(vararg states: State) {
-        val dState = dState ?: DState.of(daVinCi)
-        dState.appendStates(states)
-        this.dState = dState
-    }
-
     internal fun states():MutableCollection<State>? {
         return dState?.collect()
-    }
-
-    internal fun statesArray():Array<State>? {
-        return dState?.collectToArray()
     }
 
     @SuppressLint("all")

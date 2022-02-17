@@ -42,8 +42,8 @@ class SldSyntactic private constructor(): Statable<DaVinCiExpression.StateListDr
             states = states
         )
 
-        exp.listExpression().dState = dState
-        host.shapeListExpression().setExpression(dState, exp)
+        exp.statedStub().dState = dState
+        host.stub().setExpression(dState, exp)
 
         DPools.sldSyntacticPool.release(this)
         return host
@@ -57,8 +57,8 @@ class SldSyntactic private constructor(): Statable<DaVinCiExpression.StateListDr
             parseFromText = true,
             states = states
         )
-        exp.listExpression().dState = dState
-        host.shapeListExpression().setExpression(dState, exp)
+        exp.statedStub().dState = dState
+        host.stub().setExpression(dState, exp)
 
         DPools.sldSyntacticPool.release(this)
         return host

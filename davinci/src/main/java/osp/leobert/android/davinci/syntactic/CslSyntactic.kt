@@ -77,7 +77,7 @@ class CslSyntactic private constructor() : Statable<DaVinCiExpression.ColorState
             colorStr = this@CslSyntactic.strColor(),
             states = states
         )
-        host.listExpression().append(statedColor)
+        host.statedStub().append(statedColor)
         DPools.cslSyntacticPool.release(this)
         return host
 
@@ -93,7 +93,7 @@ class CslSyntactic private constructor() : Statable<DaVinCiExpression.ColorState
             colorStr = this@CslSyntactic.strColor(),
             states = states
         )
-        host.listExpression().append(statedColor)
+        host.statedStub().append(statedColor)
         DPools.cslSyntacticPool.release(this)
         return host
     }

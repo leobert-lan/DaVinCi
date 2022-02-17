@@ -17,7 +17,7 @@ import osp.leobert.android.reporter.diagram.notation.GenerateClassDiagram
 @Suppress("WeakerAccess", "unused")
 @ExpDiagram
 @GenerateClassDiagram
-abstract class DaVinCiExpression {
+abstract class DaVinCiExpression : Poolable {
 
     protected fun <T> log(str: String, any: T?): T? {
         if (DaVinCi.enableDebugLog) Log.d(sLogTag, "${javaClass.simpleName}:$str")
@@ -43,7 +43,7 @@ abstract class DaVinCiExpression {
     }
 
     @CallSuper
-    internal open fun reset() {
+    override fun reset() {
         daVinCi = null
         tokenName = null
         text = null
@@ -51,7 +51,7 @@ abstract class DaVinCiExpression {
     }
 
     @CallSuper
-    open fun release() {
+    override fun release() {
         //let child realize it
     }
 
@@ -77,13 +77,13 @@ abstract class DaVinCiExpression {
 
     companion object {
 
-        val resetter: DPools.Resetter<DaVinCiExpression> = object : DPools.Resetter<DaVinCiExpression> {
-            override fun reset(target: DaVinCiExpression) {
+        val resetter: DPools.Resetter<Poolable> = object : DPools.Resetter<Poolable> {
+            override fun reset(target: Poolable) {
                 target.reset()
             }
         }
 
-        fun <T : DaVinCiExpression> DPools.Resetter<DaVinCiExpression>.cast(): DPools.Resetter<T> {
+        fun <T : Poolable> DPools.Resetter<Poolable>.cast(): DPools.Resetter<T> {
             return resetter as DPools.Resetter<T>
         }
 
@@ -97,6 +97,7 @@ abstract class DaVinCiExpression {
         fun stateColor(): ColorStateList = ColorStateList(manual = true)
 
         @JvmStatic
+        @Deprecated("语义不是非常明确，不建议这样使用")
         fun shapeAndStateColor(
             shape: Shape,
             stateColor: ColorStateList,
@@ -123,11 +124,11 @@ abstract class DaVinCiExpression {
     @GenerateClassDiagram
     class StateListDrawable internal constructor(val manual: Boolean = false) : DaVinCiExpression() {
 
-        private var expressions: ShapeListExpression? = null
+        private var sldStub: SldStub? = null
         override fun startTag(): String = tag
 
-        internal fun shapeListExpression(): ShapeListExpression = expressions ?: ShapeListExpression.of(daVinCi, manual).apply {
-            expressions = this
+        internal fun stub(): SldStub = sldStub ?: SldStub.of(manual).apply {
+            sldStub = this
         }
 
         fun shape(exp: Shape): SldSyntactic {
@@ -139,7 +140,7 @@ abstract class DaVinCiExpression {
         }
 
         override fun release() {
-            expressions?.release()
+            sldStub?.release()
             super.release()
         }
 
@@ -152,7 +153,7 @@ abstract class DaVinCiExpression {
         override fun interpret() {
             daVinCi?.let {
                 if (manual) {
-                    this.expressions = shapeListExpression().apply {
+                    this.sldStub = stub().apply {
                         this.injectThenParse(it)
                         this.interpret()
                     }
@@ -164,7 +165,7 @@ abstract class DaVinCiExpression {
                 } else {
                     //解析型
                     it.next()
-                    this.expressions = shapeListExpression().apply {
+                    this.sldStub = stub().apply {
                         this.injectThenParse(it)
                         this.interpret()
                     }
@@ -173,7 +174,7 @@ abstract class DaVinCiExpression {
         }
 
         override fun toString(): String {
-            return "$tag $expressions $END"
+            return "$tag $sldStub $END"
         }
 
         fun applyInto(view: View) {
@@ -201,34 +202,34 @@ abstract class DaVinCiExpression {
             }
         }
 
-        private var expressions: ListExpression? = null
+        private var statedStub: StatedStub? = null
         override fun startTag(): String = tag
 
-        internal fun listExpression(): ListExpression {
-            return expressions ?: ListExpression.of(daVinCi, manual).apply {
-                expressions = this
+        internal fun statedStub(): StatedStub {
+            return statedStub ?: StatedStub.of(manual).apply {
+                statedStub = this
             }
         }
 
         //region apis
         fun states(vararg states: State): Shape {
-            val exp: ListExpression = listExpression()
-            exp.appendState(*states)
+            val exp: StatedStub = statedStub()
+            exp.appendState(daVinCi, *states)
             return this
         }
 
         internal fun statesCollect(): MutableCollection<State>? {
-            return listExpression().states()
+            return statedStub().states()
         }
 
         internal fun statesArray(): Array<State>? {
-            return listExpression().statesArray()
+            return statedStub().statesArray()
         }
 
         fun type(str: String): Shape {
             ShapeType.of(manual = true).apply {
                 this.text = str
-                listExpression().append(this)
+                statedStub().append(this)
             }
             return this
         }
@@ -237,7 +238,7 @@ abstract class DaVinCiExpression {
             ShapeType.of(manual = true).apply {
                 this.text = ShapeType.Rectangle
                 parseFromText = false
-                listExpression().append(this)
+                statedStub().append(this)
             }
             return this
         }
@@ -246,7 +247,7 @@ abstract class DaVinCiExpression {
             ShapeType.of(manual = true).apply {
                 this.text = ShapeType.Oval
                 parseFromText = false
-                listExpression().append(this)
+                statedStub().append(this)
             }
             return this
         }
@@ -255,7 +256,7 @@ abstract class DaVinCiExpression {
             ShapeType.of(manual = true).apply {
                 this.text = ShapeType.Ring
                 parseFromText = false
-                listExpression().append(this)
+                statedStub().append(this)
             }
             return this
         }
@@ -264,7 +265,7 @@ abstract class DaVinCiExpression {
             ShapeType.of(manual = true).apply {
                 this.text = ShapeType.Line
                 parseFromText = false
-                listExpression().append(this)
+                statedStub().append(this)
             }
             return this
         }
@@ -274,7 +275,7 @@ abstract class DaVinCiExpression {
             Corners.of(manual = true).apply {
                 this.conners = arrayListOf(r, r, r, r)
                 parseFromText = false
-                listExpression().append(this)
+                statedStub().append(this)
             }
             return this
         }
@@ -283,7 +284,7 @@ abstract class DaVinCiExpression {
             Corners.of(manual = true).apply {
                 this.text = str
                 parseFromText = true
-                listExpression().append(this)
+                statedStub().append(this)
             }
             return this
         }
@@ -292,7 +293,7 @@ abstract class DaVinCiExpression {
             Corners.of(manual = true).apply {
                 this.conners = arrayListOf(lt, rt, rb, lb)
                 parseFromText = false
-                listExpression().append(this)
+                statedStub().append(this)
             }
             return this
         }
@@ -301,7 +302,7 @@ abstract class DaVinCiExpression {
         fun solid(str: String): Shape {
             Solid.of(manual = true).apply {
                 text = str
-                listExpression().append(this)
+                statedStub().append(this)
             }
             return this
         }
@@ -311,7 +312,7 @@ abstract class DaVinCiExpression {
                 text = "#" + String.format("%8x", color)
                 this.colorInt = color
                 parseFromText = false
-                listExpression().append(this)
+                statedStub().append(this)
             }
             return this
         }
@@ -321,7 +322,7 @@ abstract class DaVinCiExpression {
         fun stroke(width: String, color: String): Shape {
             Stroke.of(manual = true).apply {
                 text = Stroke.prop_width + width + ";" + Stroke.prop_color + color
-                listExpression().append(this)
+                statedStub().append(this)
             }
             return this
         }
@@ -330,7 +331,7 @@ abstract class DaVinCiExpression {
             Stroke.of(manual = true).apply {
                 text =
                     "${Stroke.prop_width}$width;${Stroke.prop_color}$color;${Stroke.prop_dash_gap}$dashGap;${Stroke.prop_dash_width}$dashWidth"
-                listExpression().append(this)
+                statedStub().append(this)
             }
             return this
         }
@@ -344,7 +345,7 @@ abstract class DaVinCiExpression {
                     "%8x",
                     colorInt
                 )
-                listExpression().append(this)
+                statedStub().append(this)
             }
             return this
         }
@@ -376,7 +377,7 @@ abstract class DaVinCiExpression {
 
                 parseFromText = false
                 //犯懒了，不想手拼了
-                listExpression().append(this)
+                statedStub().append(this)
             }
             return this
         }
@@ -406,7 +407,7 @@ abstract class DaVinCiExpression {
                         centerX.run { ";${Gradient.prop_center_x}$this" } +
                         centerY.run { ";${Gradient.prop_center_y}$this" } +
                         angle.run { ";${Gradient.prop_angle}$this" }
-                listExpression().append(this)
+                statedStub().append(this)
             }
             return this
         }
@@ -422,7 +423,7 @@ abstract class DaVinCiExpression {
         override fun interpret() {
             daVinCi?.let {
                 if (manual) {
-                    this.expressions = listExpression().apply {
+                    this.statedStub = statedStub().apply {
                         this.injectThenParse(it)
                         this.interpret()
                     }
@@ -434,7 +435,7 @@ abstract class DaVinCiExpression {
                 } else {
                     //解析型
                     it.next()
-                    this.expressions = listExpression().apply {
+                    this.statedStub = statedStub().apply {
                         this.injectThenParse(it)
                         this.interpret()
                     }
@@ -443,7 +444,7 @@ abstract class DaVinCiExpression {
         }
 
         override fun toString(): String {
-            return "$tag $expressions $END"
+            return "$tag $statedStub $END"
         }
 
         fun applyInto(view: View) {
@@ -461,12 +462,12 @@ abstract class DaVinCiExpression {
     @GenerateClassDiagram
     class ColorStateList internal constructor(private val manual: Boolean = false) : DaVinCiExpression() {
 
-        private var expressions: ListExpression? = null
+        private var statedStub: StatedStub? = null
         override fun startTag(): String = tag
 
 
-        internal fun listExpression(): ListExpression = expressions ?: ListExpression.of(daVinCi, manual).apply {
-            expressions = this
+        internal fun statedStub(): StatedStub = statedStub ?: StatedStub.of(manual).apply {
+            statedStub = this
         }
 
 
@@ -491,7 +492,7 @@ abstract class DaVinCiExpression {
         override fun interpret() {
             daVinCi?.let {
                 if (manual) {
-                    this.expressions = listExpression().apply {
+                    this.statedStub = statedStub().apply {
                         this.injectThenParse(it)
                         this.interpret()
                     }
@@ -503,7 +504,7 @@ abstract class DaVinCiExpression {
                 } else {
                     //解析型
                     it.next()
-                    this.expressions = listExpression().apply {
+                    this.statedStub = statedStub().apply {
                         this.injectThenParse(it)
                         this.interpret()
                     }
@@ -512,7 +513,7 @@ abstract class DaVinCiExpression {
         }
 
         override fun toString(): String {
-            return "$tag $expressions $END"
+            return "$tag $statedStub $END"
         }
 
         fun applyInto(view: TextView) {

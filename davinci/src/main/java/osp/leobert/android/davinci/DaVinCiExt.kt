@@ -230,7 +230,7 @@ internal fun simplify(
         exp.interpret()
 
         return if (exp is DaVinCiExpression.Shape) {
-            exp.listExpression().dState?.collect() ?: arrayListOf()
+            exp.statedStub().dState?.collect() ?: arrayListOf()
         } else {
             arrayListOf()
         }
