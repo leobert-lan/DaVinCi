@@ -29,21 +29,21 @@ android {
 
 dependencies {
 
-    implementation("com.google.android.material:material:1.3.0")
+    implementation("com.google.android.material:material:1.4.0")
     compileOnly(project(":davinci"))
     compileOnly(project(":annotation"))
 
 
     compileOnly("org.jetbrains.kotlin:kotlin-stdlib:${Dependencies.Kotlin.version}")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.0-native-mt")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.0-native-mt")
     compileOnly("androidx.core:core-ktx:1.6.0")
 
-    implementation("io.github.leobert-lan:pandora:0.0.8")
+    implementation("io.github.leobert-lan:pandora:0.0.9")
     implementation("io.github.leobert-lan:pandorarv_kt:0.0.4")
     implementation("androidx.recyclerview:recyclerview:1.2.0")
 
-    implementation("androidx.appcompat:appcompat:1.3.0")
+    implementation("androidx.appcompat:appcompat:1.4.0")
 }
 
 EasyPublish {

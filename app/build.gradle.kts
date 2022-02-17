@@ -1,6 +1,6 @@
 plugins {
     id("com.android.application")
-    id("com.google.devtools.ksp") //version Dependencies.Kotlin.Ksp.version
+//    id("com.google.devtools.ksp") //version Dependencies.Kotlin.Ksp.version
     id("kotlin-android")
     kotlin("kapt")
     id("cn.cxzheng.asmtraceman")
@@ -14,7 +14,7 @@ traceMan {
 
 //configure<com.android.build.gradle.internal.dsl.BaseAppModuleExtension> {
 android {
-    compileSdkVersion(30)
+    compileSdkVersion(31)
     buildToolsVersion("30.0.3")
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
@@ -25,6 +25,11 @@ android {
     }
 
     defaultConfig {
+        configurations.all {
+            resolutionStrategy {
+                force("androidx.core:core-ktx:1.6.0")
+            }
+        }
         applicationId = "com.example.simpletest"
         minSdkVersion(26)
         targetSdkVersion(30)
@@ -81,27 +86,31 @@ android {
     }
 }
 
-ksp {
-    arg("daVinCi.verbose", "true")
-    arg("daVinCi.pkg", "com.examole.simpletest")
-    arg("daVinCi.module", "App")
-    arg("daVinCi.preview", "true")
-}
+//ksp {
+//    arg("daVinCi.verbose", "true")
+//    arg("daVinCi.pkg", "com.examole.simpletest")
+//    arg("daVinCi.module", "App")
+//    arg("daVinCi.preview", "true")
+//}
 
 val dev = true
 
 dependencies {
-    implementation("androidx.constraintlayout:constraintlayout:1.1.3")
+    implementation("androidx.constraintlayout:constraintlayout:2.1.0")
 
+    //fix: Duplicate class com.google.common.util.concurrent.ListenableFuture found in modules
+    // jetified-guava-23.5-jre (com.google.guava:guava:23.5-jre)
+    // and jetified-listenablefuture-1.0 (com.google.guava:listenablefuture:1.0)
+    implementation("com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava")
 
 
     implementation("org.jetbrains.kotlin:kotlin-stdlib:${Dependencies.Kotlin.version}")
-    implementation("androidx.appcompat:appcompat:1.3.0")
+    implementation("androidx.appcompat:appcompat:1.4.0")
     implementation("androidx.core:core-ktx:1.6.0")
 
     testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.ext:junit:1.1.2")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.3.0")
+    androidTestImplementation("androidx.test.ext:junit:1.1.3")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
 
     if (dev) {
         debugImplementation(project(":davinci_styles_viewer"))
