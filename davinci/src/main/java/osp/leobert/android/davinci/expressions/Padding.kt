@@ -52,7 +52,7 @@ internal class Padding private constructor() : ShapeSpecExpression() {
     }
 
     override fun release() {
-        onRelease()
+        super.release()
         DPools.paddingExpPool.release(this)
     }
 

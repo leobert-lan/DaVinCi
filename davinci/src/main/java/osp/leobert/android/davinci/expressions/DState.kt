@@ -8,6 +8,7 @@ import osp.leobert.android.reporter.diagram.notation.GenerateClassDiagram
 
 /**
  * short for DaVinCiState, expression for [State]
+ * states can be composed as a group of states, e.g. {CHECKABLE_T,CHECKED_T} ,{CHECKABLE_T,CHECKED_F}
  */
 @NotTerminal
 @ExpDiagram
@@ -44,7 +45,7 @@ internal class DState private constructor() : CommandExpression() {
             }
         }
 
-        fun of(daVinCi: DaVinCi? = null, manual: Boolean = false):DState {
+        fun of(daVinCi: DaVinCi? = null, manual: Boolean = false): DState {
             return requireNotNull(DPools.dStateExpPool.acquire()).apply {
                 this.manual = manual
                 injectThenParse(daVinCi)
@@ -79,7 +80,7 @@ internal class DState private constructor() : CommandExpression() {
     }
 
     override fun release() {
-        onRelease()
+        super.release()
         DPools.dStateExpPool.release(this)
     }
 
@@ -123,7 +124,7 @@ internal class DState private constructor() : CommandExpression() {
         return states.toCollection(arrayListOf())
     }
 
-    internal fun collectToArray():Array<State> {
+    internal fun collectToArray(): Array<State> {
         return states.toTypedArray()
     }
 }

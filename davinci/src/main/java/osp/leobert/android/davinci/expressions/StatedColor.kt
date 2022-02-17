@@ -83,7 +83,7 @@ internal class StatedColor private constructor() : CommandExpression() {
     }
 
     override fun release() {
-        onRelease()
+        super.release()
         DPools.statedColorExpPool.release(this)
     }
 

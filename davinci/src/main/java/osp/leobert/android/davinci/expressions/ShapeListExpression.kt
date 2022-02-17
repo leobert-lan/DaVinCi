@@ -7,12 +7,14 @@ import osp.leobert.android.davinci.DaVinCi
 import osp.leobert.android.davinci.DaVinCiExpression
 import osp.leobert.android.davinci.uml.ExpDiagram
 import osp.leobert.android.reporter.diagram.notation.GenerateClassDiagram
+import osp.leobert.android.reporter.review.TODO
 import java.util.ArrayList
 
 //专门用于解析一串shape
 @NotTerminal
 @ExpDiagram
 @GenerateClassDiagram
+@TODO("增加父类 StubExpression,本身是StateListExpression的Stub，用于解耦构建和解析过程")
 internal class ShapeListExpression private constructor() : DaVinCiExpression() {
 
     companion object {
@@ -41,13 +43,9 @@ internal class ShapeListExpression private constructor() : DaVinCiExpression() {
         list.clear()
     }
 
-    override fun onRelease() {
-        super.onRelease()
-        list.forEach { it.release() }
-    }
-
     override fun release() {
-        onRelease()
+        super.release()
+        list.forEach { it.release() }
         DPools.shapeListExpPool.release(this)
     }
 

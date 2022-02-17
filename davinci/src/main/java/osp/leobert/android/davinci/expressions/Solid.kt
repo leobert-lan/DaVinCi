@@ -41,7 +41,7 @@ internal class Solid private constructor() : ShapeSpecExpression() {
     }
 
     override fun release() {
-        onRelease()
+        super.release()
         DPools.solidExpPool.release(this)
     }
 

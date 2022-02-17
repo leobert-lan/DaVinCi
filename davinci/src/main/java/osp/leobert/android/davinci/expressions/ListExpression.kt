@@ -48,14 +48,11 @@ internal class ListExpression private constructor() : DaVinCiExpression() {
         list.clear()
     }
 
-    override fun onRelease() {
-        super.onRelease()
-        dState?.release()
-        list.forEach { it.release() }
-    }
 
     override fun release() {
-        onRelease()
+        super.release()
+        dState?.release()
+        list.forEach { it.release() }
         DPools.listExpPool.release(this)
     }
 

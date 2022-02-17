@@ -69,7 +69,7 @@ internal class Stroke private constructor() : ShapeSpecExpression() {
     }
 
     override fun release() {
-        onRelease()
+        super.release()
         DPools.strokeExpPool.release(this)
     }
 

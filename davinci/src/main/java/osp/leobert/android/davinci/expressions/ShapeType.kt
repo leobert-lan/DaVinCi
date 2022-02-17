@@ -38,7 +38,7 @@ internal class ShapeType private constructor() : ShapeSpecExpression() {
     }
 
     override fun release() {
-        onRelease()
+        super.release()
         DPools.shapeTypeExpPool.release(this)
     }
 

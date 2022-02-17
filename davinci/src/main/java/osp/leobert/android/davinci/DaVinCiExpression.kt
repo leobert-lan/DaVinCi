@@ -50,14 +50,15 @@ abstract class DaVinCiExpression {
         parseFromText = true
     }
 
+    @CallSuper
     open fun release() {
         //let child realize it
     }
 
-    @CallSuper
-    internal open fun onRelease() {
-
-    }
+//    @CallSuper
+//    internal open fun onRelease() {
+//
+//    }
 
 
     //一定会植入，手动创建的不解析
@@ -135,6 +136,11 @@ abstract class DaVinCiExpression {
 
         companion object {
             const val tag = "sld:["
+        }
+
+        override fun release() {
+            expressions?.release()
+            super.release()
         }
 
         override fun injectThenParse(daVinCi: DaVinCi?) {

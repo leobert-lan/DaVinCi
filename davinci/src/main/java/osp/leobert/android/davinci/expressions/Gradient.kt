@@ -95,7 +95,7 @@ internal class Gradient private constructor() : ShapeSpecExpression() {
     }
 
     override fun release() {
-        onRelease()
+        super.release()
         DPools.gradientExpPool.release(this)
     }
 

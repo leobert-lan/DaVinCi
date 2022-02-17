@@ -56,7 +56,7 @@ internal class Size private constructor() : ShapeSpecExpression() {
     }
 
     override fun release() {
-        onRelease()
+        super.release()
         DPools.sizeExpPool.release(this)
     }
 
