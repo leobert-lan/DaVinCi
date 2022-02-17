@@ -28,6 +28,7 @@
         android:layout_marginEnd="15dp"
         android:layout_marginBottom="3dp"
         android:orientation="vertical"
+        android:onClick="@{()->itemInteract.onItemClicked(vo)}"
         android:padding="10dp">
 
         <!-- android:onClick="@{(view)->itemInteract.foo(vh.getAdapterPosition(),vo)}"-->

@@ -149,6 +149,7 @@ class StyleVHCreator(private val itemInteract: StyleItemInteract?) : ViewHolderC
 }
 
 interface StyleItemInteract {
+    fun onItemClicked(vo:StyleVO2)
 }
 
 

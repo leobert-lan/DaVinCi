@@ -2,12 +2,15 @@ package osp.leobert.android.davinci.viewer
 
 import android.os.Bundle
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.flow.*
 import osp.leobert.android.davinci.StyleRegistry
 import osp.leobert.android.davinci.annotation.PreviewConfigRegistry
+import osp.leobert.android.davinci.viewer.widget.StyleItemInteract
 import osp.leobert.android.davinci.viewer.widget.StyleVHCreator
 import osp.leobert.android.davinci.viewer.widget.StyleVO2
 import osp.leobert.android.pandora.Logger
@@ -36,7 +39,15 @@ class StylesActivity : AppCompatActivity() {
 
         dataSet.registerDVRelation(
             StyleVO2.Impl::class.java,
-            StyleVHCreator(null)
+            StyleVHCreator(object : StyleItemInteract {
+                override fun onItemClicked(vo: StyleVO2) {
+                    val styleInfo = StyleRegistry.find(vo.name)?.toString() ?: "null"
+                    AlertDialog.Builder(this@StylesActivity)
+                        .setMessage(styleInfo)
+                        .create().show()
+                }
+
+            })
         )
 
         loadAllStyles()
@@ -44,39 +55,6 @@ class StylesActivity : AppCompatActivity() {
 
     private fun loadAllStyles() {
 
-//        //其实这并不耗时
-//        CoroutineScope(Dispatchers.Main).launch {
-//            flow {
-//                this.emit(
-//                    StyleRegistry.allStyleNames()
-//                )
-//            }.map { styles ->
-//                styles.map { style ->
-//                    StyleVO2.Impl(style, PreviewConfigRegistry.find(style))
-//                }
-//            }.flowOn(Dispatchers.IO)
-//                .onStart {
-//                    Toast.makeText(
-//                        this@StylesActivity,
-//                        "start collecting",
-//                        Toast.LENGTH_SHORT
-//                    ).show()
-//                }.onEach {
-//                    Toast.makeText(
-//                        this@StylesActivity,
-//                        "${it.size} Bg-style detected",
-//                        Toast.LENGTH_SHORT
-//                    ).show()
-//                    dataSet.setData(it)
-//                }.onEmpty {
-//                    Toast.makeText(
-//                        this@StylesActivity,
-//                        "0 Bg-style detected",
-//                        Toast.LENGTH_SHORT
-//                    ).show()
-//                }
-//                .collect()
-//        }
         StyleRegistry.allStyleNames().apply {
             Toast.makeText(
                 this@StylesActivity,

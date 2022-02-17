@@ -167,7 +167,7 @@ object StyleRegistry {
         }
 
         override fun toString(): String {
-            return "Style(name='$name', statedColorExp=$statedColorExp, sldExp=$sldExp)"
+            return "Style(name='$name', \nstatedColorExp=\n$statedColorExp, \nsldExp=\n$sldExp\n)"
         }
 
 
