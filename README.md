@@ -1,5 +1,13 @@
 [![GitHub](https://img.shields.io/github/license/leobert-lan/DaVinCi)](https://github.com/leobert-lan/DaVinCi/blob/master/LICENSE)
 
+## 如果报错
+
+如果出现guava中类重复，可添加进行解决
+
+```
+implementation("com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava")
+```
+
 ## 是什么？
 在Android上取代xml方式定义 Shape/GradientDrawable 以及 ColorStateList的方案。
 
