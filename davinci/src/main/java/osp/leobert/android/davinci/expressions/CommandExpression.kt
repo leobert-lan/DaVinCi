@@ -30,25 +30,25 @@ internal abstract class CommandExpression internal constructor() : DaVinCiExpres
     companion object {
         const val state_separator = "|"
 
-        @Deprecated("理论上不应该被使用，厘清后移除")
-        fun of(daVinCi: DaVinCi? = null): CommandExpression {
-
-            requireNotNull(daVinCi)
-
-            return daVinCi.run {
-                when (this.currentToken) {
-                    Corners.tag -> Corners.of(this)
-                    Solid.tag -> Solid.of(this)
-                    ShapeType.tag -> ShapeType.of(this)
-                    Stroke.tag -> Stroke.of(this)
-                    Size.tag -> Size.of(this)
-                    Padding.tag -> Padding.of(this)
-                    Gradient.tag -> Gradient.of(this)
-                    StatedColor.tag -> StatedColor.of()
-                    else -> throw Exception("cannot parse ${this.currentToken}")
-                }
-            }
-        }
+//        @Deprecated("理论上不应该被使用，厘清后移除")
+//        fun of(daVinCi: DaVinCi? = null): CommandExpression {
+//
+//            requireNotNull(daVinCi)
+//
+//            return daVinCi.run {
+//                when (this.currentToken) {
+//                    Corners.tag -> Corners.of(this)
+//                    Solid.tag -> Solid.of(this)
+//                    ShapeType.tag -> ShapeType.of(this)
+//                    Stroke.tag -> Stroke.of(this)
+//                    Size.tag -> Size.of(this)
+//                    Padding.tag -> Padding.of(this)
+//                    Gradient.tag -> Gradient.of(this)
+//                    StatedColor.tag -> StatedColor.of()
+//                    else -> throw Exception("cannot parse ${this.currentToken}")
+//                }
+//            }
+//        }
     }
 
     /**
@@ -60,24 +60,30 @@ internal abstract class CommandExpression internal constructor() : DaVinCiExpres
 
 
     protected fun toPx(str: String, context: Context): Int? {
-        return requireNotNull(daVinCi).lookupDimension(str, context)
+        return requireNotNull(daVinCi).lookupDimension(str, context, daVinCi)
     }
 
     @TODO(desc = "迁移到DaVinCi中，进一步考虑Theme")
     protected fun parseColor(text: String?): Int? {
+
         if (text.isNullOrEmpty()) return null
-        //todo tag的解析方式耦合较高，目前尚不容易迁移，可以认为这是分两步走的：解析怎么定义的资源+解析（获取）资源对应的ColorInt
-        //先迁移第二步 getColor
+
+        //分两步走的：
+        // 1. 解析怎么定义的资源 可进一步扩展
+        // 2. 解析（获取）资源对应的ColorInt --> 已完成
         text.let { s ->
             return when {
                 s.startsWith("@") -> {
-                    getColor(daVinCi?.context, getTag(daVinCi?.context, s.substring(1)))
+                    getColor(
+                        daVinCi?.context,
+                        /*colorResName*/daVinCi?.lookupTag(s.substring(1), daVinCi?.context, daVinCi)
+                    )
                 }
                 s.startsWith(sResourceColor) -> {
-                    getColor(daVinCi?.context, s.substring(sResourceColor.length))
+                    getColor(daVinCi?.context, /*colorResName*/s.substring(sResourceColor_length))
                 }
                 else -> {
-                    getColor(daVinCi?.context, s)
+                    getColor(daVinCi?.context, /*colorStr*/s)
                 }
             }
         }
@@ -103,20 +109,15 @@ internal abstract class CommandExpression internal constructor() : DaVinCiExpres
     }
 
     protected fun getTag(context: Context?, resName: String): String? {
-        if (context == null) return null
-        val resources = context.resources
-        val id = resources.getIdentifier(resName, "id", context.packageName)
-        return if (id == 0) {
-            null
-        } else (daVinCi?.applier?.getTag(id) ?: "").toString()
+        return daVinCi?.lookupTag(resName, context, daVinCi)
     }
 
-    private fun getColor(context: Context?, resName: String?): Int? {
+    private fun getColor(context: Context?, colorResNameOrColorStr: String?): Int? {
         val lookup: IColorLookup = daVinCi ?: DaVinCiConfig.apply {
-            if (DaVinCi.enableDebugLog) Log.e(sLogTag, "daVinCi is null.use default config to parse $resName")
+            if (DaVinCi.enableDebugLog) Log.e(sLogTag, "daVinCi is null.use default config to parse $colorResNameOrColorStr")
         }
 
-        return lookup.lookupColor(resName, context)
+        return lookup.lookupColor(colorResNameOrColorStr, context, daVinCi)
     }
 
     protected fun asPrimitiveParse(start: String, daVinCi: DaVinCi?) {

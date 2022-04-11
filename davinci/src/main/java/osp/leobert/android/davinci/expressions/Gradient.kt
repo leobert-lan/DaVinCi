@@ -59,10 +59,6 @@ internal class Gradient private constructor() : ShapeSpecExpression() {
         }
     }
 
-//    init {
-//        injectThenParse(daVinCi)
-//    }
-
     @ColorInt
     var startColor: Int? = null
 
@@ -155,6 +151,7 @@ internal class Gradient private constructor() : ShapeSpecExpression() {
                     }
 
                     e.startsWith(prop_use_level) -> {
+                        // TODO: check why remove it
 //                            useLevel = parseFloat(e.replace(prop_center_x, ""), 0f) ?: 0f
                     }
                     e.startsWith(prop_gradient_radius) -> {

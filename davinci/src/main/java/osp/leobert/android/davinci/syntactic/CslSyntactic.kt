@@ -38,6 +38,10 @@ class CslSyntactic private constructor() : Statable<DaVinCiExpression.ColorState
                 this.host = host
             }
         }
+
+        private const val TAG_COLOR_NOT_INIT = 0
+        private const val TAG_COLOR_STR = 1
+        private const val TAG_COLOR_INT = 2
     }
 
     var host: DaVinCiExpression.ColorStateList? = null
@@ -46,22 +50,22 @@ class CslSyntactic private constructor() : Statable<DaVinCiExpression.ColorState
         set(value) {
             field = value
             if (value != null)
-                colorTag = 1
+                colorTag = TAG_COLOR_STR
         }
 
     var colorInt: Int? = null
         set(value) {
             field = value
             if (value != null)
-                colorTag = 2
+                colorTag = TAG_COLOR_INT
         }
 
-    private var colorTag = 0
+    private var colorTag = TAG_COLOR_NOT_INIT
 
     private fun strColor(): String? {
         return when (colorTag) {
-            1 -> color
-            2 -> "#" + String.format("%8x", colorInt)
+            TAG_COLOR_STR -> color
+            TAG_COLOR_INT -> "#" + String.format("%8x", colorInt)
             else -> null
         }
     }
@@ -73,7 +77,7 @@ class CslSyntactic private constructor() : Statable<DaVinCiExpression.ColorState
             manual = true,
             //如果颜色也不需要解析，则无需从文本解析
             parseFromText = this@CslSyntactic.colorTag == 1,
-            colorInt = this@CslSyntactic.colorInt.takeIf { this@CslSyntactic.colorTag == 2 },
+            colorInt = this@CslSyntactic.colorInt.takeIf { this@CslSyntactic.colorTag == TAG_COLOR_INT },
             colorStr = this@CslSyntactic.strColor(),
             states = states
         )
@@ -89,7 +93,7 @@ class CslSyntactic private constructor() : Statable<DaVinCiExpression.ColorState
         val statedColor = StatedColor.create(
             manual = true,
             parseFromText = true,
-            colorInt = this@CslSyntactic.colorInt.takeIf { this@CslSyntactic.colorTag == 2 },
+            colorInt = this@CslSyntactic.colorInt.takeIf { this@CslSyntactic.colorTag == TAG_COLOR_INT },
             colorStr = this@CslSyntactic.strColor(),
             states = states
         )

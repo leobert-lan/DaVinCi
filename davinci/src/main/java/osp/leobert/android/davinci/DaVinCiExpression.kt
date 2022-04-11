@@ -116,6 +116,8 @@ abstract class DaVinCiExpression : Poolable {
         const val NEXT = "];"
 
         const val sResourceColor = "rc/"
+
+        const val sResourceColor_length = sResourceColor.length
     }
 
 

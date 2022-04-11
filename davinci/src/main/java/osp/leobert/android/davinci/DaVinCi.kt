@@ -4,15 +4,17 @@ import android.content.Context
 import android.util.Log
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
+import osp.leobert.android.davinci.lookup.IApplierTagLookup
 import osp.leobert.android.davinci.lookup.IColorLookup
 import osp.leobert.android.davinci.lookup.IDimensionLookup
+import osp.leobert.android.reporter.review.TODO
 import java.util.*
 import java.util.concurrent.Executors
 
 @Suppress("unused")
 class DaVinCi private constructor(
     private val config: DaVinCiConfig = DaVinCiConfig
-) : IDimensionLookup by config, IColorLookup by config {
+) : IDimensionLookup by config, IColorLookup by config, IApplierTagLookup by config {
     companion object {
         var enableDebugLog = true
 
@@ -117,6 +119,7 @@ class DaVinCi private constructor(
     }
 
     var applier: Applier? = null
+        internal set
 
     // 待解析的文本内容
     // 使用空格分隔待解析文本内容
@@ -175,6 +178,7 @@ class DaVinCi private constructor(
         applyCsl(exp, null)
     }
 
+    @TODO("`core.clear()` -- figure out why clear it, if exp is cycle-using?")
     fun applyCsl(exp: DaVinCiExpression.ColorStateList, onComplete: (() -> Unit)? = null) {
         daVinCiExecute(scope = scopeMain, runnable = {
             if (enableDebugLog)

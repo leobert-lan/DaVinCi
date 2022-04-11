@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.TypedValue
 import android.view.ViewGroup
 import androidx.annotation.Dimension
+import osp.leobert.android.davinci.DaVinCi
 
 /**
  * parse dimension
@@ -12,11 +13,11 @@ import androidx.annotation.Dimension
  */
 interface IDimensionLookup {
     @Dimension(unit = Dimension.PX)
-    fun lookupDimension(str: String, context: Context): Int?
+    fun lookupDimension(str: String, context: Context,daVinCi: DaVinCi?): Int?
 
     companion object {
         val InternalLookup: IDimensionLookup = object : IDimensionLookup {
-            override fun lookupDimension(str: String, context: Context): Int? {
+            override fun lookupDimension(str: String, context: Context, daVinCi: DaVinCi?): Int? {
                 return when {
                     str == "w" -> {
                         ViewGroup.LayoutParams.WRAP_CONTENT

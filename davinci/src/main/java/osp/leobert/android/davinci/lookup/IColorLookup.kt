@@ -13,7 +13,7 @@ import osp.leobert.android.davinci.DaVinCiExpression
  */
 interface IColorLookup {
     @ColorInt
-    fun lookupColor(resName: String?, context: Context?): Int?
+    fun lookupColor(resNameOrColorStr: String?, context: Context?, daVinCi: DaVinCi?): Int?
 
     companion object {
         /**
@@ -26,18 +26,18 @@ interface IColorLookup {
          * 前置流程为解析资源定义类型和资源TOKEN
          * */
         val InternalLookup: IColorLookup = object : IColorLookup {
-            override fun lookupColor(resName: String?, context: Context?): Int? {
+            override fun lookupColor(resNameOrColorStr: String?, context: Context?, daVinCi: DaVinCi?): Int? {
                 try {
-                    if (resName.isNullOrEmpty()) return null
+                    if (resNameOrColorStr.isNullOrEmpty()) return null
 
-                    if (resName.startsWith("#")) {
-                        return Color.parseColor(resName)
+                    if (resNameOrColorStr.startsWith("#")) {
+                        return Color.parseColor(resNameOrColorStr)
                     }
                     if (context == null) return null
                     val resources = context.resources
-                    val id = resources.getIdentifier(resName, "color", context.packageName)
+                    val id = resources.getIdentifier(resNameOrColorStr, "color", context.packageName)
                     return if (id == 0) {
-                        if (DaVinCi.enableDebugLog) Log.d(DaVinCiExpression.sLogTag, "no color resource named $resName")
+                        if (DaVinCi.enableDebugLog) Log.d(DaVinCiExpression.sLogTag, "no color resource named $resNameOrColorStr")
                         null
                     } else ContextCompat.getColor(context, id)
                 } catch (e: Exception) {
