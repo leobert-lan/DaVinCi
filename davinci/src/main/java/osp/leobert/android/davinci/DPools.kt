@@ -37,6 +37,7 @@ object DPools {
 
 //    @Deprecated("CommandExpression 将修改为抽象类")
 //    internal val commandExpPool by lazy { simple(DEFAULT_POOL_SIZE, CommandExpression.factory, DaVinCiExpression.resetter.cast()) }
+    internal val listExpPool by lazy { simple(10, ListExpression.factory, DaVinCiExpression.resetter.cast()) }
 
     internal val cornersExpPool by lazy { simple(10, Corners.factory, DaVinCiExpression.resetter.cast()) }
     internal val solidExpPool by lazy { simple(10, Solid.factory, DaVinCiExpression.resetter.cast()) }
@@ -46,7 +47,6 @@ object DPools {
     internal val strokeExpPool by lazy { simple(10, Stroke.factory, DaVinCiExpression.resetter.cast()) }
     internal val gradientExpPool by lazy { simple(10, Gradient.factory, DaVinCiExpression.resetter.cast()) }
     internal val dStateExpPool by lazy { simple(10, DState.factory, DaVinCiExpression.resetter.cast()) }
-    internal val listExpPool by lazy { simple(10, ListExpression.factory, DaVinCiExpression.resetter.cast()) }
     internal val statedColorExpPool by lazy { simple(10, StatedColor.factory, DaVinCiExpression.resetter.cast()) }
 
     internal val sldStubPool by lazy { simple(10, SldStub.factory, DaVinCiExpression.resetter.cast()) }

@@ -96,15 +96,15 @@ abstract class DaVinCiExpression : Poolable {
         @JvmStatic
         fun stateColor(): ColorStateList = ColorStateList(manual = true)
 
-        @JvmStatic
-        @Deprecated("语义不是非常明确，不建议这样使用")
-        fun shapeAndStateColor(
-            shape: Shape,
-            stateColor: ColorStateList,
-        ): DaVinCiExpression = ListExpression.of().apply {
-            append(shape)
-            append(stateColor)
-        }
+//        @JvmStatic 只有一种情况应该考虑，直接使用序列化的DSL，且这一DSL同时包含了 StateListDrawable 和 ColorStateList
+//        @Deprecated("语义不是非常明确，不建议这样使用")
+//        fun shapeAndStateColor(
+//            shape: Shape,
+//            stateColor: ColorStateList,
+//        ): DaVinCiExpression = ListExpression.of().apply {
+//            append(shape)
+//            append(stateColor)
+//        }
 
         @JvmStatic
         fun stateArray(vararg state: State) = state

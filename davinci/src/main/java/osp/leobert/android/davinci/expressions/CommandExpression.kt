@@ -71,6 +71,7 @@ internal abstract class CommandExpression internal constructor() : DaVinCiExpres
         //分两步走的：
         // 1. 解析怎么定义的资源 可进一步扩展
         // 2. 解析（获取）资源对应的ColorInt --> 已完成
+        // todo 最终变为： lookupColorResource, 资源的定义形式则可以扩展到DaVinCi
         text.let { s ->
             return when {
                 s.startsWith("@") -> {

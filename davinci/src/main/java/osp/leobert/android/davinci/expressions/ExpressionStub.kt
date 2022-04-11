@@ -10,7 +10,7 @@ import java.util.*
  * <p><b>Package:</b> osp.leobert.android.davinci.expressions </p>
  * <p><b>Project:</b> DaVinCi </p>
  * <p><b>Classname:</b> ExpressionStub </p>
- * <p><b>Description:</b> TODO </p>
+ * <p><b>Description:</b> 壳，按照状态 [State] 填充各类 [DaVinCiExpression] </p>
  * Created by leobert on 2022/2/17.
  */
 internal abstract class ExpressionStub<T>(private val parsers: Strategy<String, StubItemParser<T>>) : Poolable {

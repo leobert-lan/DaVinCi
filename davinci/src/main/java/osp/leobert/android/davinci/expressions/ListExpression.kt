@@ -8,10 +8,14 @@ import osp.leobert.android.davinci.uml.ExpDiagram
 import osp.leobert.android.reporter.diagram.notation.GenerateClassDiagram
 import java.util.*
 
+/**
+ * 仅用于：直接使用序列化的DSL，且这一DSL（可能）同时包含了 StateListDrawable 和 ColorStateList
+ *
+ * 注意，它是语义无约束的，所以无法建立健全的校验机制，毕竟没有明确的语义，这意味着可能抛出异常，或者无法跳过'不支持的局部'而解析失败
+ * */
 @NotTerminal
 @ExpDiagram
 @GenerateClassDiagram
-@Deprecated("除了组合shape和statedcolorList外，目前无任何用途了")
 internal class ListExpression private constructor() : DaVinCiExpression() {
 
     companion object {
