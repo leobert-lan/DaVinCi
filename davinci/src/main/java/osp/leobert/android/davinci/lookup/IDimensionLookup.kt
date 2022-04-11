@@ -1,9 +1,9 @@
 package osp.leobert.android.davinci.lookup
 
 import android.content.Context
+import android.util.TypedValue
 import android.view.ViewGroup
 import androidx.annotation.Dimension
-import osp.leobert.android.reporter.review.TODO
 
 /**
  * parse dimension
@@ -15,23 +15,67 @@ interface IDimensionLookup {
     fun lookupDimension(str: String, context: Context): Int?
 
     companion object {
-        @TODO(desc = "添加PT等单位处理")
         val InternalLookup: IDimensionLookup = object : IDimensionLookup {
             override fun lookupDimension(str: String, context: Context): Int? {
                 return when {
-                    str.endsWith("dp") -> {
-                        val scale: Float = context.resources.displayMetrics.density
-                        val dipValue = (str.substring(0, str.length - 2).toIntOrNull() ?: 0)
-                        (dipValue * scale + 0.5f).toInt()
-                    }
                     str == "w" -> {
                         ViewGroup.LayoutParams.WRAP_CONTENT
                     }
                     str == "m" -> {
                         ViewGroup.LayoutParams.MATCH_PARENT
                     }
+                    str.endsWith("dp") -> {
+                        dp2px(
+                            context,
+                            (str.substring(0, str.length - 2).toFloatOrNull() ?: 0f)
+                        )
+                    }
+                    str.endsWith("sp") -> {
+                        sp2px(
+                            context,
+                            (str.substring(0, str.length - 2).toFloatOrNull() ?: 0f)
+                        )
+                    }
+                    str.endsWith("mm") -> {
+                        mm2px(
+                            context,
+                            (str.substring(0, str.length - 2).toFloatOrNull() ?: 0f)
+                        )
+                    }
+                    str.endsWith("in") -> {
+                        in2px(
+                            context,
+                            (str.substring(0, str.length - 2).toFloatOrNull() ?: 0f)
+                        )
+                    }
+                    str.endsWith("pt") -> {
+                        pt2px(
+                            context,
+                            (str.substring(0, str.length - 2).toFloatOrNull() ?: 0f)
+                        )
+                    }
                     else -> str.toIntOrNull()
                 }
+            }
+
+            fun dp2px(context: Context, value: Float): Int {
+                return (TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, value, context.resources.displayMetrics) + 0.5f).toInt()
+            }
+
+            fun sp2px(context: Context, value: Float): Int {
+                return (TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, value, context.resources.displayMetrics) + 0.5f).toInt()
+            }
+
+            fun pt2px(context: Context, value: Float): Int {
+                return (TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_PT, value, context.resources.displayMetrics) + 0.5f).toInt()
+            }
+
+            fun in2px(context: Context, value: Float): Int {
+                return (TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_IN, value, context.resources.displayMetrics) + 0.5f).toInt()
+            }
+
+            fun mm2px(context: Context, value: Float): Int {
+                return (TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_MM, value, context.resources.displayMetrics) + 0.5f).toInt()
             }
         }
     }

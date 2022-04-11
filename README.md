@@ -67,6 +67,16 @@ debugImplementation "io.github.leobert-lan:davinci-style-viewer:0.0.1" //预览
 
 或参考项目Demo
 
+## 项目内容简介
+
+* anno_ksp ：style注册和预览的 APT or KSP
+* annotation ： style 注册与预览配置相关的注解
+* davinci ：主功能API
+* davinci_styles_viewer ：扩展，用于样式预览
+* app: Demo
+* 废弃
+    * preview_anno_ksp：废弃，style注册和预览的KSP实现
+    * annotation-java：废弃，实测KSP是否对Java注解有效
 
 ## 几篇相关拙作：
 
