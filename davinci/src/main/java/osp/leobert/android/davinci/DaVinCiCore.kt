@@ -12,8 +12,6 @@ import androidx.annotation.ColorInt
 import androidx.annotation.Px
 
 /*
- * <p><b>Package:</b> com.example.simpletest.background </p>
- * <p><b>Classname:</b> Expression </p>
  * Created by leobert on 2020-02-23.
  */
 @Suppress("unused")
@@ -345,10 +343,10 @@ class DaVinCiCore {
         } else drawable ?: stateListDrawable
     }
 
-    @Deprecated("含义不够准确", ReplaceWith("buildDrawable()"))
-    fun build(): Drawable? {
-        return buildDrawable()
-    }
+//    @Deprecated("含义不够准确", ReplaceWith("buildDrawable()"))
+//    fun build(): Drawable? {
+//        return buildDrawable()
+//    }
 
     /**
      * 利用[csl]信息，构建[ColorStateList]

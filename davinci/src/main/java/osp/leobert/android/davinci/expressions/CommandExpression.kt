@@ -30,6 +30,7 @@ internal abstract class CommandExpression internal constructor() : DaVinCiExpres
     companion object {
         const val state_separator = "|"
 
+        @Deprecated("理论上不应该被使用，厘清后移除")
         fun of(daVinCi: DaVinCi? = null): CommandExpression {
 
             requireNotNull(daVinCi)
