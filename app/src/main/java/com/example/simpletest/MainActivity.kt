@@ -6,6 +6,7 @@ import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.example.simpletest.databinding.ActivityMainBinding
+import com.example.simpletest.databinding.ActivityMainNoneBinding
 import osp.leobert.android.davinci.DaVinCiExpression
 import osp.leobert.android.davinci.State
 import osp.leobert.android.davinci.daVinCiColor
@@ -16,9 +17,26 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val binding = Utils.timeCost("加载databinding") {
+        Utils.timeCost("单纯加载布局 compare1") {
+            setContentView( R.layout.activity_main_none)
+        }
+
+        Utils.timeCost("单纯加载布局 compare2") {
+            setContentView( R.layout.activity_main_none)
+        }
+
+        Utils.timeCost("加载databinding compare") {
+            DataBindingUtil.setContentView<ActivityMainNoneBinding>(this, R.layout.activity_main_none)
+        }
+
+        Utils.timeCost("加载databinding compare2") {
+            DataBindingUtil.setContentView<ActivityMainNoneBinding>(this, R.layout.activity_main_none)
+        }
+
+        val binding = Utils.timeCost("加载databinding exist davinci") {
             DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main)
         }
+        // 通过简单的对比可以发现，排除掉必要的LayoutInflater初始化等，时间上并无明显差异，DaVinCi解析（包括构建）过程分离到子线程后，已经对性能无影响
 
 
         DaVinCiExpression.stateColor()
