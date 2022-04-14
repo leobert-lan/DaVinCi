@@ -19,8 +19,7 @@ import java.util.concurrent.Executors
 class DaVinCi private constructor(
     private val config: DaVinCiConfig = DaVinCiConfig
 ) : IDimensionLookup by config, IColorLookup by config, IApplierTagLookup by config,
-    IResourceLookup by config
-{
+    IResourceLookup by config {
     companion object {
         var enableDebugLog = true
 
@@ -66,9 +65,26 @@ class DaVinCi private constructor(
         fun fastLoad() {
             daVinCiExecute {
                 val start = System.nanoTime()
-                DaVinCiExpression.stateListDrawable()
-                    .shape(DaVinCiExpression.shape().rectAngle().solid("#ffffffff").stroke("1", "#ffffffff").corner("0"))
-                    .states(State.ENABLE_F)
+
+                val tmp = timeCost("fast-load create shape") {
+                    DaVinCiExpression.shape().rectAngle().solid("#ffffffff").stroke("1", "#ffffffff").corner("0")
+                }
+
+                val sld = timeCost("create sld") {
+                    DaVinCiExpression.stateListDrawable()
+                }
+                val ss = timeCost("apply shape to sld") {
+                    sld.shape(tmp)
+                }
+
+                timeCost("apply state to ss") { //---主要耗时点
+                    ss.states(
+                        timeCost("load state") {
+                            State.ENABLE_F
+                        }
+                    )
+                }
+
 
                 val cost = System.nanoTime() - start
                 if (enableDebugLog)

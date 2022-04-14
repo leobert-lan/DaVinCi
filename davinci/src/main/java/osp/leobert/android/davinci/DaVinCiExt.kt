@@ -237,3 +237,11 @@ internal fun simplify(
     }
     return arrayListOf()
 }
+
+inline fun <T> timeCost(info: String, job: () -> T): T {
+    val nanoStart = System.nanoTime()
+    val t: T = job()
+    val cost = System.nanoTime() - nanoStart
+    Log.d("davinci-timecost", "$info cost: $cost ns, about ${cost / 1000_000} ms")
+    return t
+}

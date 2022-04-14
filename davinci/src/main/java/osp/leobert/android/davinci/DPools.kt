@@ -98,12 +98,7 @@ object DPools {
     ) : Pools.Pool<T> {
 
         override fun acquire(): T? {
-            var result = pool.acquire()
-            if (result == null) {
-                result = factory.create()
-            }
-
-            return result
+            return pool.acquire()?:factory.create()
         }
 
         override fun release(@NotNull instance: T): Boolean {
