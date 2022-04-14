@@ -50,12 +50,12 @@ internal class Solid private constructor() : ShapeSpecExpression() {
 
         if (manual) {
             if (parseFromText)
-                colorInt = parseColor(text)
+                colorInt = lookupColorInt(text)
             return
         }
         colorInt = null
         asPrimitiveParse(tag, daVinCi)
-        colorInt = parseColor(text)
+        colorInt = lookupColorInt(text)
 
     }
 

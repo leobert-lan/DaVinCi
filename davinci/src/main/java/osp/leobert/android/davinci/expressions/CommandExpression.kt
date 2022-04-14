@@ -6,10 +6,10 @@ import osp.leobert.android.davinci.DaVinCi
 import osp.leobert.android.davinci.DaVinCiConfig
 import osp.leobert.android.davinci.DaVinCiExpression
 import osp.leobert.android.davinci.State
-import osp.leobert.android.davinci.lookup.IColorLookup
+import osp.leobert.android.davinci.lookup.IResourceLookup
+import osp.leobert.android.davinci.res.DaVinCiResource
 import osp.leobert.android.davinci.uml.ExpDiagram
 import osp.leobert.android.reporter.diagram.notation.GenerateClassDiagram
-import osp.leobert.android.reporter.review.TODO
 import java.util.*
 
 /**
@@ -63,31 +63,17 @@ internal abstract class CommandExpression internal constructor() : DaVinCiExpres
         return requireNotNull(daVinCi).lookupDimension(str, context, daVinCi)
     }
 
-    @TODO(desc = "迁移到DaVinCi中，进一步考虑Theme")
-    protected fun parseColor(text: String?): Int? {
+    protected fun lookupColorInt(text: String?): Int? {
 
         if (text.isNullOrEmpty()) return null
 
-        //分两步走的：
-        // 1. 解析怎么定义的资源 可进一步扩展
-        // 2. 解析（获取）资源对应的ColorInt --> 已完成
-        // todo 最终变为： lookupColorResource, 资源的定义形式则可以扩展到DaVinCi
-        text.let { s ->
-            return when {
-                s.startsWith("@") -> {
-                    getColor(
-                        daVinCi?.context,
-                        /*colorResName*/daVinCi?.lookupTag(s.substring(1), daVinCi?.context, daVinCi)
-                    )
-                }
-                s.startsWith(sResourceColor) -> {
-                    getColor(daVinCi?.context, /*colorResName*/s.substring(sResourceColor_length))
-                }
-                else -> {
-                    getColor(daVinCi?.context, /*colorStr*/s)
-                }
-            }
+        val lookup: IResourceLookup = daVinCi ?: DaVinCiConfig.apply {
+            if (DaVinCi.enableDebugLog) Log.e(sLogTag, "daVinCi is null.use default config to lookup colorIntRes")
         }
+
+        return kotlin.runCatching {
+            DaVinCiResource.ColorIntRes::class.java.cast(lookup.lookupResource(DaVinCiResource.ColorIntRes::class.java, text, daVinCi?.context, daVinCi))
+        }.getOrNull()?.colorInt
     }
 
     protected fun parseStates(text: String?): List<State>? {
@@ -109,17 +95,17 @@ internal abstract class CommandExpression internal constructor() : DaVinCiExpres
         return text.toFloatOrNull() ?: default
     }
 
-    protected fun getTag(context: Context?, resName: String): String? {
-        return daVinCi?.lookupTag(resName, context, daVinCi)
-    }
+//    protected fun getTag(context: Context?, resName: String): String? {
+//        return daVinCi?.lookupTag(resName, context, daVinCi)
+//    }
 
-    private fun getColor(context: Context?, colorResNameOrColorStr: String?): Int? {
-        val lookup: IColorLookup = daVinCi ?: DaVinCiConfig.apply {
-            if (DaVinCi.enableDebugLog) Log.e(sLogTag, "daVinCi is null.use default config to parse $colorResNameOrColorStr")
-        }
-
-        return lookup.lookupColor(colorResNameOrColorStr, context, daVinCi)
-    }
+//    private fun getColor(context: Context?, colorResNameOrColorStr: String?): Int? {
+//        val lookup: IColorLookup = daVinCi ?: DaVinCiConfig.apply {
+//            if (DaVinCi.enableDebugLog) Log.e(sLogTag, "daVinCi is null.use default config to parse $colorResNameOrColorStr")
+//        }
+//
+//        return lookup.lookupColor(colorResNameOrColorStr, context, daVinCi)
+//    }
 
     protected fun asPrimitiveParse(start: String, daVinCi: DaVinCi?) {
         this.daVinCi = daVinCi

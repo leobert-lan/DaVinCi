@@ -98,7 +98,7 @@ internal class Stroke private constructor() : ShapeSpecExpression() {
                             width = toPx(e.replace(prop_width, ""), daVinCi.context)
                     }
                     e.startsWith(prop_color) -> {
-                        color = parseColor(e.replace(prop_color, ""))
+                        color = lookupColorInt(e.replace(prop_color, ""))
                     }
                     e.startsWith(prop_dash_gap) -> {
                         if (daVinCi != null)

@@ -1,6 +1,7 @@
 package osp.leobert.android.davinci
 
 /**
+ * 策略模式的马甲
  * Created by leobert on 2022/1/19.
  */
 class Strategy<K, H : IHandler>(

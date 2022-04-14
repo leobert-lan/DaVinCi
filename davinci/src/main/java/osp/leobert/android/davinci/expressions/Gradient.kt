@@ -122,17 +122,17 @@ internal class Gradient private constructor() : ShapeSpecExpression() {
                 when {
                     e.startsWith(prop_start_color) -> {
                         if (daVinCi != null)
-                            startColor = parseColor(e.replace(prop_start_color, ""))
+                            startColor = lookupColorInt(e.replace(prop_start_color, ""))
                     }
 
                     e.startsWith(prop_center_color) -> {
                         if (daVinCi != null)
-                            centerColor = parseColor(e.replace(prop_center_color, ""))
+                            centerColor = lookupColorInt(e.replace(prop_center_color, ""))
                     }
 
                     e.startsWith(prop_end_color) -> {
                         if (daVinCi != null)
-                            endColor = parseColor(e.replace(prop_end_color, ""))
+                            endColor = lookupColorInt(e.replace(prop_end_color, ""))
                     }
 
                     e.startsWith(prop_type) -> {

@@ -107,7 +107,7 @@ internal class StatedColor private constructor() : CommandExpression() {
                 when {
                     e.startsWith(prop_color) -> {
                         if (daVinCi != null)
-                            colorInt = parseColor(e.replace(prop_color, ""))
+                            colorInt = lookupColorInt(e.replace(prop_color, ""))
                     }
                     e.startsWith(prop_state) -> {
                         if (daVinCi != null) {

@@ -2,11 +2,15 @@ package osp.leobert.android.davinci
 
 import android.content.Context
 import android.util.Log
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.asCoroutineDispatcher
 import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
 import osp.leobert.android.davinci.lookup.IApplierTagLookup
 import osp.leobert.android.davinci.lookup.IColorLookup
 import osp.leobert.android.davinci.lookup.IDimensionLookup
+import osp.leobert.android.davinci.lookup.IResourceLookup
 import osp.leobert.android.reporter.review.TODO
 import java.util.*
 import java.util.concurrent.Executors
@@ -14,7 +18,9 @@ import java.util.concurrent.Executors
 @Suppress("unused")
 class DaVinCi private constructor(
     private val config: DaVinCiConfig = DaVinCiConfig
-) : IDimensionLookup by config, IColorLookup by config, IApplierTagLookup by config {
+) : IDimensionLookup by config, IColorLookup by config, IApplierTagLookup by config,
+    IResourceLookup by config
+{
     companion object {
         var enableDebugLog = true
 
@@ -106,7 +112,6 @@ class DaVinCi private constructor(
 
     fun release() {
         daVinCiExecute {
-            Log.e("lmsg", "release davinci, ${hashCode()}")
             DPools.daVinCiPool.release(this)
         }
     }
