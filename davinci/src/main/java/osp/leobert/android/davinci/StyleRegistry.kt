@@ -79,7 +79,7 @@ object StyleRegistry {
             return styles[styleName]
 
         //find if in lazy factory
-        // TODO: 2021/5/31 consider remove?
+        // TODO: 2021/5/31 consider remove from lazyFactoryOfStyles after use?
 
         return lazyFactoryOfStyles[styleName]?.register2StyleRegistry(this).apply {
             if (this == null && DaVinCi.enableDebugLog) {

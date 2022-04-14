@@ -14,7 +14,7 @@ object Utils {
         val nanoStart = System.nanoTime()
         val t: T = job()
         val cost = System.nanoTime() - nanoStart
-        Log.d("davinci-timecost", "${info} cost: $cost ns, about ${cost / 1000_000} ms")
+        Log.d("davinci-timecost", "$info cost: $cost ns, about ${cost / 1000_000} ms")
         return t
     }
 }

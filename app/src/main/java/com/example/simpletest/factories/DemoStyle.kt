@@ -67,12 +67,69 @@ class DemoStyle2 : StyleRegistry.Style("btn_style.test") {
                 exp = DaVinCiExpression.stateListDrawable()
                     .shape(DaVinCiExpression.shape().rectAngle().solid("#80ff3c08").corner("10dp"))
                     .states(State.ENABLE_F)
-                    .shape(DaVinCiExpression.shape().rectAngle().corner("10dp")
+                    .shape(
+                        DaVinCiExpression.shape().rectAngle().corner("10dp")
 //                        .solid("#ff653c") 用 solid对比一下耗时 并未有明显变化
-                        .gradient("#ff3c08", "#ff653c", 0)
+                            .gradient("#ff3c08", "#ff653c", 0)
                     )
                     .states(State.ENABLE_T)
             )
         }
+    }
+}
+
+//以下均为测试耗时而增加的马甲
+
+@DaVinCiStyle(styleName = "btn_style.test2")
+@StyleViewer(
+    height = 48, width = 150,
+    type = StyleViewer.FLAG_CSL or StyleViewer.FLAG_BG, background = "#ffffff"
+)
+class DemoStyle3 : StyleRegistry.Style("btn_style.test2") {
+    init {
+        val shape = DaVinCiExpression.shape().rectAngle().solid("#80ff3c08").corner("10dp")
+
+        DaVinCiExpression.stateListDrawable()
+            .shape(shape)
+            .states(State.ENABLE_F)
+
+        this.registerSld(
+            exp = DaVinCiExpression.stateListDrawable()
+                .shape(DaVinCiExpression.shape().rectAngle().solid("#80ff3c08").corner("10dp"))
+                .states(State.ENABLE_F)
+                .shape(
+                    DaVinCiExpression.shape().rectAngle().corner("10dp")
+//                        .solid("#ff653c") 用 solid对比一下耗时 并未有明显变化
+                        .gradient("#ff3c08", "#ff653c", 0)
+                )
+                .states(State.ENABLE_T)
+        )
+    }
+}
+
+@DaVinCiStyle(styleName = "btn_style.test3")
+@StyleViewer(
+    height = 48, width = 150,
+    type = StyleViewer.FLAG_CSL or StyleViewer.FLAG_BG, background = "#ffffff"
+)
+class DemoStyle4 : StyleRegistry.Style("btn_style.test3") {
+    init {
+        val shape = DaVinCiExpression.shape().rectAngle().solid("#80ff3c08").corner("10dp")
+
+        DaVinCiExpression.stateListDrawable()
+            .shape(shape)
+            .states(State.ENABLE_F)
+
+        this.registerSld(
+            exp = DaVinCiExpression.stateListDrawable()
+                .shape(DaVinCiExpression.shape().rectAngle().solid("#80ff3c08").corner("10dp"))
+                .states(State.ENABLE_F)
+                .shape(
+                    DaVinCiExpression.shape().rectAngle().corner("10dp")
+//                        .solid("#ff653c") 用 solid对比一下耗时 并未有明显变化
+                        .gradient("#ff3c08", "#ff653c", 0)
+                )
+                .states(State.ENABLE_T)
+        )
     }
 }
