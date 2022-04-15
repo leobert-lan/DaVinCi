@@ -10,6 +10,7 @@ import osp.leobert.android.davinci.lookup.IResourceLookup
 import osp.leobert.android.davinci.res.DaVinCiResource
 import osp.leobert.android.davinci.uml.ExpDiagram
 import osp.leobert.android.reporter.diagram.notation.GenerateClassDiagram
+import osp.leobert.android.reporter.review.TODO
 import java.util.*
 
 /**
@@ -76,10 +77,11 @@ internal abstract class CommandExpression internal constructor() : DaVinCiExpres
         }.getOrNull()?.colorInt
     }
 
+    @TODO("valueOf 不能纠错，进一步考虑效率问题")
     protected fun parseStates(text: String?): List<State>? {
         if (text.isNullOrEmpty()) return null
 
-        return text.toUpperCase(Locale.ENGLISH).split(state_separator).map {
+        return text.uppercase().split(state_separator).map {
             State.valueOf(it)
         }
 

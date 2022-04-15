@@ -1,9 +1,6 @@
 package osp.leobert.android.davinci.syntactic
 
-import osp.leobert.android.davinci.DPools
-import osp.leobert.android.davinci.DaVinCiExpression
-import osp.leobert.android.davinci.Statable
-import osp.leobert.android.davinci.State
+import osp.leobert.android.davinci.*
 import osp.leobert.android.davinci.expressions.DState
 
 class SldSyntactic private constructor(): Statable<DaVinCiExpression.StateListDrawable> {
@@ -36,11 +33,9 @@ class SldSyntactic private constructor(): Statable<DaVinCiExpression.StateListDr
 
         val host = requireNotNull(host)
         val exp = requireNotNull(exp)
-        val dState = DState.create(
-            manual = true,
-            parseFromText = false,
-            states = states
-        )
+        val dState = DState.manualCreate(
+                states = states
+            )
 
         exp.statedStub().dState = dState
         host.stub().setExpression(dState, exp)
@@ -52,9 +47,7 @@ class SldSyntactic private constructor(): Statable<DaVinCiExpression.StateListDr
     override fun states(vararg states: String): DaVinCiExpression.StateListDrawable {
         val host = requireNotNull(host)
         val exp = requireNotNull(exp)
-        val dState = DState.create(
-            manual = true,
-            parseFromText = true,
+        val dState = DState.manualCreate(
             states = states
         )
         exp.statedStub().dState = dState

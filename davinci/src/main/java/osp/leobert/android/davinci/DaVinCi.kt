@@ -66,24 +66,16 @@ class DaVinCi private constructor(
             daVinCiExecute {
                 val start = System.nanoTime()
 
+                timeCost("load _Arrays and so on") {
+                    //如果是加载类等耗时，即使分离到子线程也无法避免
+                    Log.v(DaVinCiExpression.sLogTag, "" + arrayOf(State.ENABLE_F, State.ENABLE_T).joinToString(",").split(",").sorted().size)
+                }
+
                 val tmp = timeCost("fast-load create shape") {
+                    //耗时正常
                     DaVinCiExpression.shape().rectAngle().solid("#ffffffff").stroke("1", "#ffffffff").corner("0")
                 }
-
-                val sld = timeCost("create sld") {
-                    DaVinCiExpression.stateListDrawable()
-                }
-                val ss = timeCost("apply shape to sld") {
-                    sld.shape(tmp)
-                }
-
-                timeCost("apply state to ss") { //---主要耗时点
-                    ss.states(
-                        timeCost("load state") {
-                            State.ENABLE_F
-                        }
-                    )
-                }
+                DaVinCiExpression.stateListDrawable().shape(tmp).states(State.ENABLE_F)
 
 
                 val cost = System.nanoTime() - start
