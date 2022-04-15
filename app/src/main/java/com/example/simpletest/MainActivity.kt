@@ -45,7 +45,7 @@ class MainActivity : AppCompatActivity() {
             }
 
         DaVinCiExpression.stateColor()
-            .color(Color.parseColor("#ff0000")).states(State.PRESSED_F, State.CHECKED_T)
+            .color(Color.parseColor("#ff00ff")).states(State.PRESSED_F, State.CHECKED_T)
             .color(Color.parseColor("#0000dd")).states(State.PRESSED_T, State.CHECKED_T)
             .color(Color.parseColor("#ff0000")).states(State.CHECKED_T.name)
             .color(Color.parseColor("#00aa00")).states(State.CHECKED_F)
