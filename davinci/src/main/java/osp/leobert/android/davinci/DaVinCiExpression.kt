@@ -139,6 +139,8 @@ abstract class DaVinCiExpression : Poolable {
 
         companion object {
             const val tag = "sld:["
+
+            fun of(manual: Boolean = false) = StateListDrawable(manual)
         }
 
         override fun release() {

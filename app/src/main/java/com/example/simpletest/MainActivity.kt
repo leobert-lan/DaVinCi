@@ -2,13 +2,15 @@ package com.example.simpletest
 
 import android.graphics.Color
 import android.os.Bundle
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.example.simpletest.databinding.ActivityMainBinding
-import osp.leobert.android.davinci.DaVinCiExpression
-import osp.leobert.android.davinci.State
-import osp.leobert.android.davinci.daVinCiColor
-import osp.leobert.android.davinci.daVinCiSld
+import osp.leobert.android.davinci.*
+import osp.leobert.android.davinci.Applier.Companion.applier
+import osp.leobert.android.davinci.Applier.Companion.csl
+import osp.leobert.android.davinci.Applier.Companion.drawable
+import osp.leobert.android.davinci.Applier.Companion.viewBackground
 
 class MainActivity : AppCompatActivity() {
 
@@ -117,5 +119,93 @@ class MainActivity : AppCompatActivity() {
         binding.tvTestFactory.setOnClickListener {
             binding.tvTestFactory2.isEnabled = !binding.tvTestFactory2.isEnabled
         }
+    }
+
+    fun demoOfApplier() {
+        val view = findViewById<TextView>(R.id.test2)
+
+        val dsl = """ sld:[ 
+            shape:[ 
+                gradient:[ type:linear;startColor:#ff3c08;endColor:#353538 ];
+                st:[ Oval ];
+                state:[ ${State.ENABLE_T.name}|${State.PRESSED_T.name} ];
+                corners:[ 40dp ];
+                stroke:[ width:4dp;color:#000000 ]
+            ];
+            shape:[ 
+                gradient:[ type:linear;startColor:#ff3c08;endColor:#353538 ];
+                st:[ Oval ];
+                corners:[ 40dp ];
+                state:[ ${State.ENABLE_T.name} ];
+                stroke:[ width:4dp;color:rc/colorAccent ]
+            ];
+            shape:[ 
+                gradient:[ type:linear;startColor:#ff3c08;endColor:#353538 ];
+                st:[ Oval ];
+                state:[ ${State.ENABLE_F.name} ];
+                corners:[ 40dp ];
+                stroke:[ width:4dp;color:#000000 ]
+            ]
+        ]
+        """.trimIndent()
+
+        //内置策略
+        DaVinCi.of(dsl, view.viewBackground())
+            .applySld(DaVinCiExpression.StateListDrawable.of(false))
+
+        DaVinCi.of(null, view.csl())
+            .applyCsl(
+                DaVinCiExpression.stateColor()
+                    .color("#e5332c").states(State.PRESSED_T)
+                    .color("#667700").states(State.PRESSED_F)
+            )
+
+        DaVinCi.of(null, view.applier())
+            .applyCsl(
+                DaVinCiExpression.stateColor()
+                    .color("#e5332c").states(State.PRESSED_T)
+                    .color("#667700").states(State.PRESSED_F)
+            )
+
+        //自由使用csl
+        val daVinCi = DaVinCi.of(null, Applier.csl(this) {
+            //自由使用
+        })
+        val cslExp = DaVinCiExpression.stateColor()
+            .color("#e5332c").states(State.PRESSED_T)
+            .color("#667700").states(State.PRESSED_F)
+
+        daVinCi.applyCsl(cslExp)
+        daVinCi.applyCsl(cslExp, onComplete = {
+            //onComplete
+        })
+
+
+        //自由使用shape、sld
+        val daVinCi2 = DaVinCi.of(null, Applier.drawable(this) {
+            //自由使用
+        })
+        //shape 或者 stateListDrawable
+        val drawableExp = DaVinCiExpression.shape().oval()
+            .corner("40dp") //这个就没啥用了
+            .solid(resources.getColor(R.color.colorPrimaryDark))
+            .stroke(12, Color.parseColor("#26262a"))
+
+        //如果为 stateListDrawable 则使用 applySld
+        daVinCi2.applyShape(drawableExp)
+        daVinCi.applyShape(drawableExp, onComplete = {
+            //onComplete
+        })
+
+        //以上两者虽然相对简单，但存在一处缺陷：无法使用tag语法，没有实现从View中查询tag，如果需要使用View中的tag，则可以如下：
+
+        val daVinCi3 = DaVinCi.of(null, Applier.ViewComposer(view)
+            .drawable {
+                //自由使用drawable
+            }.csl {
+                //自由使用ColorStateList
+            }
+        )
+
     }
 }

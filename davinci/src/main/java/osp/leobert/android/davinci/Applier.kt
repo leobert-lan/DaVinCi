@@ -45,7 +45,7 @@ interface Applier {
         }
     }
 
-    class ViewComposer<T : View>(val view: T) : Composer(context = view.context, null, null) {
+    class ViewComposer<T : View> constructor(val view: T) : Composer(context = view.context, null, null) {
         override fun getTag(id: Int): Any? {
             return view.getTag(id)
         }
@@ -69,7 +69,19 @@ interface Applier {
         }
 
         fun <T : View> ViewComposer<T>.viewBackground(): ViewComposer<T> {
-            this.drawableConsumer = { ViewCompat.setBackground(this@viewBackground.view, this) }
+            this.drawable {
+                ViewCompat.setBackground(this, it)
+            }
+            return this
+        }
+
+        fun <T : View> ViewComposer<T>.drawable(consumer: T.(Drawable?) -> Unit): ViewComposer<T> {
+            this.drawableConsumer = { consumer.invoke(this@drawable.view, this) }
+            return this
+        }
+
+        fun <T : View> ViewComposer<T>.csl(consumer: T.(ColorStateList?) -> Unit): ViewComposer<T> {
+            this.cslConsumer = { consumer.invoke(this@csl.view, this) }
             return this
         }
 

@@ -77,7 +77,7 @@ DaVinCi 目前提供三类功能：
 
 其中，func1是主要功能。而func1有一个使用缺点："未复用或者不便于复用"，所以增加了func2提供了可复用性，并同步增加func3，增加了预览
 
-#### func1系列
+#### func1系列 -- 构建AST
 
 目前（0.0.8）版本实现的支持创建：
 
@@ -217,7 +217,7 @@ DaVinCiExpression.stateListDrawable()
 
 小结：以上以0.0.8版本为例，列举了 `逻辑构建` 的主要API，而 DSL 的规则将单独介绍（看到这些字表示我还在犯懒，没有写完）
 
-#### func1补充
+#### func1补充 -- 使用AST生成的结果（Drawable、ColorStateList）
 
 构建完AST后就具备了创建Target的能力，但我们最终的目标是使用Target，DaVinCi中对使用场景也进行了针对性封装：
 
@@ -225,13 +225,15 @@ DaVinCiExpression.stateListDrawable()
 * 给TextView设置文字色 -- 内置策略
 * 自由扩展
 
-**但显然，内置的策略对应有更简单的使用方式**：
+**一般情况下，运用：**：
 
 ```kotlin
 DaVinCiExpression#applyInto(view: View)
 ```
 
-而对于自由使用，DaVinCi中抽象了作为Target的消费者
+即可为View按照 `内置策略` 使用 DaVinCiExpression 创建的Target。
+
+DaVinCi 作为上下文，接受一个 Applier实例作为 `Target的消费者`，
 
 ```kotlin
 interface Applier {
@@ -245,24 +247,14 @@ interface Applier {
 }
 ```
 
-并可以基于：
-
-```kotlin
-//自由使用Drawable类型Target
-inline fun drawable(context: Context, crossinline consumer: Drawable?.() -> Unit)
-
-//自由使用ColorStateList类型Target
-inline fun csl(context: Context, crossinline consumer: ColorStateList?.() -> Unit)
-```
-
-并内置了：
+并可以使用一下API运用内置策略：
 
 ```kotlin
 //给View设置背景
-fun View.viewBackground()
+fun View.viewBackground(): Applier
 
 //给TextView设置文字色
-fun TextView.csl()
+fun TextView.csl(): Applier
 
 //自动应用以上两者规则
 fun View.applier(): Applier {
@@ -273,29 +265,249 @@ fun View.applier(): Applier {
 }
 ```
 
+通过如下API获得 `DaVinCi` 实例并设置 `Applier` 策略：
+
 ```kotlin
 DaVinCi.of(text: String? = null, applier: Applier? = null): DaVinCi
 ```
-//结合DaVinCi以下API
+
+_如果使用序列化的DSL，将其作为text 入参，并按照根类型调用下文API；否则text参数为null，基于手动创建的AST树调用以下API_
+
+按照类型使用以下API：
+
+```kotlin
+class DaCinCi {
+
+    fun applySld(exp: DaVinCiExpression.StateListDrawable)
+
+    fun applySld(exp: DaVinCiExpression.StateListDrawable, onComplete: (() -> Unit)? = null)
+
+    fun applyShape(exp: DaVinCiExpression.Shape)
+
+    fun applyShape(exp: DaVinCiExpression.Shape, onComplete: (() -> Unit)? = null)
+
+    fun applyCsl(exp: DaVinCiExpression.ColorStateList)
+
+    fun applyCsl(exp: DaVinCiExpression.ColorStateList, onComplete: (() -> Unit)? = null)
+}
+```
+
+可参考下文代码：
 
 ```kotlin
 
-fun applySld(exp: DaVinCiExpression.StateListDrawable)
+fun demoOfApplier() {
+    val view = findViewById<TextView>(R.id.test2)
 
-fun applySld(exp: DaVinCiExpression.StateListDrawable, onComplete: (() -> Unit)? = null)
+    val dsl = """ sld:[ 
+            shape:[ 
+                gradient:[ type:linear;startColor:#ff3c08;endColor:#353538 ];
+                st:[ Oval ];
+                state:[ ${State.ENABLE_T.name}|${State.PRESSED_T.name} ];
+                corners:[ 40dp ];
+                stroke:[ width:4dp;color:#000000 ]
+            ];
+            shape:[ 
+                gradient:[ type:linear;startColor:#ff3c08;endColor:#353538 ];
+                st:[ Oval ];
+                corners:[ 40dp ];
+                state:[ ${State.ENABLE_T.name} ];
+                stroke:[ width:4dp;color:rc/colorAccent ]
+            ];
+            shape:[ 
+                gradient:[ type:linear;startColor:#ff3c08;endColor:#353538 ];
+                st:[ Oval ];
+                state:[ ${State.ENABLE_F.name} ];
+                corners:[ 40dp ];
+                stroke:[ width:4dp;color:#000000 ]
+            ]
+        ]
+        """.trimIndent()
 
-fun applyShape(exp: DaVinCiExpression.Shape)
+    //内置策略
+    DaVinCi.of(dsl, view.viewBackground())
+        .applySld(DaVinCiExpression.StateListDrawable.of(false))
 
-fun applyShape(exp: DaVinCiExpression.Shape, onComplete: (() -> Unit)? = null)
+    DaVinCi.of(null, view.csl())
+        .applyCsl(
+            DaVinCiExpression.stateColor()
+                .color("#e5332c").states(State.PRESSED_T)
+                .color("#667700").states(State.PRESSED_F)
+        )
 
-fun applyCsl(exp: DaVinCiExpression.ColorStateList)
+    DaVinCi.of(null, view.applier())
+        .applyCsl(
+            DaVinCiExpression.stateColor()
+                .color("#e5332c").states(State.PRESSED_T)
+                .color("#667700").states(State.PRESSED_F)
+        )
 
-fun applyCsl(exp: DaVinCiExpression.ColorStateList, onComplete: (() -> Unit)? = null)
+    //自由使用csl
+    val daVinCi = DaVinCi.of(null, Applier.csl(this) {
+        //自由使用
+    })
+    val cslExp = DaVinCiExpression.stateColor()
+        .color("#e5332c").states(State.PRESSED_T)
+        .color("#667700").states(State.PRESSED_F)
+
+    daVinCi.applyCsl(cslExp)
+    daVinCi.applyCsl(cslExp, onComplete = {
+        //onComplete
+    })
+
+
+    //自由使用shape、sld
+    val daVinCi2 = DaVinCi.of(null, Applier.drawable(this) {
+        //自由使用
+    })
+    //shape 或者 stateListDrawable
+    val drawableExp = DaVinCiExpression.shape().oval()
+        .corner("40dp") //这个就没啥用了
+        .solid(resources.getColor(R.color.colorPrimaryDark))
+        .stroke(12, Color.parseColor("#26262a"))
+
+    //如果为 stateListDrawable 则使用 applySld
+    daVinCi2.applyShape(drawableExp)
+    daVinCi.applyShape(drawableExp, onComplete = {
+        //onComplete
+    })
+
+    //以上两者虽然相对简单，但存在一处缺陷：无法使用tag语法，没有实现从View中查询tag，如果需要使用View中的tag，则可以如下：
+
+    val daVinCi3 = DaVinCi.of(null, Applier.ViewComposer(view)
+        .drawable {
+            //自由使用drawable
+        }.csl {
+            //自由使用ColorStateList
+        }
+    )
+
+}
 ```
 
-可自由使用。
+**在XML中使用：**
 
-未完待续 TODO
+请结合Demo查阅，API含义很简单，不再赘述。
+
+#### func2 配置 Drawable or ColorStateList 的 Style 或 StyleFactory 并进行应用
+
+使用Style 或 StyleFactory需要使用注解，**按照项目实际使用AnnotationProcessor或Kapt（or ksp）**
+
+以KAPT为例：
+
+```
+kapt {
+    this.arguments {
+        this.arg("daVinCi.verbose", "true") //编译日志开关
+        this.arg("daVinCi.pkg", "com.example.simpletest") //生成类的package
+        this.arg("daVinCi.module", "App") //生成类的前缀
+        this.arg("daVinCi.preview", "false") //需要预览则打开
+    }
+}
+```
+
+引入注解和注解处理器
+```
+"io.github.leobert-lan:davinci-anno:0.0.2"
+"io.github.leobert-lan:davinci-anno-ksp:0.0.2"
+```
+
+Application初始化时调用：`{daVinCi.module}DaVinCiStyles.register()` _{daVinCi.module} 为配置的前缀_
+
+给定唯一的Style命名，并定义Style、StyleFactory：
+
+```kotlin
+//定义style
+@DaVinCiStyle(styleName = "btn_style.main") //给定唯一的Style命名
+@StyleViewer(
+    height = 40, width = ViewGroup.LayoutParams.MATCH_PARENT,
+    type = StyleViewer.FLAG_CSL or StyleViewer.FLAG_BG, background = "#ffffff"
+)
+class DemoStyle : StyleRegistry.Style("btn_style.main" /*给定唯一的Style命名*/) {
+    init {
+        Utils.timeCost("create DemoStyle 'btn_style.main'") {
+            this.registerSld(
+                exp = DaVinCiExpression.stateListDrawable()
+                    .shape(DaVinCiExpression.shape().stroke("1", "#ff653c").corner("2dp"))
+                    .states(State.CHECKED_F, State.ENABLE_T)
+
+                    .shape(DaVinCiExpression.shape().solid("#ff653c").corner("2dp,2dp,0,0"))
+                    .states(State.CHECKED_T, State.ENABLE_T)
+
+                    .shape(DaVinCiExpression.shape().rectAngle().solid("#80ff3c08").corner("10dp")).states(State.ENABLE_F)
+
+            ).registerCsl(
+                exp = DaVinCiExpression.stateColor()
+                    .color("#000000").states(State.ENABLE_T, State.CHECKED_T)
+                    .color("#666666").states(State.ENABLE_T, State.CHECKED_F)
+                    .color("#ffffff").states(State.ENABLE_F)
+            )
+        }
+    }
+}
+
+//定义StyleFactory
+@DaVinCiStyleFactory(styleName = "btn_style.sub") //给定唯一的Style命名
+class DemoStyleFactory : StyleRegistry.Style.Factory() {
+  override val styleName: String = "btn_style.sub" //给定唯一的Style命名
+
+  override fun apply(style: StyleRegistry.Style) {
+    style.registerSld(
+      DaVinCiExpression.stateListDrawable()
+        .shape(DaVinCiExpression.shape().rectAngle().solid("#80ff3c08").corner("10dp"))
+        .states(State.ENABLE_F)
+        .shape(
+          DaVinCiExpression.shape().rectAngle().corner("10dp")
+            .gradient("#ff3c08", "#ff653c", 0)
+        ).states(State.ENABLE_T)
+    )
+  }
+}
+
+
+
+```
+
+并通过以下API使用：
+
+```kotlin
+@BindingAdapter("daVinCiStyle")
+fun View.daVinCiStyle(styleName: String) {
+    with(StyleRegistry.find(styleName)) {
+
+        this?.applyTo(daVinCi = DaVinCi.of(null, this@daVinCiStyle.applier()), releaseAfter = true)
+            ?: Log.d(DaVinCiExpression.sLogTag, "could not found style with name $styleName")
+    }
+}
+```
+
+#### func3使用APP形式预览Style、StyleFactory
+
+_目前尚未开发DataBinding xml预览_
+
+对于有复用度需求的Style、StyleFactory 可以进行预览：
+
+添加：io.github.leobert-lan:davinci-style-viewer:0.0.1 并在Application中调用： ` AppDaVinCiStylePreviewInjector.register()` _注意配置的前缀_
+
+桌面会多出一个Activity入口。进入后是一个列表，列表的ItemView应用了样式，并可以设置Enable、Checked
+
+当然，需要对Style和StyleFactory使用如下注解：
+
+```kotlin
+@Target(AnnotationTarget.CLASS)
+@Retention(AnnotationRetention.SOURCE)
+public annotation class StyleViewer(
+    val height: Int = 48, // 预览区高度 dp
+    val width: Int = -1 /*android.view.ViewGroup.LayoutParams.MATCH_PARENT = -1*/, //预览区宽度 dp
+    val background: String = "#ffffff", 预览区背景，可避免撞色
+    val type: Int = FLAG_BG or FLAG_CSL, //用途，使用默认即可
+) {
+    public companion object {
+        public const val FLAG_BG: Int = 1 shl 0
+        public const val FLAG_CSL: Int = 1 shl 1
+    }
+}
+```
 
 ## 项目内容简介
 
