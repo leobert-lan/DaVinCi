@@ -84,7 +84,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         //这种方式不推荐使用，手写语法式很容易出错，但这是一个保留功能，日志将以此语法形式输出，
-        binding.test2.setOnClickListener {
+        binding.tvDemo3.setOnClickListener {
             Utils.timeCost("文本dsl创建") {
                 it.daVinCiSld(
                     """

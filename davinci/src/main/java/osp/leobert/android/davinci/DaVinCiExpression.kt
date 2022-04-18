@@ -13,6 +13,7 @@ import osp.leobert.android.davinci.syntactic.CslSyntactic
 import osp.leobert.android.davinci.syntactic.SldSyntactic
 import osp.leobert.android.davinci.uml.ExpDiagram
 import osp.leobert.android.reporter.diagram.notation.GenerateClassDiagram
+import osp.leobert.android.reporter.review.TODO
 
 @Suppress("WeakerAccess", "unused")
 @ExpDiagram
@@ -55,13 +56,7 @@ abstract class DaVinCiExpression : Poolable {
         //let child realize it
     }
 
-//    @CallSuper
-//    internal open fun onRelease() {
-//
-//    }
-
-
-    //一定会植入，手动创建的不解析
+    //一定会植入(对上下文赋值)，手动创建的不解析
     abstract fun injectThenParse(daVinCi: DaVinCi?)
 
     /*
@@ -71,7 +66,7 @@ abstract class DaVinCiExpression : Poolable {
 
     open fun startTag(): String = ""
 
-    internal open fun containsState(dState: DState): Boolean {
+    internal open fun equalState(dState: DState): Boolean {
         return false
     }
 
@@ -154,10 +149,11 @@ abstract class DaVinCiExpression : Poolable {
             daVinCi?.next()
         }
 
+        @TODO(desc="解析型的也需要考虑顺序")
         override fun interpret() {
             daVinCi?.let {
                 if (manual) {
-                    this.sldStub = stub().apply {
+                    with(stub()) {
                         this.injectThenParse(it)
                         this.interpret()
                     }
@@ -169,7 +165,7 @@ abstract class DaVinCiExpression : Poolable {
                 } else {
                     //解析型
                     it.next()
-                    this.sldStub = stub().apply {
+                    with(stub()) {
                         this.injectThenParse(it)
                         this.interpret()
                     }
@@ -230,8 +226,8 @@ abstract class DaVinCiExpression : Poolable {
             return statedStub().statesArray()
         }
 
-        override fun containsState(dState: DState): Boolean {
-            return statedStub?.containsState(dState) == true
+        override fun equalState(dState: DState): Boolean {
+            return statedStub?.equalState(dState) == true
         }
 
         fun type(str: String): Shape {

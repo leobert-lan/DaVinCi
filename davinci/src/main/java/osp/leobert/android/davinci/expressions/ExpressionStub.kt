@@ -28,7 +28,7 @@ internal abstract class ExpressionStub<T>(private val parsers: Strategy<String, 
 
     fun setExpression(dState: DState, exp: DaVinCiExpression) {
         list.removeAll {
-            it.containsState(dState)
+            it.equalState(dState)
         }
         list.add(exp)
     }
@@ -75,7 +75,10 @@ internal abstract class ExpressionStub<T>(private val parsers: Strategy<String, 
                         )
                     } else {
                         parser.parse(t = getT(), daVinCi = it)?.let { exp ->
-                            //injectThenParse(it) //should not call this method, in autoParse mode, it will invoke nextToken to fetch the specified tag, but now it has moved to
+                            // injectThenParse(it) //should not call this method, in autoParse mode,
+                            // it will invoke nextToken to fetch the specified tag, but now it has moved to
+
+
                             exp.interpret()
                             list.add(exp)
                         }

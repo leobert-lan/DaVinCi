@@ -5,11 +5,13 @@ import android.util.Log
 import osp.leobert.android.davinci.*
 import osp.leobert.android.davinci.uml.ExpDiagram
 import osp.leobert.android.reporter.diagram.notation.GenerateClassDiagram
+import osp.leobert.android.reporter.review.TODO
 
 //专门用于解析一串shape
 @NotTerminal
 @ExpDiagram
 @GenerateClassDiagram
+@TODO(desc = "优化命名，目前它作为Shape的核心，包含Shape的各个组成部分以及添加了一个状态的标志")
 internal class StatedStub private constructor() : ExpressionStub<StatedStub>(parser) {
 
     companion object {
@@ -138,7 +140,7 @@ internal class StatedStub private constructor() : ExpressionStub<StatedStub>(par
 
     }
 
-    fun containsState(dState: DState): Boolean {
+    fun equalState(dState: DState): Boolean {
         return (this.dState?.statesHash ?: 0) == dState.statesHash
     }
 

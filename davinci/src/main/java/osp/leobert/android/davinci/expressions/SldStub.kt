@@ -7,6 +7,7 @@ import osp.leobert.android.davinci.DaVinCiExpression
 import osp.leobert.android.davinci.strategyOf
 import osp.leobert.android.davinci.uml.ExpDiagram
 import osp.leobert.android.reporter.diagram.notation.GenerateClassDiagram
+import osp.leobert.android.reporter.review.TODO
 
 /**
  * 让StateListDrawable的构建和解析过程更加明确添加的Stub
@@ -38,6 +39,7 @@ internal class SldStub private constructor() : ExpressionStub<SldStub>(parser) {
         }
     }
 
+    @TODO(desc = "手动建立AST的考虑排序")
     override fun interpret() {
         if (manual) {
             list.forEach { it.interpret() }
