@@ -194,7 +194,7 @@ class DaVinCi private constructor(
     @TODO("`core.clear()` -- figure out why clear it, if exp is cycle-using?")
     fun applyCsl(exp: DaVinCiExpression.ColorStateList, onComplete: (() -> Unit)? = null) {
         daVinCiExecute(scope = scopeMain, runnable = {
-            if (enableDebugLog)
+            if (enableDebugLog && exp.manual) //手动创建的结构
                 Log.d(DaVinCiExpression.sLogTag, "daVinCi csl:$exp")
 
             Log.e("lmsg", "applyCsl,${hashCode()} ${this.applier == null}")

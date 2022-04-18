@@ -96,12 +96,7 @@ internal abstract class ExpressionStub<T>(private val parsers: Strategy<String, 
 
     @SuppressLint("all")
     open fun interpret() {
-        if (manual) {
-            list.forEach { it.interpret() }
-        } else {
-            if (DaVinCi.enableDebugLog) Log.d(DaVinCiExpression.sLogTag, "${javaClass.simpleName} 已自动解析2")
-        }
-//        list.forEach { it.interpret() }
+        list.forEach { it.interpret() }
     }
 
     override fun reset() {

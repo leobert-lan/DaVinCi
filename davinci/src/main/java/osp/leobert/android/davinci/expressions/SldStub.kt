@@ -42,12 +42,6 @@ internal class SldStub private constructor() : ExpressionStub<SldStub>(parser) {
 
     @TODO(desc = "手动建立AST的考虑排序")
     override fun interpret() {
-//        if (manual) {
-//            list.forEach { it.interpret() }
-//        } else {
-//            if (DaVinCi.enableDebugLog) Log.d(DaVinCiExpression.sLogTag, "${javaClass.simpleName} 已自动解析")
-//
-//        }
         list.forEach { it.interpret() }
     }
 

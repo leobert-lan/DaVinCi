@@ -152,7 +152,6 @@ abstract class DaVinCiExpression : Poolable {
             var token: String?
             do {
                 token = daVinCi?.next()
-                log("token is $token", null)
             } while (token == tag)
 
             stub().injectThenParse(daVinCi)
@@ -160,28 +159,6 @@ abstract class DaVinCiExpression : Poolable {
 
         @TODO(desc = "解析型的也需要考虑顺序")
         override fun interpret() {
-//            daVinCi?.let {
-//                if (manual) {
-//                    with(stub()) {
-////                        this.injectThenParse(it)
-//                        this.interpret()
-//                    }
-//                }
-////                else if (!it.equalsWithCommand(tag)) {
-////                    if (DaVinCi.enableDebugLog) Log.e(
-////                        sLogTag,
-////                        "The {$tag} is Excepted For Start When Not Manual! but got {${it.currentToken}}"
-////                    )
-////                }
-//                else {
-//                    //解析型
-//                    it.next()
-//                    with(stub()) {
-////                        this.injectThenParse(it)
-//                        this.interpret()
-//                    }
-//                }
-//            }
             //it's enough
             stub().interpret()
         }
@@ -210,8 +187,7 @@ abstract class DaVinCiExpression : Poolable {
 
             fun of(daVinCi: DaVinCi? = null, manual: Boolean = false): Shape {
                 return Shape(manual).apply {
-//                    this.daVinCi = daVinCi
-                    //todo test 如果有问题，还使用上面的
+                    //如果细分一下，语法树解析而成的，需要进行连续解析，则很显然，需要串联过程；手工建立的，只会注入davinci
                     injectThenParse(daVinCi)
                 }
             }
@@ -444,33 +420,10 @@ abstract class DaVinCiExpression : Poolable {
             do {
                 token = daVinCi?.next()
             } while (token == tag)
-//            daVinCi?.next() 改为上
             statedStub().injectThenParse(daVinCi)
         }
 
         override fun interpret() {
-//            daVinCi?.let {
-//                if (manual) {
-//                    this.statedStub = statedStub().apply {
-////                        this.injectThenParse(it)
-//                        this.interpret()
-//                    }
-//                }
-////                else if (!it.equalsWithCommand(tag)) {
-////                    if (DaVinCi.enableDebugLog) Log.e(
-////                        sLogTag,
-////                        "The {$tag} is Excepted For Start When Not Manual! but got {${it.currentToken}}"
-////                    )
-////                }
-//                else {
-//                    //解析型
-////                    val temp = it.next()
-//                    this.statedStub = statedStub().apply {
-////                        this.injectThenParse(it)
-//                        this.interpret()
-//                    }
-//                }
-//            }
             //it's enough!
             statedStub().interpret()
         }
@@ -492,7 +445,7 @@ abstract class DaVinCiExpression : Poolable {
     //region Color State List
     @ExpDiagram
     @GenerateClassDiagram
-    class ColorStateList internal constructor(private val manual: Boolean = false) : DaVinCiExpression() {
+    class ColorStateList internal constructor(val manual: Boolean = false) : DaVinCiExpression() {
 
         private var statedStub: StatedStub? = null
         override fun startTag(): String = tag
@@ -517,32 +470,22 @@ abstract class DaVinCiExpression : Poolable {
 
         override fun injectThenParse(daVinCi: DaVinCi?) {
             this.daVinCi = daVinCi
-            if (manual) return
-            daVinCi?.next()
+
+            if (manual) {
+                statedStub().injectThenParse(daVinCi)
+                return
+            }
+
+            var token: String?
+            do {
+                token = daVinCi?.next()
+            } while (token == tag)
+            statedStub().injectThenParse(daVinCi)
         }
 
         @TODO(desc = "理论上应该将解析和执行分开")
         override fun interpret() {
-            daVinCi?.let {
-                if (manual) {
-                    this.statedStub = statedStub().apply {
-                        this.injectThenParse(it)
-                        this.interpret()
-                    }
-                } else if (!it.equalsWithCommand(tag)) {
-                    if (DaVinCi.enableDebugLog) Log.e(
-                        sLogTag,
-                        "The {$tag} is Excepted For Start When Not Manual! but got {${it.currentToken}}"
-                    )
-                } else {
-                    //解析型
-                    it.next()
-                    this.statedStub = statedStub().apply {
-                        this.injectThenParse(it)
-                        this.interpret()
-                    }
-                }
-            }
+            statedStub().interpret()
         }
 
         override fun toString(): String {

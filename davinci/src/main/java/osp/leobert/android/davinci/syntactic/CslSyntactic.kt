@@ -81,6 +81,7 @@ class CslSyntactic private constructor() : Statable<DaVinCiExpression.ColorState
             colorStr = this@CslSyntactic.strColor(),
             states = states
         )
+
         host.statedStub().append(statedColor)
         DPools.cslSyntacticPool.release(this)
         return host

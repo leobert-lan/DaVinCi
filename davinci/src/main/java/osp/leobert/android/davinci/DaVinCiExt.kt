@@ -51,7 +51,7 @@ fun TextView.daVinCiColor(str: String) {
     if (DaVinCi.enableDebugLog) Log.d(DaVinCiExpression.sLogTag, "daVinCiColor:$str")
     val daVinCi = DaVinCi.of(str, this.csl())
 
-    val expressions = DaVinCiExpression.stateColor()
+    val expressions = DaVinCiExpression.ColorStateList()
     daVinCi.applyCsl(expressions) {
         daVinCi.release()
         expressions.release()

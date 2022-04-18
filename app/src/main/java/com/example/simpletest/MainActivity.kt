@@ -88,22 +88,22 @@ class MainActivity : AppCompatActivity() {
             Utils.timeCost("文本dsl创建") {
                 it.daVinCiSld(
                     """
-                    sld:[ 
-                        shape:[ 
+                    sld:[
+                        shape:[
                             gradient:[ type:linear;startColor:#ff3c08;endColor:#353538 ];
                             st:[ Oval ];
                             state:[ ${State.ENABLE_T.name}|${State.PRESSED_T.name} ];
                             corners:[ 40dp ];
                             stroke:[ width:4dp;color:#000000 ]
                         ];
-                        shape:[ 
+                        shape:[
                             gradient:[ type:linear;startColor:#ff3c08;endColor:#353538 ];
                             st:[ Oval ];
                             corners:[ 40dp ];
                             state:[ ${State.ENABLE_T.name} ];
                             stroke:[ width:4dp;color:rc/colorAccent ]
                         ];
-                        shape:[ 
+                        shape:[
                             gradient:[ type:linear;startColor:#ff3c08;endColor:#353538 ];
                             st:[ Oval ];
                             state:[ ${State.ENABLE_F.name} ];
@@ -113,6 +113,11 @@ class MainActivity : AppCompatActivity() {
                     ]
                     """.trimIndent()
                 )
+            }
+
+            val csl = "csl:[ sc:[ state:PRESSED_T;color:#e5332c ]; sc:[ state:PRESSED_F;color:#667700 ] ]"
+            Utils.timeCost("文本DSL创建 csl") {
+                binding.tvDemo3.daVinCiColor(csl)
             }
         }
 
