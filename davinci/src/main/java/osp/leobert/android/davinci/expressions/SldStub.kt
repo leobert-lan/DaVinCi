@@ -42,9 +42,13 @@ internal class SldStub private constructor() : ExpressionStub<SldStub>(parser) {
         }
     }
 
-    @TODO(desc = "手动建立AST的考虑排序")
     override fun interpret() {
         list.forEach { it.interpret() }
+    }
+
+    @TODO(desc = "考虑排序,但是需要注意，它是否已经完成解析")
+    override fun append(exp: DaVinCiExpression) {
+        super.append(exp)
     }
 
     override fun release() {

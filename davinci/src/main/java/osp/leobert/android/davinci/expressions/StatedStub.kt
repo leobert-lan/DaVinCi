@@ -5,6 +5,7 @@ import android.util.Log
 import osp.leobert.android.davinci.*
 import osp.leobert.android.davinci.uml.ExpDiagram
 import osp.leobert.android.reporter.diagram.notation.GenerateClassDiagram
+import osp.leobert.android.reporter.review.TODO
 
 /**
  * 状态化的Stub，可包含一个 [DState] 标识状态，以及一个list 包含 [DaVinCiExpression],
@@ -122,6 +123,14 @@ internal class StatedStub private constructor() : ExpressionStub<StatedStub>(par
         this.dState = dState
     }
 
+    @TODO(desc = "当其为ColorStateList情况时,考虑排序,但是需要注意，它是否已经完成解析")
+    override fun append(exp: DaVinCiExpression) {
+        super.append(exp)
+    }
+
+    /**
+     * different with [append], it's only used for DState to serve [DaVinCiExpression.Shape]
+     * */
     fun appendState(daVinCi: DaVinCi?, vararg states: State) {
         val dState = dState ?: DState.of(daVinCi)
         dState.appendStates(states)

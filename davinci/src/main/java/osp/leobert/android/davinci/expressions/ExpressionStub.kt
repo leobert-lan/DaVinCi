@@ -22,7 +22,7 @@ internal abstract class ExpressionStub<T>(private val parsers: Strategy<String, 
     internal var manual: Boolean = false
     internal val list: ArrayList<DaVinCiExpression> = ArrayList()
 
-    fun append(exp: DaVinCiExpression) {
+    open fun append(exp: DaVinCiExpression) {
         list.add(exp)
     }
 
@@ -30,7 +30,7 @@ internal abstract class ExpressionStub<T>(private val parsers: Strategy<String, 
         list.removeAll {
             it.equalState(dState)
         }
-        list.add(exp)
+        append(exp)
     }
 
     protected abstract fun getT(): T
@@ -74,13 +74,15 @@ internal abstract class ExpressionStub<T>(private val parsers: Strategy<String, 
                             "No parser registered to parse item in list for token: {${it.currentToken}}"
                         )
                     } else {
+                        //when null returns,it means the chunk expression should not put into the list, e.g. DState
                         parser.parse(t = getT(), daVinCi = it)?.let { exp ->
                             //不需要再调用，parse时已经处理
 //                            exp.injectThenParse(it)
 
                             // 解析延迟到对应的interpret chain
 //                            exp.interpret()
-                            list.add(exp)
+                            //todo consider order for stated things
+                            onExpParsed(exp)
                         }
                     }
                 }
@@ -92,6 +94,10 @@ internal abstract class ExpressionStub<T>(private val parsers: Strategy<String, 
                 if (DaVinCi.enableDebugLog) Log.e(DaVinCiExpression.sLogTag, "语法解析有误，进入死循环，强制跳出")
             }
         }
+    }
+
+    fun onExpParsed(exp: DaVinCiExpression) {
+        append(exp)
     }
 
     @SuppressLint("all")
