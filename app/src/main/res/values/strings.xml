@@ -7,7 +7,8 @@
     <string name="sample">Sample</string>
     <string name="demo2">demo2:xml中 按压效果示例，daVinCi_bg_pressed+daVinCi_bg_unpressed</string>
     <string name="demo3">demo3:xml中，圆角、描边、渐变 示例；点击后kotlin源码演示直接使用字符串语法式</string>
-    <string name="demo_4">demo4:错误示范：daVinCi_bg只能单独使用，一旦有其他的，就需要使用相应的成对的；文字色设置见kotlin源码（是正确的示例）</string>
+    <string name="demo_4">demo4:daVinCi_bg只能单独使用，一旦有其他的，就需要使用相应的成对的--xml为错误方式演示；文字色设置见kotlin源码（是正确的示例）</string>
+    <string name="demo_4_2">demo4:正确示范：0.0.8 版本开始提供新的API设置StateListDrawable--xml正确方式演示</string>
     <string name="demo5">demo5:xml中check状态使用示例，daVinCi_bg_checked+daVinCi_bg_unchecked；注意，更加复杂的状态组合目前无法用该方式，需要使用statelistdrawable</string>
     <string name="explain">
         <![CDATA[

@@ -78,54 +78,97 @@ fun View.daVinCiStyle(styleName: String) {
     }
 }
 
-@BindingAdapter("daVinCi_bg1", "states1", requireAll = false)
-fun View.daVinCiBg1(exp: DaVinCiExpression.Shape, states: Array<State>? = null) {
-    this.helpXmlDaVinCiBg(exp, states)
+//@BindingAdapter("daVinCi_bg1", "states1", requireAll = false)
+//@TODO(desc = "这一系列API，依旧存在很大不合理")
+//fun View.daVinCiBg1(exp: DaVinCiExpression.Shape, states: Array<State>? = null) {
+//    this.helpXmlDaVinCiBg(exp, states)
+//}
+//
+//@BindingAdapter("daVinCi_bg2", "states2", requireAll = false)
+//fun View.daVinCiBg2(exp: DaVinCiExpression.Shape, states: Array<State>? = null) {
+//    this.helpXmlDaVinCiBg(exp, states)
+//}
+//
+//@BindingAdapter("daVinCi_bg3", "states3", requireAll = false)
+//fun View.daVinCiBg3(exp: DaVinCiExpression.Shape, states: Array<State>? = null) {
+//    this.helpXmlDaVinCiBg(exp, states)
+//}
+//
+//@BindingAdapter("daVinCi_bg4", "states4", requireAll = false)
+//fun View.daVinCiBg4(exp: DaVinCiExpression.Shape, states: Array<State>? = null) {
+//    this.helpXmlDaVinCiBg(exp, states)
+//}
+//
+//@BindingAdapter("daVinCi_bg5", "states5", requireAll = false)
+//fun View.daVinCiBg5(exp: DaVinCiExpression.Shape, states: Array<State>? = null) {
+//    this.helpXmlDaVinCiBg(exp, states)
+//}
+//
+//@BindingAdapter("daVinCi_bg6", "states6", requireAll = false)
+//fun View.daVinCiBg6(exp: DaVinCiExpression.Shape, states: Array<State>? = null) {
+//    this.helpXmlDaVinCiBg(exp, states)
+//}
+//
+//@BindingAdapter("daVinCi_bg7", "states7", requireAll = false)
+//fun View.daVinCiBg7(exp: DaVinCiExpression.Shape, states: Array<State>? = null) {
+//    this.helpXmlDaVinCiBg(exp, states)
+//}
+//
+//@BindingAdapter("daVinCi_bg8", "states8", requireAll = false)
+//fun View.daVinCiBg8(exp: DaVinCiExpression.Shape, states: Array<State>? = null) {
+//    this.helpXmlDaVinCiBg(exp, states)
+//}
+//
+//@TODO(desc="很显然，目前的分布构建法，无法找到合适的切入点释放expression")
+//private fun View.helpXmlDaVinCiBg(exp: DaVinCiExpression.Shape, states: Array<State>?) {
+//    val stateListDrawable = this.getTag(R.id.davinci_sld)?.takeIfInstance<DaVinCiExpression.StateListDrawable>()
+//        ?: DaVinCiExpression.stateListDrawable().apply {
+//            this@helpXmlDaVinCiBg.setTag(R.id.davinci_sld, this)
+//        }
+//    stateListDrawable.shape(exp).states(*requireNotNull(states ?: exp.statesArray())).applyInto(this)
+//}
+
+@BindingAdapter("daVinCi_bg1", "states1",
+    "daVinCi_bg2", "states2",
+    "daVinCi_bg3", "states3",
+    "daVinCi_bg4", "states4",
+    "daVinCi_bg5", "states5",
+    "daVinCi_bg6", "states6",
+    "daVinCi_bg7", "states7",
+    "daVinCi_bg8", "states8",
+    requireAll = false)
+@TODO(desc = "以XML资源定义为例，可能出现提示：This item is unreachable because a previous item (item #1) is a more general match than this one，" +
+        "同样的，davinci也会面临这个问题，0.0.8版本中未处理，需要使用者注意顺序。应该在Sld内部处理好排序")
+fun View.daVinCiBg1(exp1: DaVinCiExpression.Shape? = null, states1: Array<State>? = null,
+                    exp2: DaVinCiExpression.Shape? = null, states2: Array<State>? = null,
+                    exp3: DaVinCiExpression.Shape? = null, states3: Array<State>? = null,
+                    exp4: DaVinCiExpression.Shape? = null, states4: Array<State>? = null,
+                    exp5: DaVinCiExpression.Shape? = null, states5: Array<State>? = null,
+                    exp6: DaVinCiExpression.Shape? = null, states6: Array<State>? = null,
+                    exp7: DaVinCiExpression.Shape? = null, states7: Array<State>? = null,
+                    exp8: DaVinCiExpression.Shape? = null, states8: Array<State>? = null) {
+    DaVinCiExpression.stateListDrawable().apply {
+        setIfNotNull(exp1,states1)
+        setIfNotNull(exp2,states2)
+        setIfNotNull(exp3,states3)
+        setIfNotNull(exp4,states4)
+        setIfNotNull(exp5,states5)
+        setIfNotNull(exp6,states6)
+        setIfNotNull(exp7,states7)
+        setIfNotNull(exp8,states8)
+        Log.e("lmsg","debug:$this")
+    }.applyInto(this)
+
 }
 
-@BindingAdapter("daVinCi_bg2", "states2", requireAll = false)
-fun View.daVinCiBg2(exp: DaVinCiExpression.Shape, states: Array<State>? = null) {
-    this.helpXmlDaVinCiBg(exp, states)
-
-}
-
-@BindingAdapter("daVinCi_bg3", "states3", requireAll = false)
-fun View.daVinCiBg3(exp: DaVinCiExpression.Shape, states: Array<State>? = null) {
-    this.helpXmlDaVinCiBg(exp, states)
-}
-
-@BindingAdapter("daVinCi_bg4", "states4", requireAll = false)
-fun View.daVinCiBg4(exp: DaVinCiExpression.Shape, states: Array<State>? = null) {
-    this.helpXmlDaVinCiBg(exp, states)
-}
-
-@BindingAdapter("daVinCi_bg5", "states5", requireAll = false)
-fun View.daVinCiBg5(exp: DaVinCiExpression.Shape, states: Array<State>? = null) {
-    this.helpXmlDaVinCiBg(exp, states)
-}
-
-@BindingAdapter("daVinCi_bg6", "states6", requireAll = false)
-fun View.daVinCiBg6(exp: DaVinCiExpression.Shape, states: Array<State>? = null) {
-    this.helpXmlDaVinCiBg(exp, states)
-}
-
-@BindingAdapter("daVinCi_bg7", "states7", requireAll = false)
-fun View.daVinCiBg7(exp: DaVinCiExpression.Shape, states: Array<State>? = null) {
-    this.helpXmlDaVinCiBg(exp, states)
-}
-
-@BindingAdapter("daVinCi_bg8", "states8", requireAll = false)
-fun View.daVinCiBg8(exp: DaVinCiExpression.Shape, states: Array<State>? = null) {
-    this.helpXmlDaVinCiBg(exp, states)
-}
-
-@TODO(desc="很显然，目前的分布构建法，无法找到合适的切入点释放expression")
-private fun View.helpXmlDaVinCiBg(exp: DaVinCiExpression.Shape, states: Array<State>?) {
-    val stateListDrawable = this.getTag(R.id.davinci_sld)?.takeIfInstance<DaVinCiExpression.StateListDrawable>()
-        ?: DaVinCiExpression.stateListDrawable().apply {
-            this@helpXmlDaVinCiBg.setTag(R.id.davinci_sld, this)
-        }
-    stateListDrawable.shape(exp).states(*requireNotNull(states ?: exp.statesArray())).applyInto(this)
+private fun DaVinCiExpression.StateListDrawable.setIfNotNull(
+    exp: DaVinCiExpression.Shape? = null, states: Array<State>? = null
+):DaVinCiExpression.StateListDrawable
+{
+    exp?.let {
+        this.shape(it).states(*requireNotNull(states ?: it.statesArray()?: arrayOf()))
+    }
+    return this
 }
 
 

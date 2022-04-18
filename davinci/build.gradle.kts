@@ -1,5 +1,3 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
 plugins {
     id("com.android.library")
     id("kotlin-android")
@@ -90,7 +88,7 @@ EasyPublish {
 
     groupId = "io.github.leobert-lan"
     artifactId = "davinci"
-    version = "0.0.7"
+    version = "0.0.8"
     packaging = "aar"
     siteUrl = "https://github.com/leobert-lan/DaVinCi"
     gitUrl = "https://github.com/leobert-lan/DaVinCi.git"
