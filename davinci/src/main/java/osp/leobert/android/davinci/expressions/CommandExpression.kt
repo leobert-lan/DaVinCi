@@ -11,7 +11,6 @@ import osp.leobert.android.davinci.res.DaVinCiResource
 import osp.leobert.android.davinci.uml.ExpDiagram
 import osp.leobert.android.reporter.diagram.notation.GenerateClassDiagram
 import osp.leobert.android.reporter.review.TODO
-import java.util.*
 
 /**
  * CommandExp 用于解析构建实际子属性
@@ -113,12 +112,22 @@ internal abstract class CommandExpression internal constructor() : DaVinCiExpres
         this.daVinCi = daVinCi
         daVinCi?.let {
             tokenName = it.currentToken
-            it.next()
+            //要求已经对齐到start tag
             if (start == tokenName) {
-                this.text = it.currentToken
+                //获取内容段
+                this.text = it.next()//it.currentToken
+                //对齐到下一位 理论上为NEXT or END
                 it.next()
             } else {
-                it.next()
+                //TODO 应该抛出错误
+                if (DaVinCi.enableDebugLog) {
+                    Log.e(
+                        sLogTag,
+                        "The {$start} is Excepted For Start When Not Manual! but got {${it.currentToken}}",
+                        Throwable()
+                    )
+                }
+                null
             }
         }
     }

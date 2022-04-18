@@ -75,11 +75,11 @@ internal abstract class ExpressionStub<T>(private val parsers: Strategy<String, 
                         )
                     } else {
                         parser.parse(t = getT(), daVinCi = it)?.let { exp ->
-                            // injectThenParse(it) //should not call this method, in autoParse mode,
-                            // it will invoke nextToken to fetch the specified tag, but now it has moved to
+                            //不需要再调用，parse时已经处理
+//                            exp.injectThenParse(it)
 
-
-                            exp.interpret()
+                            // 解析延迟到对应的interpret chain
+//                            exp.interpret()
                             list.add(exp)
                         }
                     }
@@ -99,8 +99,9 @@ internal abstract class ExpressionStub<T>(private val parsers: Strategy<String, 
         if (manual) {
             list.forEach { it.interpret() }
         } else {
-            if (DaVinCi.enableDebugLog) Log.d(DaVinCiExpression.sLogTag, "已自动解析")
+            if (DaVinCi.enableDebugLog) Log.d(DaVinCiExpression.sLogTag, "${javaClass.simpleName} 已自动解析2")
         }
+//        list.forEach { it.interpret() }
     }
 
     override fun reset() {

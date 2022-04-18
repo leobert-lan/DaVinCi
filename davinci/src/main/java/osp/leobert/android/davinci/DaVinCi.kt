@@ -178,7 +178,7 @@ class DaVinCi private constructor(
             exp.interpret()
 
             if (enableDebugLog && !exp.manual) //利用DaVinCi内容解析的结构
-                Log.d(DaVinCiExpression.sLogTag, "parsed,daVinCi sld:$exp")
+                Log.d(DaVinCiExpression.sLogTag, "parsed,daVinCi shape:$exp")
 
             core.buildSimpleDrawable()
         }) {

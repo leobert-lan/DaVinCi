@@ -5,6 +5,7 @@ import androidx.annotation.ColorInt
 import osp.leobert.android.davinci.DPools
 import osp.leobert.android.davinci.DaVinCi
 import osp.leobert.android.davinci.DaVinCiCore
+import osp.leobert.android.davinci.DaVinCiExpression
 import osp.leobert.android.davinci.uml.ExpDiagram
 import osp.leobert.android.reporter.diagram.notation.GenerateClassDiagram
 
@@ -107,7 +108,14 @@ internal class Gradient private constructor() : ShapeSpecExpression() {
     }
 
     private fun parse(daVinCi: DaVinCi?) {
-        text?.let { it ->
+        val text = text
+        if (text == null) {
+            if (DaVinCi.enableDebugLog) {
+                Log.e(sLogTag,"${javaClass.simpleName} invoke parse but text is null")
+            }
+            return
+        }
+        text.let { it ->
             startColor = null
             centerColor = null
             endColor = null
@@ -152,7 +160,7 @@ internal class Gradient private constructor() : ShapeSpecExpression() {
 
                     e.startsWith(prop_use_level) -> {
                         // TODO: check why remove it
-//                            useLevel = parseFloat(e.replace(prop_center_x, ""), 0f) ?: 0f
+    //                            useLevel = parseFloat(e.replace(prop_center_x, ""), 0f) ?: 0f
                     }
                     e.startsWith(prop_gradient_radius) -> {
                         if (daVinCi != null)

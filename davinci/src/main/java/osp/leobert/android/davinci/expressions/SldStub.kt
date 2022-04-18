@@ -19,6 +19,7 @@ internal class SldStub private constructor() : ExpressionStub<SldStub>(parser) {
 
     companion object {
 
+        //按照规则，Sld中可以放置的根元素需要在此进行注册
         val parser = strategyOf<String, StubItemParser<SldStub>>()
             .register(DaVinCiExpression.Shape.tag, object : StubItemParser<SldStub> {
                 override fun parse(t: SldStub, daVinCi: DaVinCi): DaVinCiExpression {
@@ -41,11 +42,13 @@ internal class SldStub private constructor() : ExpressionStub<SldStub>(parser) {
 
     @TODO(desc = "手动建立AST的考虑排序")
     override fun interpret() {
-        if (manual) {
-            list.forEach { it.interpret() }
-        } else {
-            if (DaVinCi.enableDebugLog) Log.d(DaVinCiExpression.sLogTag, "已自动解析")
-        }
+//        if (manual) {
+//            list.forEach { it.interpret() }
+//        } else {
+//            if (DaVinCi.enableDebugLog) Log.d(DaVinCiExpression.sLogTag, "${javaClass.simpleName} 已自动解析")
+//
+//        }
+        list.forEach { it.interpret() }
     }
 
     override fun release() {
