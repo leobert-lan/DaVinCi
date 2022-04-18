@@ -1,9 +1,12 @@
 package osp.leobert.android.davinci.syntactic
 
-import osp.leobert.android.davinci.*
+import osp.leobert.android.davinci.DPools
+import osp.leobert.android.davinci.DaVinCiExpression
+import osp.leobert.android.davinci.Statable
+import osp.leobert.android.davinci.State
 import osp.leobert.android.davinci.expressions.DState
 
-class SldSyntactic private constructor(): Statable<DaVinCiExpression.StateListDrawable> {
+class SldSyntactic private constructor() : Statable<DaVinCiExpression.StateListDrawable> {
     private var exp: DaVinCiExpression.Shape? = null
     private var host: DaVinCiExpression.StateListDrawable? = null
 
@@ -34,10 +37,10 @@ class SldSyntactic private constructor(): Statable<DaVinCiExpression.StateListDr
         val host = requireNotNull(host)
         val exp = requireNotNull(exp)
         val dState = DState.manualCreate(
-                states = states
-            )
+            states = states
+        )
 
-        exp.statedStub().dState = dState
+        exp.statedStub().setDState(dState)
         host.stub().setExpression(dState, exp)
 
         DPools.sldSyntacticPool.release(this)
@@ -50,7 +53,7 @@ class SldSyntactic private constructor(): Statable<DaVinCiExpression.StateListDr
         val dState = DState.manualCreate(
             states = states
         )
-        exp.statedStub().dState = dState
+        exp.statedStub().setDState(dState)
         host.stub().setExpression(dState, exp)
 
         DPools.sldSyntacticPool.release(this)

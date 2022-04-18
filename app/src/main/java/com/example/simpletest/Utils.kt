@@ -6,7 +6,7 @@ import android.util.Log
  * <p><b>Package:</b> com.example.simpletest </p>
  * <p><b>Project:</b> DaVinCi </p>
  * <p><b>Classname:</b> Utils </p>
- * <p><b>Description:</b> TODO </p>
+ * <p><b>Description:</b> Utils </p>
  * Created by leobert on 2021/11/8.
  */
 object Utils {

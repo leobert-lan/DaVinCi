@@ -1,6 +1,5 @@
 package osp.leobert.android.davinci.expressions
 
-import android.util.Log
 import osp.leobert.android.davinci.DPools
 import osp.leobert.android.davinci.DaVinCi
 import osp.leobert.android.davinci.DaVinCiExpression
@@ -11,6 +10,9 @@ import osp.leobert.android.reporter.review.TODO
 
 /**
  * 让StateListDrawable的构建和解析过程更加明确添加的Stub
+ *
+ * 本质上代表了一个 [DaVinCiExpression.StateListDrawable] 的实质内容，
+ * 创建AST的逻辑复用 [ExpressionStub]，基于组合模式保障了 [DaVinCiExpression.StateListDrawable] 的继承结构不受干扰，剥离了AST建立细节
  * */
 @NotTerminal
 @ExpDiagram

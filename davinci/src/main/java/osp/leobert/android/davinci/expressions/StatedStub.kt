@@ -5,13 +5,26 @@ import android.util.Log
 import osp.leobert.android.davinci.*
 import osp.leobert.android.davinci.uml.ExpDiagram
 import osp.leobert.android.reporter.diagram.notation.GenerateClassDiagram
-import osp.leobert.android.reporter.review.TODO
 
-//专门用于解析一串shape
+/**
+ * 状态化的Stub，可包含一个 [DState] 标识状态，以及一个list 包含 [DaVinCiExpression],
+ * 复用了 [ExpressionStub] 构建AST的逻辑
+ * 目前可用于表示 ：
+ * [DaVinCiExpression.ColorStateList] 的内容，则list内容为 [StatedColor]
+ * [DaVinCiExpression.Shape] 的内容
+ *
+ * 很显然，这两者设计格格不入，因为 ColorStateList 实现进行了简化，如果设计一致，则 [DaVinCiExpression.ColorStateList] 需要组合一个 CslStub 类似 [SldStub]
+ * CslStub 中 包含类似 [DaVinCiExpression.Shape] 的 Color ,Color 组合一个 [StatedStub], 以其 [StatedStub.dState] 作为状态，加一个色值表达Expression 于list中。
+ *
+ * 显而易见，这复杂了，所以问题在于 [DaVinCiExpression.Shape] 相比之下更加复杂！原因在于：设计[DaVinCiExpression.StateListDrawable] 的DSL语法时，
+ * 为了减少一层嵌套而将状态表达加入了Shape之内, 所以他的本质是StatedShape , 即本身应该 DState + Shape => StatedShape 而实际为 {list(exp).remove(dState) + dState} => Shape
+ * 而 [DaVinCiExpression.ColorStateList] 太简单了，以至于不想再用 : DState + Color => StatedColor 而是直接定义了 {list(state)+color} => StatedColor
+ *
+ * 从文法和OO基本原则上看，这两个行为都挖了坑
+ * */
 @NotTerminal
 @ExpDiagram
 @GenerateClassDiagram
-@TODO(desc = "优化命名，目前它作为Shape的核心，包含Shape的各个组成部分以及添加了一个状态的标志")
 internal class StatedStub private constructor() : ExpressionStub<StatedStub>(parser) {
 
     companion object {
@@ -87,8 +100,9 @@ internal class StatedStub private constructor() : ExpressionStub<StatedStub>(par
 
     /**
      * in rule: only one state expression is permitted
+     * only used for Shape in StatedListDrawable
      * */
-    var dState: DState? = null
+    private var dState: DState? = null
 
     override fun reset() {
         super.reset()
@@ -104,6 +118,9 @@ internal class StatedStub private constructor() : ExpressionStub<StatedStub>(par
         DPools.statedStubPool.release(this)
     }
 
+    fun setDState(dState: DState) {
+        this.dState = dState
+    }
 
     fun appendState(daVinCi: DaVinCi?, vararg states: State) {
         val dState = dState ?: DState.of(daVinCi)
@@ -111,7 +128,7 @@ internal class StatedStub private constructor() : ExpressionStub<StatedStub>(par
         this.dState = dState
     }
 
-    internal fun states(): MutableCollection<State>? {
+    internal fun states(): MutableList<State>? {
         return dState?.collect()
     }
 

@@ -113,7 +113,7 @@ dependencies {
     androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
 
     if (dev) {
-        debugImplementation(project(":davinci_styles_viewer"))
+//        debugImplementation(project(":davinci_styles_viewer"))
 //    ksp(project(":anno_ksp"))
 //    implementation(project(":annotation"))
         implementation(project(":davinci"))
