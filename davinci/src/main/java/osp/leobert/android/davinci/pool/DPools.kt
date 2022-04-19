@@ -1,7 +1,10 @@
-package osp.leobert.android.davinci
+package osp.leobert.android.davinci.pool
 
 import androidx.core.util.Pools
 import org.jetbrains.annotations.NotNull
+import osp.leobert.android.davinci.DaVinCi
+import osp.leobert.android.davinci.DaVinCiCore
+import osp.leobert.android.davinci.DaVinCiExpression
 import osp.leobert.android.davinci.DaVinCiExpression.Companion.cast
 import osp.leobert.android.davinci.expressions.*
 import osp.leobert.android.davinci.expressions.Corners

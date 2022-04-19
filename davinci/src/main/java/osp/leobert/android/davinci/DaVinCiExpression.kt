@@ -9,6 +9,8 @@ import androidx.annotation.Px
 import osp.leobert.android.davinci.Applier.Companion.csl
 import osp.leobert.android.davinci.Applier.Companion.viewBackground
 import osp.leobert.android.davinci.expressions.*
+import osp.leobert.android.davinci.pool.DPools
+import osp.leobert.android.davinci.pool.Poolable
 import osp.leobert.android.davinci.syntactic.CslSyntactic
 import osp.leobert.android.davinci.syntactic.SldSyntactic
 import osp.leobert.android.davinci.uml.ExpDiagram

@@ -1,6 +1,6 @@
 package osp.leobert.android.davinci.syntactic
 
-import osp.leobert.android.davinci.DPools
+import osp.leobert.android.davinci.pool.DPools
 import osp.leobert.android.davinci.DaVinCiExpression
 import osp.leobert.android.davinci.Statable
 import osp.leobert.android.davinci.State

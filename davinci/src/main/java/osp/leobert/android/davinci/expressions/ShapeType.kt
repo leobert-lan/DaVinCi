@@ -1,6 +1,6 @@
 package osp.leobert.android.davinci.expressions
 
-import osp.leobert.android.davinci.DPools
+import osp.leobert.android.davinci.pool.DPools
 import osp.leobert.android.davinci.DaVinCi
 import osp.leobert.android.davinci.DaVinCiCore
 import osp.leobert.android.davinci.uml.ExpDiagram

@@ -2,10 +2,9 @@ package osp.leobert.android.davinci.expressions
 
 import android.util.Log
 import androidx.annotation.ColorInt
-import osp.leobert.android.davinci.DPools
+import osp.leobert.android.davinci.pool.DPools
 import osp.leobert.android.davinci.DaVinCi
 import osp.leobert.android.davinci.DaVinCiCore
-import osp.leobert.android.davinci.DaVinCiExpression
 import osp.leobert.android.davinci.uml.ExpDiagram
 import osp.leobert.android.reporter.diagram.notation.GenerateClassDiagram
 

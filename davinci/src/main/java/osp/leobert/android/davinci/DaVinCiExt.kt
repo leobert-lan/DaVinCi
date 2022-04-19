@@ -84,41 +84,6 @@ fun View.daVinCiStyle(styleName: String) {
 //    this.helpXmlDaVinCiBg(exp, states)
 //}
 //
-//@BindingAdapter("daVinCi_bg2", "states2", requireAll = false)
-//fun View.daVinCiBg2(exp: DaVinCiExpression.Shape, states: Array<State>? = null) {
-//    this.helpXmlDaVinCiBg(exp, states)
-//}
-//
-//@BindingAdapter("daVinCi_bg3", "states3", requireAll = false)
-//fun View.daVinCiBg3(exp: DaVinCiExpression.Shape, states: Array<State>? = null) {
-//    this.helpXmlDaVinCiBg(exp, states)
-//}
-//
-//@BindingAdapter("daVinCi_bg4", "states4", requireAll = false)
-//fun View.daVinCiBg4(exp: DaVinCiExpression.Shape, states: Array<State>? = null) {
-//    this.helpXmlDaVinCiBg(exp, states)
-//}
-//
-//@BindingAdapter("daVinCi_bg5", "states5", requireAll = false)
-//fun View.daVinCiBg5(exp: DaVinCiExpression.Shape, states: Array<State>? = null) {
-//    this.helpXmlDaVinCiBg(exp, states)
-//}
-//
-//@BindingAdapter("daVinCi_bg6", "states6", requireAll = false)
-//fun View.daVinCiBg6(exp: DaVinCiExpression.Shape, states: Array<State>? = null) {
-//    this.helpXmlDaVinCiBg(exp, states)
-//}
-//
-//@BindingAdapter("daVinCi_bg7", "states7", requireAll = false)
-//fun View.daVinCiBg7(exp: DaVinCiExpression.Shape, states: Array<State>? = null) {
-//    this.helpXmlDaVinCiBg(exp, states)
-//}
-//
-//@BindingAdapter("daVinCi_bg8", "states8", requireAll = false)
-//fun View.daVinCiBg8(exp: DaVinCiExpression.Shape, states: Array<State>? = null) {
-//    this.helpXmlDaVinCiBg(exp, states)
-//}
-//
 //@TODO(desc="很显然，目前的分布构建法，无法找到合适的切入点释放expression")
 //private fun View.helpXmlDaVinCiBg(exp: DaVinCiExpression.Shape, states: Array<State>?) {
 //    val stateListDrawable = this.getTag(R.id.davinci_sld)?.takeIfInstance<DaVinCiExpression.StateListDrawable>()
