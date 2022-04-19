@@ -104,14 +104,14 @@ fun View.daVinCiStyle(styleName: String) {
     requireAll = false)
 @TODO(desc = "以XML资源定义为例，可能出现提示：This item is unreachable because a previous item (item #1) is a more general match than this one，" +
         "同样的，davinci也会面临这个问题，0.0.8版本中未处理，需要使用者注意顺序。应该在Sld内部处理好排序")
-fun View.daVinCiBg1(exp1: DaVinCiExpression.Shape? = null, states1: Array<State>? = null,
-                    exp2: DaVinCiExpression.Shape? = null, states2: Array<State>? = null,
-                    exp3: DaVinCiExpression.Shape? = null, states3: Array<State>? = null,
-                    exp4: DaVinCiExpression.Shape? = null, states4: Array<State>? = null,
-                    exp5: DaVinCiExpression.Shape? = null, states5: Array<State>? = null,
-                    exp6: DaVinCiExpression.Shape? = null, states6: Array<State>? = null,
-                    exp7: DaVinCiExpression.Shape? = null, states7: Array<State>? = null,
-                    exp8: DaVinCiExpression.Shape? = null, states8: Array<State>? = null) {
+fun View.daVinCiBgHelper(exp1: DaVinCiExpression.Shape? = null, states1: Array<State>? = null,
+                         exp2: DaVinCiExpression.Shape? = null, states2: Array<State>? = null,
+                         exp3: DaVinCiExpression.Shape? = null, states3: Array<State>? = null,
+                         exp4: DaVinCiExpression.Shape? = null, states4: Array<State>? = null,
+                         exp5: DaVinCiExpression.Shape? = null, states5: Array<State>? = null,
+                         exp6: DaVinCiExpression.Shape? = null, states6: Array<State>? = null,
+                         exp7: DaVinCiExpression.Shape? = null, states7: Array<State>? = null,
+                         exp8: DaVinCiExpression.Shape? = null, states8: Array<State>? = null) {
     DaVinCiExpression.stateListDrawable().apply {
         setIfNotNull(exp1,states1)
         setIfNotNull(exp2,states2)

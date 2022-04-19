@@ -72,7 +72,7 @@ abstract class DaVinCiExpression : Poolable {
         return false
     }
 
-    fun accept(visitor: IStatedExpression.Visitor): IStatedExpression? {
+    open fun accept(visitor: IStatedExpression.Visitor): IStatedExpression? {
         return visitor.visitOther(this)
     }
 
@@ -439,6 +439,10 @@ abstract class DaVinCiExpression : Poolable {
         override fun interpret() {
             //it's enough!
             statedStub().interpret()
+        }
+
+        override fun accept(visitor: IStatedExpression.Visitor): IStatedExpression {
+            return visitor.visit(this)
         }
 
         override fun stateChunksEncode(): Int {

@@ -132,6 +132,10 @@ internal class StatedColor private constructor() : CommandExpression(), IStatedE
         }
     }
 
+    override fun accept(visitor: IStatedExpression.Visitor): IStatedExpression {
+        return visitor.visit(this)
+    }
+
     override fun stateChunksEncode(): Int {
         return 0.apply {
             states.forEach {

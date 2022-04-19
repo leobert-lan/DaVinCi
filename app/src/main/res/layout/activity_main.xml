@@ -216,8 +216,9 @@
                 </CheckBox>
 
                 <TextView
-                    daVinCi_bg1="@{DaVinCiExpression.shape().states(State.PRESSED_T,State.ENABLE_T).corner(`10dp,15dp,20dp,30dp`).stroke(`4dp`,`@i2`).gradient(`#26262a`,`#ff0699`,0)}"
-                    daVinCi_bg2="@{DaVinCiExpression.shape().states(State.ENABLE_T).corner(60).solid(`@i2`).stroke(`4dp`,`@i1`)}"
+                    android:id="@+id/tv_demo4_2"
+                    daVinCi_bg1="@{DaVinCiExpression.shape().states(State.ENABLE_T).corner(60).solid(`@i2`).stroke(`4dp`,`@i1`)}"
+                    daVinCi_bg2="@{DaVinCiExpression.shape().states(State.PRESSED_T,State.ENABLE_T).corner(`10dp,15dp,20dp,30dp`).stroke(`4dp`,`@i2`).gradient(`#26262a`,`#ff0699`,0)}"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
