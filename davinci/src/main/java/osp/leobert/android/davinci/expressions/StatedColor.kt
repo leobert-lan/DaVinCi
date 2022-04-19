@@ -1,17 +1,18 @@
 package osp.leobert.android.davinci.expressions
 
 import androidx.annotation.ColorInt
-import osp.leobert.android.davinci.pool.DPools
 import osp.leobert.android.davinci.DaVinCi
+import osp.leobert.android.davinci.IStatedExpression
 import osp.leobert.android.davinci.State
 import osp.leobert.android.davinci.StateItem
+import osp.leobert.android.davinci.pool.DPools
 import osp.leobert.android.davinci.uml.ExpDiagram
 import osp.leobert.android.reporter.diagram.notation.GenerateClassDiagram
 
 @NotTerminal
 @ExpDiagram
 @GenerateClassDiagram
-internal class StatedColor private constructor() : CommandExpression() {
+internal class StatedColor private constructor() : CommandExpression(), IStatedExpression {
     @ColorInt
     var colorInt: Int? = null //这是解析出来的，不要乱赋值
 
@@ -35,8 +36,6 @@ internal class StatedColor private constructor() : CommandExpression() {
         fun of(daVinCi: DaVinCi? = null, manual: Boolean = false): StatedColor {
             return requireNotNull(DPools.statedColorExpPool.acquire()).apply {
                 this.manual = manual
-                //todo 检查是否此处就应该使用null
-                this.daVinCi = daVinCi
                 injectThenParse(daVinCi)
             }
         }
@@ -69,11 +68,6 @@ internal class StatedColor private constructor() : CommandExpression() {
         }
 
     }
-
-//    init {
-//        injectThenParse(null)
-////        injectThenParse(daVinCi)
-//    }
 
     override fun reset() {
         super.reset()
@@ -136,6 +130,21 @@ internal class StatedColor private constructor() : CommandExpression() {
         if (tag == tokenName || manual) {
             daVinCi?.core?.addColorItem(StateItem.of(colorInt).applyState(states))
         }
+    }
+
+    override fun stateChunksEncode(): Int {
+        return 0.apply {
+            states.forEach {
+                it.appendEncode(this)
+            }
+        }
+    }
+
+    override fun isStateGeneralThan(exp: IStatedExpression): Boolean {
+        val meEncode = stateChunksEncode()
+        val otherEncode = exp.stateChunksEncode()
+
+        return (meEncode and otherEncode) == meEncode
     }
 
     override fun toString(): String {

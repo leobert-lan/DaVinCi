@@ -175,5 +175,9 @@ internal class StatedStub private constructor() : ExpressionStub<StatedStub>(par
         return this
     }
 
+    fun stateChunksEncode(): Int? {
+        return dState?.stateChunksEncode()
+    }
+
 
 }

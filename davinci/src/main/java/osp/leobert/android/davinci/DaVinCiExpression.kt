@@ -72,6 +72,17 @@ abstract class DaVinCiExpression : Poolable {
         return false
     }
 
+    fun accept(visitor: IStatedExpression.Visitor): IStatedExpression? {
+        return visitor.visitOther(this)
+    }
+
+    internal open fun isStateGeneralThan(exp: DaVinCiExpression): Boolean {
+        val me = this.accept(IStatedExpression.Visitor.Default) ?: return false
+        val other = exp.accept(IStatedExpression.Visitor.Default) ?: return false
+
+        return other.isStateGeneralThan(me)
+    }
+
     companion object {
 
         val resetter: DPools.Resetter<Poolable> = object : DPools.Resetter<Poolable> {
@@ -182,7 +193,7 @@ abstract class DaVinCiExpression : Poolable {
     //region Shape
     @ExpDiagram
     @GenerateClassDiagram
-    class Shape internal constructor(val manual: Boolean = false) : DaVinCiExpression() {
+    class Shape internal constructor(val manual: Boolean = false) : DaVinCiExpression(),IStatedExpression {
 
         companion object {
             const val tag = "shape:["
@@ -428,6 +439,17 @@ abstract class DaVinCiExpression : Poolable {
         override fun interpret() {
             //it's enough!
             statedStub().interpret()
+        }
+
+        override fun stateChunksEncode(): Int {
+            return statedStub?.stateChunksEncode()?:0
+        }
+
+        override fun isStateGeneralThan(exp: IStatedExpression): Boolean {
+            val meEncode = stateChunksEncode()
+            val otherEncode = exp.stateChunksEncode()
+
+            return (meEncode and otherEncode) == meEncode
         }
 
         override fun toString(): String {

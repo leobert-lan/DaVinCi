@@ -24,7 +24,18 @@ internal abstract class ExpressionStub<T>(private val parsers: Strategy<String, 
     internal val list: ArrayList<DaVinCiExpression> = ArrayList()
 
     open fun append(exp: DaVinCiExpression) {
-        list.add(exp)
+        var targetIndex: Int? = null
+        for (i in list.indices) {
+            if (list[i].isStateGeneralThan(exp)) {
+                targetIndex = i
+                break
+            }
+        }
+        if (targetIndex == null) {
+            list.add(exp)
+        } else {
+            list.add(targetIndex, exp)
+        }
     }
 
     fun setExpression(dState: DState, exp: DaVinCiExpression) {

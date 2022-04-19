@@ -5,6 +5,7 @@ import osp.leobert.android.davinci.DaVinCi
 import osp.leobert.android.davinci.State
 import osp.leobert.android.davinci.uml.ExpDiagram
 import osp.leobert.android.reporter.diagram.notation.GenerateClassDiagram
+import osp.leobert.android.reporter.review.TODO
 
 /**
  * short for DaVinCiState, expression for [State]
@@ -18,6 +19,7 @@ internal class DState private constructor() : CommandExpression() {
     private val states: MutableSet<State> by lazy { linkedSetOf() }
 
     //caution: 可能尚未解析出实质的State,务必注意
+    @TODO("设计改进，使用编码方式，注意text设置的需要及时解析")
     var statesHash: Int = 0
         private set
 
@@ -26,18 +28,21 @@ internal class DState private constructor() : CommandExpression() {
         //ignore all check！
         this.states.addAll(states)
         text = states.joinToString(CommandExpression.state_separator)
-//            timeCost("join to string") {
-//        }
     }
 
     override fun onTextContentSet(text: String?) {
         super.onTextContentSet(text)
         //state hash
         statesHash = text?.split(CommandExpression.state_separator)?.sorted()?.hashCode() ?: 0
-//            timeCost("calc states hash") {
-//        }
     }
 
+    fun stateChunksEncode():Int {
+        return 0.apply {
+            states.forEach {
+                it.appendEncode(this)
+            }
+        }
+    }
 
     companion object {
         const val tag = "state:["
