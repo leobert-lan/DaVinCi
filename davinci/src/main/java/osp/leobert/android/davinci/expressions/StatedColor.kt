@@ -137,11 +137,11 @@ internal class StatedColor private constructor() : CommandExpression(), IStatedE
     }
 
     override fun stateChunksEncode(): Int {
-        return 0.apply {
-            states.forEach {
-                it.appendEncode(this)
-            }
+        var code = 0
+        states.forEach {
+            code = it.appendEncode(code)
         }
+        return code
     }
 
     override fun isStateGeneralThan(exp: IStatedExpression): Boolean {

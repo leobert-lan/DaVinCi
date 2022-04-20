@@ -7,18 +7,25 @@ plugins {
 
 
 android {
-    compileSdkVersion(30)
-    buildToolsVersion("30.0.3")
+    compileSdkVersion(32)
+//    buildToolsVersion("31.0.3")
 
     buildFeatures {
         this.dataBinding = true
     }
     defaultConfig {
         minSdkVersion(14)
-        targetSdkVersion(30)
+        targetSdkVersion(32)
         versionCode = 1
         versionName = "1.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    testOptions {
+        unitTests {
+            this.isIncludeAndroidResources = true
+            this.isReturnDefaultValues = true
+        }
     }
 
     buildTypes {
@@ -50,6 +57,10 @@ dependencies {
 
 
     testImplementation("junit:junit:4.13.2")
+    testImplementation("com.google.guava:guava-testlib:18.0")
+    testImplementation("org.robolectric:robolectric:3.8")
+    testImplementation("org.mockito:mockito-core:2.7.14")
+
     androidTestImplementation("androidx.test.ext:junit:1.1.3")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
 

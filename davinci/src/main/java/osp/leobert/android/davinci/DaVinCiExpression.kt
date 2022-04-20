@@ -80,7 +80,7 @@ abstract class DaVinCiExpression : Poolable {
         val me = this.accept(IStatedExpression.Visitor.Default) ?: return false
         val other = exp.accept(IStatedExpression.Visitor.Default) ?: return false
 
-        return other.isStateGeneralThan(me)
+        return me.isStateGeneralThan(other)
     }
 
     companion object {

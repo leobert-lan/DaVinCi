@@ -36,11 +36,11 @@ internal class DState private constructor() : CommandExpression() {
 //    }
 
     fun stateChunksEncode(): Int {
-        return 0.apply {
-            states.forEach {
-                it.appendEncode(this)
-            }
+        var code = 0
+        states.forEach {
+            code = it.appendEncode(code)
         }
+        return code
     }
 
     companion object {
@@ -62,7 +62,9 @@ internal class DState private constructor() : CommandExpression() {
                 // 2. 手工建立AST并赋予信息（manual为true），信息可能是：
                 //    2.1: 枚举 -- 可正确计算hash
                 //    2.2: 枚举对应的可解析文本  -- 也可以计算hash，但文本值如果错误将导致功能错误 需要解析
-                // 虽然解析和不解析均不需要DaVinCi，但是执行时需要，所以需要注入
+                // 虽然解析和不解析均不需要DaVinCi，但是执行时需要，所以需要注入，然而实际使用场景，如果是手动建树，此时DaVinCi必然为null
+                // 而注入会跟随 root 的 injectThenParse 调用传递，所以以为判断 人工建树的不需要执行也合理。
+                // 而解析型的，执行至此时必然处于 root的 injectThenParse。
                 injectThenParse(daVinCi)
             }
         }
