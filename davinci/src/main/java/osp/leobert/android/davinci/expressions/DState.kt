@@ -1,11 +1,10 @@
 package osp.leobert.android.davinci.expressions
 
-import osp.leobert.android.davinci.pool.DPools
 import osp.leobert.android.davinci.DaVinCi
 import osp.leobert.android.davinci.State
+import osp.leobert.android.davinci.pool.DPools
 import osp.leobert.android.davinci.uml.ExpDiagram
 import osp.leobert.android.reporter.diagram.notation.GenerateClassDiagram
-import osp.leobert.android.reporter.review.TODO
 
 /**
  * short for DaVinCiState, expression for [State]
@@ -18,8 +17,7 @@ internal class DState private constructor() : CommandExpression() {
 
     private val states: MutableSet<State> by lazy { linkedSetOf() }
 
-    //caution: 可能尚未解析出实质的State,务必注意
-    @TODO("设计改进，使用编码方式，注意text设置的需要及时解析")
+    //caution: 外部使用时，可能尚未解析出实质的State,务必注意
     var statesHash: Int = 0
         private set
 
@@ -28,15 +26,16 @@ internal class DState private constructor() : CommandExpression() {
         //ignore all check！
         this.states.addAll(states)
         text = states.joinToString(CommandExpression.state_separator)
+        statesHash = stateChunksEncode()
     }
 
-    override fun onTextContentSet(text: String?) {
-        super.onTextContentSet(text)
-        //state hash
-        statesHash = text?.split(CommandExpression.state_separator)?.sorted()?.hashCode() ?: 0
-    }
+//    override fun onTextContentSet(text: String?) {
+//        super.onTextContentSet(text)
+//        //state hash 更换计算方式
+//        statesHash = text?.split(CommandExpression.state_separator)?.sorted()?.hashCode() ?: 0
+//    }
 
-    fun stateChunksEncode():Int {
+    fun stateChunksEncode(): Int {
         return 0.apply {
             states.forEach {
                 it.appendEncode(this)
@@ -62,10 +61,9 @@ internal class DState private constructor() : CommandExpression() {
                 // 1. 从序列化的DSL解析，则此时进入自动建树过程（manual为false），信息由DSL解析而出，所以是需要解析的
                 // 2. 手工建立AST并赋予信息（manual为true），信息可能是：
                 //    2.1: 枚举 -- 可正确计算hash
-                //    2.2: 枚举对应的可解析文本  -- 也可以计算hash，但文本值如果错误将导致功能错误
-                if (!manual) {
-                    injectThenParse(daVinCi)
-                }
+                //    2.2: 枚举对应的可解析文本  -- 也可以计算hash，但文本值如果错误将导致功能错误 需要解析
+                // 虽然解析和不解析均不需要DaVinCi，但是执行时需要，所以需要注入
+                injectThenParse(daVinCi)
             }
         }
 
@@ -107,26 +105,24 @@ internal class DState private constructor() : CommandExpression() {
         this.daVinCi = daVinCi
         if (manual) {
             if (parseFromText)
-                parse(daVinCi)
+                parse()
             //给定 State则无需解析
             return
         }
         //解析序列化的DSL，必然要进行字符串解析
         asPrimitiveParse(tag, daVinCi)
-        parse(daVinCi)
+        parse()
     }
 
-    private fun parse(daVinCi: DaVinCi?) {
-        text?.let { content ->
-            states.clear()
-//            if (daVinCi != null) { 纯文本解析，不依赖DaVinCi，且不应当限制，进入条件必然是需要进行解析
-            parseStates(content)?.let { s ->
-                states.addAll(s)
-            }
-//            }
-
-            states.takeUnless { it.isEmpty() } ?: log<State>("state 不能为空", null)
+    private fun parse() {
+        states.clear()
+        parseStates(text)?.let { s ->
+            states.addAll(s)
         }
+
+        statesHash = stateChunksEncode()
+
+        states.takeUnless { it.isEmpty() } ?: log<State>("state 不能为空", null)
     }
 
     override fun interpret() {
