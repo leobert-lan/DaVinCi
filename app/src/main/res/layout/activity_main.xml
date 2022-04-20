@@ -30,6 +30,67 @@
                 android:orientation="vertical"
                 android:padding="5dp">
 
+                <FrameLayout
+                    daVinCi_bg="@{DaVinCiExpression.shape().solid(`#f0f0f0`).stroke(`1`,`#eaeaea`).corner(`3dp`)}"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="5dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:minHeight="80dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/tv_test_factory"
+                            daVinCiStyle="@{`btn_style.main`}"
+                            android:layout_width="0dp"
+                            android:layout_height="80dp"
+                            android:layout_gravity="center_vertical"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="@string/n_enable" />
+
+                        <TextView
+                            android:id="@+id/tv_test_factory2"
+                            daVinCiStyle="@{`btn_style.main`}"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginStart="10dp"
+                            android:layout_weight="2"
+                            android:gravity="center"
+                            android:minHeight="80dp"
+                            android:text="该样式参考DemoStyle1" />
+
+                        <TextView
+                            android:id="@+id/tv_test_factory3"
+                            daVinCiStyle="@{`btn_style.sub`}"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginStart="10dp"
+                            android:layout_weight="2"
+                            android:gravity="center"
+                            android:text="@string/style_factory" />
+                    </LinearLayout>
+                </FrameLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="5dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@android:color/white" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/_007_demo2" />
+
 
                 <CheckBox
                     daVinCi_bg1="@{DaVinCiExpression.shape().corner(60).solid(`@i1`).stroke(`4dp`,`@i2`)}"
@@ -40,7 +101,7 @@
                     android:layout_height="80dp"
                     android:layout_marginTop="10dp"
                     android:gravity="center"
-                    android:text="new DataBinding Feature">
+                    android:text="@string/add_at_0_0_7">
 
                     <tag
                         android:id="@id/i1"
@@ -51,6 +112,12 @@
                         android:value="@color/colorAccent" />
 
                 </CheckBox>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/_007_demo1" />
 
                 <CheckBox
                     daVinCi_bg1="@{DaVinCiExpression.shape().states(State.CHECKED_T).corner(60).solid(`@i1`).stroke(`4dp`,`@i2`)}"
@@ -59,7 +126,7 @@
                     android:layout_height="80dp"
                     android:layout_marginTop="10dp"
                     android:gravity="center"
-                    android:text="new DataBinding Feature">
+                    android:text="@string/add_at_0_0_7">
 
                     <tag
                         android:id="@id/i1"
@@ -70,6 +137,21 @@
                         android:value="@color/colorAccent" />
 
                 </CheckBox>
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="5dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="@android:color/white" />
+
+            <LinearLayout
+                daVinCi_bg="@{DaVinCiExpression.shape().solid(`#f0f0f0`).stroke(`1`,`#eaeaea`).corner(`3dp`)}"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="5dp">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -286,10 +368,6 @@
                     android:gravity="center"
                     android:text="@string/sample">
 
-                    <!--                    <tag-->
-                    <!--                        android:id="@id/log_tag"-->
-                    <!--                        android:value="测试log tag" />-->
-
                     <tag
                         android:id="@id/i1"
                         android:value="@color/colorPrimaryDark" />
@@ -306,46 +384,6 @@
 
             <!--            btn_style.main-->
             <!--                daVinCiBgStyle="@{AppDaVinCiStyles.btn_style_main}"-->
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="5dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:background="@android:color/white" />
-
-
-            <LinearLayout
-                daVinCi_bg="@{DaVinCiExpression.shape().solid(`#f0f0f0`).stroke(`1`,`#eaeaea`).corner(`3dp`)}"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="5dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/tv_test_factory"
-                        daVinCiStyle="@{`btn_style.main`}"
-                        android:layout_width="wrap_content"
-                        android:layout_height="80dp"
-                        android:gravity="center"
-                        android:text="@string/n_enable" />
-
-                    <TextView
-                        android:id="@+id/tv_test_factory2"
-                        daVinCiStyle="@{`btn_style.main`}"
-                        android:layout_width="match_parent"
-                        android:layout_height="80dp"
-                        android:layout_marginStart="10dp"
-                        android:gravity="center"
-                        android:text="@string/style_factory" />
-                </LinearLayout>
-            </LinearLayout>
-
             <View
                 android:layout_width="match_parent"
                 android:layout_height="5dp"

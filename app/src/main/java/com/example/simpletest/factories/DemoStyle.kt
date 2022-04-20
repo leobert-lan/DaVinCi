@@ -1,9 +1,7 @@
 package com.example.simpletest.factories
 
-import android.graphics.Color
 import android.view.ViewGroup
 import com.example.simpletest.Utils
-import osp.leobert.android.davinci.DaVinCi
 import osp.leobert.android.davinci.DaVinCiExpression
 import osp.leobert.android.davinci.State
 import osp.leobert.android.davinci.StyleRegistry

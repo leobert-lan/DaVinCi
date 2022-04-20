@@ -123,6 +123,7 @@ class MainActivity : AppCompatActivity() {
 
         binding.tvTestFactory.setOnClickListener {
             binding.tvTestFactory2.isEnabled = !binding.tvTestFactory2.isEnabled
+            binding.tvTestFactory3.isEnabled = !binding.tvTestFactory3.isEnabled
         }
     }
 

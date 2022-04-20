@@ -1,15 +1,15 @@
 <resources>
     <string name="app_name">DaVinCiTest</string>
     <string name="n_enable">点击切换右侧控件enable</string>
-    <string name="style_factory">style-factory使用</string>
-    <string name="demo1">demo1:xml-daVinCi_bg 示例,点击后变为kotlin源码</string>
+    <string name="style_factory">该样式参考DemoStyleFactory，更推荐使用该方式注册样式Factory，可以懒加载</string>
+    <string name="demo1">demo1:xml-daVinCi_bg 示例 （使用API建立AST）,点击后变为kotlin源码的结果（使用API建立AST）</string>
     <string name="demo1_txt">demo1</string>
     <string name="sample">Sample</string>
-    <string name="demo2">demo2:xml中 按压效果示例，daVinCi_bg_pressed+daVinCi_bg_unpressed</string>
-    <string name="demo3">demo3:xml中，圆角、描边、渐变 示例；点击后kotlin源码演示直接使用字符串语法式</string>
-    <string name="demo_4">demo4:daVinCi_bg只能单独使用，一旦有其他的，就需要使用相应的成对的--xml为错误方式演示；文字色设置见kotlin源码（是正确的示例）</string>
-    <string name="demo_4_2">demo4:正确示范：0.0.8 版本开始提供新的API设置StateListDrawable--xml正确方式演示,并且可以运行时处理State组排序</string>
-    <string name="demo5">demo5:xml中check状态使用示例，daVinCi_bg_checked+daVinCi_bg_unchecked；注意，更加复杂的状态组合目前无法用该方式，需要使用statelistdrawable</string>
+    <string name="demo2">demo2:xml中 按压效果示例，daVinCi_bg_pressed+daVinCi_bg_unpressed (从0.0.7开启建议废弃，转用 daVinCi_bgX+statesX指定该shape对应的状态Array)</string>
+    <string name="demo3">demo3:xml中，圆角、描边、渐变 示例；点击后kotlin源码演示直接使用字符串语法式 (通过符合DSL语法的String解析建立AST，进而设置背景等)</string>
+    <string name="demo_4">demo4:daVinCi_bg只能单独使用，一旦有其他的，就需要使用相应的成对的 - xml中为错误方式演示（正是有此不足并且有设计bug所以提供了新API并对此废弃）；文字色设置见kotlin源码（正确使用）</string>
+    <string name="demo_4_2">两个正确示范：0.0.7 版本开始提供新的API设置StateListDrawable - xml推荐API演示。 并且可以运行时处理State组排序(0.0.8进行的优化)</string>
+    <string name="demo5">(建议参考demo4升级新API)demo5:xml中check状态使用示例，daVinCi_bg_checked+daVinCi_bg_unchecked；注意，更加复杂的状态组合目前无法用该方式，需要使用statelistdrawable</string>
     <string name="explain">
         <![CDATA[
         "关于早先xml中利用DataBinding的设计。"\n\n
@@ -20,4 +20,7 @@
         "下个版本会考虑添加最小成本的迁移方案"
         ]]>
     </string>
+    <string name="add_at_0_0_7">add at 0.0.7</string>
+    <string name="_007_demo1">0.0.7 新增 0.0.8 优化，仅使用 daVinCi_bgX 应用StateListDrawable</string>
+    <string name="_007_demo2">0.0.7 新增 0.0.8 优化，使用 daVinCi_bgX + statesX 应用StateListDrawable，注意：statesX优先级高于\'daVinCi_bgX中对Shape标记的状态\'，但并不会修改它</string>
 </resources>
