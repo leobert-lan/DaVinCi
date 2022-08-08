@@ -8,8 +8,7 @@ import android.widget.FrameLayout
 import androidx.annotation.RequiresApi
 
 /**
- * Classname: MF </p>
- * Description: TODO </p>
+ * a preview holder to display the target layout
  * Created by leobert on 2022/7/20.
  */
 class PreviewHolder : FrameLayout {

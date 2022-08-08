@@ -9,6 +9,7 @@ import android.widget.FrameLayout
 import androidx.annotation.RequiresApi
 
 /**
+ * inject [DavinciPreviewBHLayoutFactory] in ide preview system
  * Created by leobert on 2022/7/20.
  */
 class DavinciPreviewInjector : FrameLayout {
