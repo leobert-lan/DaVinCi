@@ -3,16 +3,9 @@ plugins {
 //    id("com.google.devtools.ksp") //version Dependencies.Kotlin.Ksp.version
     id("kotlin-android")
     kotlin("kapt")
-//    id("cn.cxzheng.asmtraceman")
 }
 
-//traceMan {
-//    open = true//这里如果设置为false,则会关闭插桩
-//    logTraceInfo = true //这里设置为true时可以在log日志里看到所有被插桩的类和方法
-//    traceConfigFile = "${project.projectDir}/traceconfig.txt"
-//}
 
-//configure<com.android.build.gradle.internal.dsl.BaseAppModuleExtension> {
 android {
     compileSdkVersion(31)
     buildToolsVersion("30.0.3")
@@ -71,6 +64,9 @@ android {
             sourceSets {
                 getByName("main") {
                     java.srcDir(File("build/generated/ksp/debug/kotlin"))
+                    res {
+                        srcDirs(File("src/main/res/preview"))
+                    }
                 }
             }
 
@@ -114,8 +110,6 @@ dependencies {
 
     if (dev) {
         debugImplementation(project(":davinci_styles_viewer"))
-//    ksp(project(":anno_ksp"))
-//    implementation(project(":annotation"))
         implementation(project(":davinci"))
     } else {
         implementation(Dependencies.DaVinCi.api)
@@ -125,13 +119,6 @@ dependencies {
     implementation(Dependencies.DaVinCi.annotation)
 //    ksp(Dependencies.DaVinVi.ksp)
     kapt(Dependencies.DaVinCi.ksp)
-    //kotlin注解
-    //java注解
-//    implementation(project(":annotation-java"))
 
-
-    // 不适用
-    //    implementation("com.github.markzhai:blockcanary-android:1.5.0")
-//    debugImplementation("com.github.zhengcx:MethodTraceMan:1.0.7")
-//    releaseImplementation("com.github.zhengcx:MethodTraceMan:1.0.5-noop")
+    implementation(project(":ide-preview"))
 }

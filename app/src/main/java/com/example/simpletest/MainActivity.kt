@@ -2,6 +2,8 @@ package com.example.simpletest
 
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
+import android.view.LayoutInflater
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -11,10 +13,20 @@ import osp.leobert.android.davinci.Applier.Companion.applier
 import osp.leobert.android.davinci.Applier.Companion.csl
 import osp.leobert.android.davinci.Applier.Companion.drawable
 import osp.leobert.android.davinci.Applier.Companion.viewBackground
+import osp.leobert.android.davinci.preview.DavinciPreviewBHLayoutFactory
 
 class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
+        try {
+            val li = LayoutInflater.from(this.applicationContext).cloneInContext(this.applicationContext)
+            DavinciPreviewBHLayoutFactory.originalLayoutInflater = li
+            li.factory2 = DavinciPreviewBHLayoutFactory.instance
+            li.inflate(R.layout.activity_main, null)
+        } catch (ignore: Exception) {
+            Log.e("dvc-layout-factory", "error", ignore)
+        }
         super.onCreate(savedInstanceState)
 
 //        Utils.timeCost("单纯加载布局 compare1") {

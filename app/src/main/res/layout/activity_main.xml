@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
@@ -28,14 +29,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="5dp">
+                android:padding="5dp"
+                app:binding_mark="true">
 
                 <FrameLayout
                     daVinCi_bg="@{DaVinCiExpression.shape().solid(`#f0f0f0`).stroke(`1`,`#eaeaea`).corner(`3dp`)}"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="5dp">
+                    android:padding="5dp"
+                    app:binding_mark="true">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -52,7 +55,8 @@
                             android:layout_gravity="center_vertical"
                             android:layout_weight="1"
                             android:gravity="center"
-                            android:text="@string/n_enable" />
+                            android:text="@string/n_enable"
+                            app:binding_mark="true" />
 
                         <TextView
                             android:id="@+id/tv_test_factory2"
@@ -64,7 +68,8 @@
                             android:layout_weight="2"
                             android:gravity="center"
                             android:minHeight="80dp"
-                            android:text="该样式参考DemoStyle1" />
+                            android:text="该样式参考DemoStyle1"
+                            app:binding_mark="true" />
 
                         <TextView
                             android:id="@+id/tv_test_factory3"
@@ -75,7 +80,8 @@
                             android:layout_marginStart="10dp"
                             android:layout_weight="2"
                             android:gravity="center"
-                            android:text="@string/style_factory" />
+                            android:text="@string/style_factory"
+                            app:binding_mark="true" />
                     </LinearLayout>
                 </FrameLayout>
 
@@ -101,7 +107,8 @@
                     android:layout_height="80dp"
                     android:layout_marginTop="10dp"
                     android:gravity="center"
-                    android:text="@string/add_at_0_0_7">
+                    android:text="@string/add_at_0_0_7"
+                    app:binding_mark="true">
 
                     <tag
                         android:id="@id/i1"
@@ -126,7 +133,8 @@
                     android:layout_height="80dp"
                     android:layout_marginTop="10dp"
                     android:gravity="center"
-                    android:text="@string/add_at_0_0_7">
+                    android:text="@string/add_at_0_0_7"
+                    app:binding_mark="true">
 
                     <tag
                         android:id="@id/i1"
@@ -151,7 +159,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="5dp">
+                android:padding="5dp"
+                app:binding_mark="true">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -166,7 +175,8 @@
                     android:layout_marginTop="10dp"
                     android:background="@drawable/test"
                     android:gravity="center"
-                    android:text="@string/sample">
+                    android:text="@string/sample"
+                    app:binding_mark="true">
 
                     <tag
                         android:id="@id/i1"
@@ -191,7 +201,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="5dp">
+                android:padding="5dp"
+                app:binding_mark="true">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -205,7 +216,8 @@
                     android:layout_height="80dp"
                     android:layout_marginTop="10dp"
                     android:gravity="center"
-                    android:text="@string/sample">
+                    android:text="@string/sample"
+                    app:binding_mark="true">
 
                     <tag
                         android:id="@id/i1"
@@ -230,7 +242,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="5dp">
+                android:padding="5dp"
+                app:binding_mark="true">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -245,7 +258,8 @@
                     android:layout_marginTop="10dp"
                     android:background="@drawable/test"
                     android:gravity="center"
-                    android:text="@string/sample">
+                    android:text="@string/sample"
+                    app:binding_mark="true">
 
                     <tag
                         android:id="@id/i1"
@@ -270,7 +284,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="5dp">
+                android:padding="5dp"
+                app:binding_mark="true">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -286,7 +301,8 @@
                     android:layout_marginTop="10dp"
                     android:background="@drawable/test"
                     android:gravity="center"
-                    android:text="@string/sample">
+                    android:text="@string/sample"
+                    app:binding_mark="true">
 
                     <tag
                         android:id="@id/i1"
@@ -306,7 +322,8 @@
                     android:layout_marginTop="10dp"
                     android:clickable="true"
                     android:padding="10dp"
-                    android:text="@string/demo_4_2">
+                    android:text="@string/demo_4_2"
+                    app:binding_mark="true">
 
                     <tag
                         android:id="@id/i1"
@@ -326,7 +343,8 @@
                     android:layout_marginTop="10dp"
                     android:background="@drawable/test"
                     android:gravity="center"
-                    android:text="@string/sample">
+                    android:text="@string/sample"
+                    app:binding_mark="true">
 
                     <tag
                         android:id="@id/i1"
@@ -351,7 +369,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="5dp">
+                android:padding="5dp"
+                app:binding_mark="true">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -366,7 +385,8 @@
                     android:layout_marginTop="10dp"
                     android:background="@drawable/test"
                     android:gravity="center"
-                    android:text="@string/sample">
+                    android:text="@string/sample"
+                    app:binding_mark="true">
 
                     <tag
                         android:id="@id/i1"

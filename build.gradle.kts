@@ -9,7 +9,7 @@ buildscript {
         classpath("com.android.tools.build:gradle:4.1.3")
         classpath("io.github.leobert-lan:easy-publish:1.2.1")
 
-        classpath("io.github.leobert-lan:traceman-plugin:1.0.6")
+//        classpath("io.github.leobert-lan:traceman-plugin:1.0.6")
     }
     repositories {
         mavenLocal()

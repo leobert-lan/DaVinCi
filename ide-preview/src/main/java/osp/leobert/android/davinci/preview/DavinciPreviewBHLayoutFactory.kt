@@ -2,6 +2,7 @@ package osp.leobert.android.davinci.preview
 
 import android.content.Context
 import android.util.AttributeSet
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -25,6 +26,8 @@ class DavinciPreviewBHLayoutFactory private constructor() : LayoutInflater.Facto
     companion object {
         var originalLayoutInflater: LayoutInflater? = null
         val instance = DavinciPreviewBHLayoutFactory()
+
+        val TAG = "dvc-layout-factory"
     }
 
     override fun onCreateView(parent: View?, name: String, context: Context, attrs: AttributeSet): View? {
@@ -42,7 +45,6 @@ class DavinciPreviewBHLayoutFactory private constructor() : LayoutInflater.Facto
 
     private fun createView(parent: View?, name: String, context: Context, attrs: AttributeSet): View? {
         if (DavinciPreviewInjector::class.java.name == name) {
-
             return DavinciPreviewInjector(context, attrs)
         }
 
@@ -91,6 +93,7 @@ class DavinciPreviewBHLayoutFactory private constructor() : LayoutInflater.Facto
                     }
 
                     if (a.getBoolean(R.styleable.davinci_binding_mark, false)) {
+                        Log.d(TAG,"original tag: ${view.tag}, apply tag ${"binding_$bindingIndex"}")
                         view.tag = "binding_$bindingIndex"
                         bindingIndex++
                     }
