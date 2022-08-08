@@ -1,0 +1,11 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+
+    <declare-styleable name="davinci">
+        <attr name="previewId" format="reference|integer" />
+        <attr name="previewName" format="string" />
+        <attr name="binding_mark" format="boolean" />
+    </declare-styleable>
+
+
+</resources>
