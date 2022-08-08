@@ -2,13 +2,12 @@ plugins {
     id("com.android.library")
     id("kotlin-android")
     id("kotlin-kapt")
-    id("osp.leobert.maven.publish")
+//    id("osp.leobert.maven.publish")
 }
 
 
 android {
     compileSdkVersion(32)
-//    buildToolsVersion("31.0.3")
 
     buildFeatures {
         this.dataBinding = true
@@ -73,38 +72,38 @@ dependencies {
 }
 
 
-EasyPublish {
-    sourceSet = android.sourceSets.named("main").get().java.srcDirs
-    docClassPathAppend = project.files(android.bootClasspath.joinToString(
-        separator = File.pathSeparator
-    ) {
-        it.name
-    }).asPath
-
-    docExcludes = arrayListOf("osp/leobert/android/davinci/*")
-
-    artifact {
-        value = "build/outputs/aar/davinci-release.aar"
-    }
-
-    description =
-        "An Android library to help create background drawable and ColorStateList without xml"
-
-    developer {
-
-        this.id = "leobert"
-        this.name = "leobert"
-        this.email = "leobert.l@hotmail.com"
-    }
-
-    groupId = "io.github.leobert-lan"
-    artifactId = "davinci"
-    version = "0.0.8-alpha1"
-    packaging = "aar"
-    siteUrl = "https://github.com/leobert-lan/DaVinCi"
-    gitUrl = "https://github.com/leobert-lan/DaVinCi.git"
-    licenseName = "MIT"
-    licenseUrl = "https://github.com/leobert-lan/DaVinCi/blob/master/LICENSE"
-
-    mavenRepoUrl = "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
-}
+//EasyPublish {
+//    sourceSet = android.sourceSets.named("main").get().java.srcDirs
+//    docClassPathAppend = project.files(android.bootClasspath.joinToString(
+//        separator = File.pathSeparator
+//    ) {
+//        it.name
+//    }).asPath
+//
+//    docExcludes = arrayListOf("osp/leobert/android/davinci/*")
+//
+//    artifact {
+//        value = "build/outputs/aar/davinci-release.aar"
+//    }
+//
+//    description =
+//        "An Android library to help create background drawable and ColorStateList without xml"
+//
+//    developer {
+//
+//        this.id = "leobert"
+//        this.name = "leobert"
+//        this.email = "leobert.l@hotmail.com"
+//    }
+//
+//    groupId = "io.github.leobert-lan"
+//    artifactId = "davinci"
+//    version = "0.0.8-alpha1"
+//    packaging = "aar"
+//    siteUrl = "https://github.com/leobert-lan/DaVinCi"
+//    gitUrl = "https://github.com/leobert-lan/DaVinCi.git"
+//    licenseName = "MIT"
+//    licenseUrl = "https://github.com/leobert-lan/DaVinCi/blob/master/LICENSE"
+//
+//    mavenRepoUrl = "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
+//}

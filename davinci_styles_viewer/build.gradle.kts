@@ -2,7 +2,7 @@ plugins {
     id("com.android.library")
     id("kotlin-android")
     kotlin("kapt")
-    id("osp.leobert.maven.publish")
+//    id("osp.leobert.maven.publish")
 }
 
 android {
@@ -46,39 +46,39 @@ dependencies {
     implementation("androidx.appcompat:appcompat:1.4.0")
 }
 
-EasyPublish {
-    sourceSet = android.sourceSets.named("main").get().java.srcDirs
-//    docClassPathAppend = project.files(android.bootClasspath.joinToString(
-//        separator = File.pathSeparator
-//    ) {
-//        it.name
-//    }).asPath
-
-    docExcludes = arrayListOf("osp/leobert/android/davinci/*")
-
-    artifact {
-        value = "build/outputs/aar/davinci_styles_viewer-release.aar"
-    }
-
-    description =
-        "An Android library to help create background drawable and ColorStateList without xml"
-
-    developer {
-
-        this.id = "leobert"
-        this.name = "leobert"
-        this.email = "leobert.l@hotmail.com"
-    }
-
-    groupId = "io.github.leobert-lan"
-    artifactId = "davinci-style-viewer"
-    version = "0.0.2"
-    packaging = "aar"
-    siteUrl = "https://github.com/leobert-lan/DaVinCi"
-    gitUrl = "https://github.com/leobert-lan/DaVinCi.git"
-    licenseName = "MIT"
-    licenseUrl = "https://github.com/leobert-lan/DaVinCi/blob/master/LICENSE"
-
-    mavenRepoUrl = "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
-
-}
+//EasyPublish {
+//    sourceSet = android.sourceSets.named("main").get().java.srcDirs
+////    docClassPathAppend = project.files(android.bootClasspath.joinToString(
+////        separator = File.pathSeparator
+////    ) {
+////        it.name
+////    }).asPath
+//
+//    docExcludes = arrayListOf("osp/leobert/android/davinci/*")
+//
+//    artifact {
+//        value = "build/outputs/aar/davinci_styles_viewer-release.aar"
+//    }
+//
+//    description =
+//        "An Android library to help create background drawable and ColorStateList without xml"
+//
+//    developer {
+//
+//        this.id = "leobert"
+//        this.name = "leobert"
+//        this.email = "leobert.l@hotmail.com"
+//    }
+//
+//    groupId = "io.github.leobert-lan"
+//    artifactId = "davinci-style-viewer"
+//    version = "0.0.2"
+//    packaging = "aar"
+//    siteUrl = "https://github.com/leobert-lan/DaVinCi"
+//    gitUrl = "https://github.com/leobert-lan/DaVinCi.git"
+//    licenseName = "MIT"
+//    licenseUrl = "https://github.com/leobert-lan/DaVinCi/blob/master/LICENSE"
+//
+//    mavenRepoUrl = "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
+//
+//}
