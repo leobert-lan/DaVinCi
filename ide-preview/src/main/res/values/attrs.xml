@@ -4,7 +4,7 @@
     <declare-styleable name="davinci">
         <attr name="previewId" format="reference|integer" />
         <attr name="previewName" format="string" />
-        <attr name="binding_mark" format="boolean" />
+        <attr name="binding_mark" format="integer" />
     </declare-styleable>
 
 

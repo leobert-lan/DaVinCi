@@ -20,50 +20,7 @@ import osp.leobert.android.davinci.Applier.Companion.viewBackground
 class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
-
-//        var li: LayoutInflater? = null
-//        try {
-//            li = LayoutInflater.from(this.applicationContext).cloneInContext(this.applicationContext)
-//            val originalLayoutInflater = LayoutInflater.from(this.applicationContext)
-//            li.factory2 = object : LayoutInflater.Factory2 {
-//                override fun onCreateView(parent: View?, name: String, context: Context, attrs: AttributeSet): View? {
-//                    return originalLayoutInflater!!.createView(name, null, attrs)?.apply {
-//                        handleTag(this, attrs)
-//                    }
-//                }
-//
-//                override fun onCreateView(name: String, context: Context, attrs: AttributeSet): View? {
-//                    return originalLayoutInflater!!.createView(name, null, attrs)?.apply {
-//                        handleTag(this, attrs)
-//                    }
-//                }
-//
-//                var bindingIndex = 0
-//
-//                fun handleTag(view: View, attrs: AttributeSet) {
-//                    val a = view.context.obtainStyledAttributes(
-//                        attrs, R.styleable.davinci, 0, 0
-//                    )
-//                    if (view.tag?.toString()?.startsWith("layout") == true) {
-//                        bindingIndex = 1
-//                        a.recycle()
-//                        return
-//                    }
-//
-//                    if (a.getBoolean(R.styleable.davinci_binding_mark, false)) {
-//                        Log.d("dvc", "original tag: ${view.tag}, apply tag ${"binding_$bindingIndex"}")
-//                        view.tag = "binding_$bindingIndex"
-//                        bindingIndex++
-//                    }
-//
-//                    a.recycle()
-//                }
-//            }
-//        } catch (ignore: Exception) {
-//            Log.e("dvc-layout-factory", "error", ignore)
-//        }
         super.onCreate(savedInstanceState)
-//        li?.inflate(R.layout.activity_main, null)
 
 //        Utils.timeCost("单纯加载布局 compare1") {
 //            setContentView( R.layout.activity_main_none)

@@ -4,9 +4,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-<!--    <osp.leobert.android.davinci.preview.PreviewHolder-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent"-->
-<!--        app:previewId="@layout/activity_main" />-->
+    <osp.leobert.android.davinci.preview.PreviewHolder
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:previewId="@layout/activity_main2"
+        />
 
 </osp.leobert.android.davinci.preview.DavinciPreviewInjector>

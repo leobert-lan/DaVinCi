@@ -69,33 +69,34 @@ class DavinciPreviewBHLayoutFactory private constructor() : LayoutInflater.Facto
             val inflater = originalLayoutInflater!!.cloneInContext(originalLayoutInflater!!.context)
             inflater.factory2 = object : LayoutInflater.Factory2 {
                 override fun onCreateView(parent: View?, name: String, context: Context, attrs: AttributeSet): View? {
-                    return originalLayoutInflater!!.createView(name, "android.view", attrs)?.apply {
+                    return originalLayoutInflater!!.createView(name, "android.view.", attrs)?.apply {
                         handleTag(this, attrs)
                     }
                 }
 
                 override fun onCreateView(name: String, context: Context, attrs: AttributeSet): View? {
-                    return originalLayoutInflater!!.createView(name, "android.view", attrs)?.apply {
+                    return originalLayoutInflater!!.createView(name, "android.view.", attrs)?.apply {
                         handleTag(this, attrs)
                     }
                 }
 
-                var bindingIndex = 0
+//                var bindingIndex = 0
 
                 fun handleTag(view: View, attrs: AttributeSet) {
                     val a = context.obtainStyledAttributes(
                         attrs, R.styleable.davinci, 0, 0
                     )
                     if (view.tag?.toString()?.startsWith("layout") == true) {
-                        bindingIndex = 1
+//                        bindingIndex = 1
                         a.recycle()
                         return
                     }
 
-                    if (a.getBoolean(R.styleable.davinci_binding_mark, false)) {
-                        Log.d(TAG,"original tag: ${view.tag}, apply tag ${"binding_$bindingIndex"}")
-                        view.tag = "binding_$bindingIndex"
-                        bindingIndex++
+                    val bindingMark = a.getInt(R.styleable.davinci_binding_mark, 0)
+                    if (bindingMark > 0) {
+//                        Log.d(TAG, "original tag: ${view.tag}, apply tag ${"binding_$bindingIndex"}")
+                        view.tag = "binding_$bindingMark"
+//                        bindingIndex++
                     }
 
                     a.recycle()

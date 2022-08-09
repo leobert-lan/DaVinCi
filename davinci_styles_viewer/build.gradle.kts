@@ -7,8 +7,8 @@ plugins {
 
 android {
 //configure<com.android.build.gradle.internal.dsl.BaseAppModuleExtension> {
-    compileSdkVersion(30)
-    buildToolsVersion("30.0.3")
+    compileSdkVersion(32)
+//    buildToolsVersion("30.0.3")
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
@@ -16,7 +16,7 @@ android {
 
     defaultConfig {
         minSdkVersion(26)
-        targetSdkVersion(30)
+        targetSdkVersion(32)
         versionCode = 1
         versionName = "1.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"

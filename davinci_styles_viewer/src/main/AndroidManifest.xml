@@ -3,10 +3,12 @@
     package="osp.leobert.android.davinci.viewer">
 
     <application>
-        <activity android:name=".StylesActivity"
+        <activity
+            android:name=".StylesActivity"
+            android:exported="true"
             android:icon="@drawable/ic_launcher_davinci"
-            android:launchMode="singleTask"
-            android:label="DaVinCi-Styles">
+            android:label="DaVinCi-Styles"
+            android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

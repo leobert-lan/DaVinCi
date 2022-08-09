@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="osp.leobert.android.davinci.DaVinCiExpression" />
+
+        <import type="osp.leobert.android.davinci.State" />
+
+    </data>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".MainActivity">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/white"
+            android:orientation="vertical"
+            android:padding="10dp">
+
+
+            <LinearLayout
+                daVinCi_bg="@{DaVinCiExpression.shape().solid(`#f0f0f0`).stroke(`1`,`#eaeaea`).corner(`3dp`)}"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="5dp"
+                android:tag="binding_1"
+                app:binding_mark="1">
+
+                <android.widget.TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/demo1" />
+
+                <android.widget.TextView
+                    daVinCi_bg="@{DaVinCiExpression.shape().corner(60).solid(`@i2`).stroke(`4dp`,`@i2`)}"
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/test"
+                    android:gravity="center"
+                    android:text="@string/sample"
+                    app:binding_mark="2">
+<!--                    android:tag="binding_2"-->
+
+                    <tag
+                        android:id="@id/i1"
+                        android:value="@color/colorPrimaryDark" />
+
+                    <tag
+                        android:id="@id/i2"
+                        android:value="@color/colorAccent" />
+                </android.widget.TextView>
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</layout>

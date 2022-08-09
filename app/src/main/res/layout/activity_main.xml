@@ -30,7 +30,8 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:padding="5dp"
-                app:binding_mark="true">
+                android:tag="binding_1"
+                app:binding_mark="1">
 
                 <FrameLayout
                     daVinCi_bg="@{DaVinCiExpression.shape().solid(`#f0f0f0`).stroke(`1`,`#eaeaea`).corner(`3dp`)}"
@@ -38,7 +39,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:padding="5dp"
-                    app:binding_mark="true">
+                    app:binding_mark="2">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -56,7 +57,7 @@
                             android:layout_weight="1"
                             android:gravity="center"
                             android:text="@string/n_enable"
-                            app:binding_mark="true" />
+                            app:binding_mark="3" />
 
                         <TextView
                             android:id="@+id/tv_test_factory2"
@@ -69,7 +70,7 @@
                             android:gravity="center"
                             android:minHeight="80dp"
                             android:text="该样式参考DemoStyle1"
-                            app:binding_mark="true" />
+                            app:binding_mark="4" />
 
                         <TextView
                             android:id="@+id/tv_test_factory3"
@@ -81,7 +82,7 @@
                             android:layout_weight="2"
                             android:gravity="center"
                             android:text="@string/style_factory"
-                            app:binding_mark="true" />
+                            app:binding_mark="5" />
                     </LinearLayout>
                 </FrameLayout>
 
@@ -108,7 +109,7 @@
                     android:layout_marginTop="10dp"
                     android:gravity="center"
                     android:text="@string/add_at_0_0_7"
-                    app:binding_mark="true">
+                    app:binding_mark="6">
 
                     <tag
                         android:id="@id/i1"
@@ -134,7 +135,7 @@
                     android:layout_marginTop="10dp"
                     android:gravity="center"
                     android:text="@string/add_at_0_0_7"
-                    app:binding_mark="true">
+                    app:binding_mark="7">
 
                     <tag
                         android:id="@id/i1"
@@ -160,7 +161,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:padding="5dp"
-                app:binding_mark="true">
+                app:binding_mark="8">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -176,7 +177,7 @@
                     android:background="@drawable/test"
                     android:gravity="center"
                     android:text="@string/sample"
-                    app:binding_mark="true">
+                    app:binding_mark="9">
 
                     <tag
                         android:id="@id/i1"
@@ -202,7 +203,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:padding="5dp"
-                app:binding_mark="true">
+                app:binding_mark="10">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -217,7 +218,7 @@
                     android:layout_marginTop="10dp"
                     android:gravity="center"
                     android:text="@string/sample"
-                    app:binding_mark="true">
+                    app:binding_mark="11">
 
                     <tag
                         android:id="@id/i1"
@@ -243,7 +244,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:padding="5dp"
-                app:binding_mark="true">
+                app:binding_mark="12">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -259,7 +260,7 @@
                     android:background="@drawable/test"
                     android:gravity="center"
                     android:text="@string/sample"
-                    app:binding_mark="true">
+                    app:binding_mark="13">
 
                     <tag
                         android:id="@id/i1"
@@ -285,7 +286,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:padding="5dp"
-                app:binding_mark="true">
+                app:binding_mark="14">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -302,7 +303,7 @@
                     android:background="@drawable/test"
                     android:gravity="center"
                     android:text="@string/sample"
-                    app:binding_mark="true">
+                    app:binding_mark="15">
 
                     <tag
                         android:id="@id/i1"
@@ -323,7 +324,7 @@
                     android:clickable="true"
                     android:padding="10dp"
                     android:text="@string/demo_4_2"
-                    app:binding_mark="true">
+                    app:binding_mark="16">
 
                     <tag
                         android:id="@id/i1"
@@ -344,7 +345,7 @@
                     android:background="@drawable/test"
                     android:gravity="center"
                     android:text="@string/sample"
-                    app:binding_mark="true">
+                    app:binding_mark="17">
 
                     <tag
                         android:id="@id/i1"
@@ -370,7 +371,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:padding="5dp"
-                app:binding_mark="true">
+                app:binding_mark="18">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -386,7 +387,7 @@
                     android:background="@drawable/test"
                     android:gravity="center"
                     android:text="@string/sample"
-                    app:binding_mark="true">
+                    app:binding_mark="19">
 
                     <tag
                         android:id="@id/i1"

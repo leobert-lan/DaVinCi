@@ -7,8 +7,8 @@ plugins {
 
 
 android {
-    compileSdkVersion(31)
-    buildToolsVersion("30.0.3")
+    compileSdkVersion(32)
+//    buildToolsVersion("30.0.3")
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
@@ -25,7 +25,7 @@ android {
         }
         applicationId = "com.example.simpletest"
         minSdkVersion(26)
-        targetSdkVersion(30)
+        targetSdkVersion(32)
         versionCode = 1
         versionName = "1.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -92,7 +92,7 @@ android {
 val dev = true
 
 dependencies {
-    implementation("androidx.constraintlayout:constraintlayout:2.1.0")
+    implementation("androidx.constraintlayout:constraintlayout:2.1.3")
 
     //fix: Duplicate class com.google.common.util.concurrent.ListenableFuture found in modules
     // jetified-guava-23.5-jre (com.google.guava:guava:23.5-jre)
@@ -105,6 +105,7 @@ dependencies {
     implementation("androidx.core:core-ktx:1.6.0")
 
     testImplementation("junit:junit:4.13.2")
+    testImplementation("com.google.testing.compile:compile-testing:0.11")
     androidTestImplementation("androidx.test.ext:junit:1.1.3")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
 
