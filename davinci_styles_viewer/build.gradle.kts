@@ -17,8 +17,9 @@ android {
     defaultConfig {
         minSdkVersion(26)
         targetSdkVersion(32)
-        versionCode = 1
-        versionName = "1.0"
+        namespace = "osp.leobert.android.davinci.viewer"
+//        versionCode = 1
+//        versionName = "1.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
     buildFeatures {
@@ -29,21 +30,21 @@ android {
 
 dependencies {
 
-    implementation("com.google.android.material:material:1.4.0")
+    implementation("com.google.android.material:material:1.10.0")
     compileOnly(project(":davinci"))
     compileOnly(project(":annotation"))
 
 
-    compileOnly("org.jetbrains.kotlin:kotlin-stdlib:${Dependencies.Kotlin.version}")
+    compileOnly("org.jetbrains.kotlin:kotlin-stdlib:1.9.22")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.0-native-mt")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.0-native-mt")
-    compileOnly("androidx.core:core-ktx:1.6.0")
+    compileOnly("androidx.core:core-ktx:1.10.1")
 
     implementation("io.github.leobert-lan:pandora:0.0.9")
-    implementation("io.github.leobert-lan:pandorarv_kt:0.0.4")
-    implementation("androidx.recyclerview:recyclerview:1.2.0")
+    implementation("io.github.leobert-lan:pandorarv_kt:0.0.5")
+    implementation("androidx.recyclerview:recyclerview:1.3.0")
 
-    implementation("androidx.appcompat:appcompat:1.4.0")
+    implementation("androidx.appcompat:appcompat:1.6.1")
 }
 
 //EasyPublish {

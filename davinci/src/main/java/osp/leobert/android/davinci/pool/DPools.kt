@@ -104,8 +104,8 @@ object DPools {
             return pool.acquire()?:factory.create()
         }
 
-        override fun release(@NotNull instance: T): Boolean {
-            if (instance == null) return false
+        override fun release(instance: T & Any): Boolean {
+//            if (instance == null) return false
 
             resetter.reset(instance)
             return pool.release(instance)

@@ -10,7 +10,7 @@ java {
 }
 
 dependencies {
-    implementation("org.jetbrains.kotlin:kotlin-stdlib:${Dependencies.Kotlin.version}")
+    implementation(libs.jetbrains.kotlin.stdlib)
 }
 
 //EasyPublish {

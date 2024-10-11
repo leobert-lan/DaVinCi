@@ -22,6 +22,8 @@ object DaVinCiConfig : IDimensionLookup, IColorLookup, IApplierTagLookup, IResou
 
     val customApplierTagLookup = arrayListOf<IApplierTagLookup.Custom>()
 
+    var executeSynchronized : Boolean = true
+
     private val resourceLookupStrategy = strategyOf<Class<*>, IResourceLookup>()
         .register(DaVinCiResource.ColorIntRes::class.java, IResourceLookup.DefaultColorIntResourceLookup())
 

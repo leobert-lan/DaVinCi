@@ -5,22 +5,22 @@ plugins {
 }
 
 dependencies {
-  compileOnly(Dependencies.Kotlin.Ksp.api)
+  compileOnly("com.google.devtools.ksp:symbol-processing-api:1.6.10-1.0.2")
 
-  implementation(Dependencies.AutoService.annotations)
+  implementation("com.google.auto.service:auto-service-annotations:1.0")
   ksp("dev.zacsweers.autoservice:auto-service-ksp:0.5.2")
-  implementation(Dependencies.KotlinPoet.kotlinPoet)
-  implementation(Dependencies.guava)
+  implementation("com.squareup:kotlinpoet:1.8.0")
+  implementation("com.google.guava:guava:30.1.1-jre")
 
-  testImplementation(Dependencies.Kotlin.Ksp.api)
-  testImplementation(Dependencies.Testing.truth)
-  testImplementation(Dependencies.Testing.junit)
+  testImplementation("com.google.devtools.ksp:symbol-processing-api:1.6.10-1.0.2")
+  testImplementation("com.google.truth:truth:1.1.2")
+  testImplementation("junit:junit:4.13.2")
 
   // TODO re-enable with new release
 //  testImplementation(Dependencies.Testing.kspCompileTesting)
-  testImplementation(Dependencies.Kotlin.Ksp.ksp)
-  testImplementation(Dependencies.Testing.compileTesting)
-  testImplementation(Dependencies.Kotlin.compilerEmbeddable)
+  testImplementation("com.google.devtools.ksp:symbol-processing:1.6.10-1.0.2")
+  testImplementation("com.github.tschuchortdev:kotlin-compile-testing:1.4.0")
+  testImplementation("org.jetbrains.kotlin:kotlin-compiler-embeddable:1.9.22")
 
 //  todo use stable version when release
   implementation(project(":annotation"))

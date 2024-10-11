@@ -38,8 +38,12 @@ class DaVinCi private constructor(
 
 
         internal fun <T> T.daVinCiExecute(runnable: T.() -> Unit): T {
-            scopeExecutor.launch {
+            if (DaVinCiConfig.executeSynchronized) {
                 runnable(this@daVinCiExecute)
+            } else {
+                scopeExecutor.launch {
+                    runnable(this@daVinCiExecute)
+                }
             }
             return this
         }

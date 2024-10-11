@@ -5,22 +5,22 @@ plugins {
 }
 
 dependencies {
-  compileOnly(Dependencies.Kotlin.Ksp.api)
+  compileOnly(libs.symbol.processing.api)
 
-  implementation(Dependencies.AutoService.annotations)
-  ksp("dev.zacsweers.autoservice:auto-service-ksp:0.5.2")
-  implementation(Dependencies.KotlinPoet.kotlinPoet)
-  implementation(Dependencies.guava)
+  implementation(libs.auto.service.annotations)
+  ksp(libs.auto.service.ksp)
+  implementation(libs.com.squareup.kotlinpoet)
+  implementation(libs.google.guava)
 
-  testImplementation(Dependencies.Kotlin.Ksp.api)
-  testImplementation(Dependencies.Testing.truth)
-  testImplementation(Dependencies.Testing.junit)
+  testImplementation(libs.symbol.processing.api)
+  testImplementation(libs.truth)
+  testImplementation(libs.junit)
 
-  testImplementation(Dependencies.Kotlin.Ksp.ksp)
-  testImplementation(Dependencies.Testing.compileTesting)
-  testImplementation(Dependencies.Kotlin.compilerEmbeddable)
+  testImplementation(libs.symbol.processing)
+  testImplementation(libs.kotlin.compile.testing)
+  testImplementation(libs.kotlin.compiler.embeddable)
 
-  implementation(Dependencies.DaVinCi.annotation)
+  implementation(libs.davinci.anno)
 
 //  todo use stable version when release
 //  implementation(project(":annotation"))

@@ -7,7 +7,7 @@ plugins {
 
 
 android {
-    compileSdkVersion(32)
+    compileSdk = 34
 //    buildToolsVersion("30.0.3")
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
@@ -24,8 +24,11 @@ android {
             }
         }
         applicationId = "com.example.simpletest"
-        minSdkVersion(26)
-        targetSdkVersion(32)
+        namespace = "com.example.sinpletest"
+//        minSdkVersion(26)
+        minSdk = 26
+//        targetSdkVersion(32)
+        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -92,34 +95,34 @@ android {
 val dev = true
 
 dependencies {
-    implementation("androidx.constraintlayout:constraintlayout:2.1.3")
+    implementation(libs.androidx.constraintlayout)
 
     //fix: Duplicate class com.google.common.util.concurrent.ListenableFuture found in modules
     // jetified-guava-23.5-jre (com.google.guava:guava:23.5-jre)
     // and jetified-listenablefuture-1.0 (com.google.guava:listenablefuture:1.0)
-    implementation("com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava")
+    implementation(libs.listenablefuture)
 
 
-    implementation("org.jetbrains.kotlin:kotlin-stdlib:${Dependencies.Kotlin.version}")
-    implementation("androidx.appcompat:appcompat:1.4.0")
-    implementation("androidx.core:core-ktx:1.6.0")
+    implementation(libs.jetbrains.kotlin.stdlib)
+    implementation(libs.androidx.appcompat)
+    implementation(libs.androidx.core.ktx)
 
-    testImplementation("junit:junit:4.13.2")
-    testImplementation("com.google.testing.compile:compile-testing:0.11")
-    androidTestImplementation("androidx.test.ext:junit:1.1.3")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
+    testImplementation(libs.junit)
+    testImplementation(libs.com.google.testing.compile.compile.testing9)
+    androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.androidx.espresso.core)
 
     if (dev) {
         debugImplementation(project(":davinci_styles_viewer"))
         implementation(project(":davinci"))
     } else {
-        implementation(Dependencies.DaVinCi.api)
-        debugImplementation(Dependencies.DaVinCi.viewer)
+        debugImplementation(libs.davinci.style.viewer)
+        implementation(libs.davinci)
     }
 
-    implementation(Dependencies.DaVinCi.annotation)
+    implementation(libs.davinci.anno)
 //    ksp(Dependencies.DaVinVi.ksp)
-    kapt(Dependencies.DaVinCi.ksp)
+    kapt(libs.davinci.anno.ksp)
 
-    implementation(project(":ide-preview"))
+//    implementation(project(":ide-preview"))
 }

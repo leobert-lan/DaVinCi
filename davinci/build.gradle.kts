@@ -7,16 +7,17 @@ plugins {
 
 
 android {
-    compileSdkVersion(32)
+    compileSdk = 34
 
     buildFeatures {
         this.dataBinding = true
     }
     defaultConfig {
-        minSdkVersion(14)
-        targetSdkVersion(32)
-        versionCode = 1
-        versionName = "1.0"
+        minSdk = 14
+        namespace = "osp.leobert.android.davinci"
+//        targetSdk = 34
+//        versionCode = 1
+//        versionName = "1.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -34,6 +35,15 @@ android {
                 "proguard-rules.pro")
         }
     }
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
 }
 
 kapt {
@@ -47,29 +57,31 @@ kapt {
 }
 
 dependencies {
-    implementation("org.jetbrains.kotlin:kotlin-stdlib:${Dependencies.Kotlin.version}")
-    implementation("androidx.appcompat:appcompat:1.4.0")
-    implementation("androidx.core:core-ktx:1.6.0")
+    implementation(libs.jetbrains.kotlin.stdlib)
+    implementation(libs.androidx.appcompat)
+    implementation(libs.androidx.core.ktx)
 
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.0-native-mt")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.0-native-mt")
+    implementation(libs.jetbrains.kotlinx.coroutines.core)
+    implementation(libs.jetbrains.kotlinx.coroutines.android)
 
 
-    testImplementation("junit:junit:4.13.2")
-    testImplementation("com.google.guava:guava-testlib:18.0")
-    testImplementation("org.robolectric:robolectric:3.8")
-    testImplementation("org.mockito:mockito-core:2.7.14")
+    testImplementation(libs.junit)
+    testImplementation(libs.com.google.guava.guava.testlib)
+    testImplementation(libs.robolectric.robolectric)
+    testImplementation(libs.mockito.mockito.core)
 
-    androidTestImplementation("androidx.test.ext:junit:1.1.3")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
+    androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.androidx.espresso.core)
 
-    implementation("io.github.leobert-lan:reporter-review:1.0.1")
-    kapt("io.github.leobert-lan:report-anno-compiler:1.1.4")
-    kapt("io.github.leobert-lan:reporter-review:1.0.1")
+    implementation(libs.io.github.leobert.lan.reporter.review)
+    kapt(libs.report.anno.compiler)
+    kapt(libs.io.github.leobert.lan.reporter.review)
 
-    implementation("io.github.leobert-lan:class-diagram-reporter:1.0.1")
-    kapt("io.github.leobert-lan:class-diagram-reporter:1.0.1")
+    implementation(libs.io.github.leobert.lan.clz.diagram.reporter)
+    kapt(libs.io.github.leobert.lan.clz.diagram.reporter)
 }
+
+apply(plugin = "com.vanniktech.maven.publish")
 
 
 //EasyPublish {

@@ -1,0 +1,67 @@
+[versions]
+agp = "8.6.0"
+autoServiceAnnotations = "1.1.1"
+autoServiceKsp = "1.2.0"
+comGoogleTestingCompileCompileTesting7 = "0.21.0"
+constraintlayout = "2.1.4"
+davinci = "0.0.7"
+davinciAnno = "0.0.2"
+davinciStyleViewer = "0.0.1"
+googleGuavaTestlib = "23.0"
+guavaVersion = "33.3.0-jre"
+ioGithubLeobertLanClassDiagramReporter8 = "1.0.1"
+kotlin = "1.9.22"
+coreKtx = "1.10.1"
+junit = "4.13.2"
+junitVersion = "1.1.5"
+espressoCore = "3.5.1"
+appcompat = "1.6.1"
+kotlinCompileTesting = "1.6.0"
+kotlinxCoroutinesCoreVersion = "1.6.0-native-mt"
+kotlinxCoroutinesAndroidVersion = "1.6.0-native-mt"
+listenablefuture = "9999.0-empty-to-avoid-conflict-with-guava"
+material = "1.10.0"
+mockitoCoreVersion = "5.13.0"
+reportAnnoCompiler = "1.1.5"
+robolectricVersion = "4.13"
+squareupKotlinpoet = "1.18.1"
+symbolProcessingApi = "1.9.22-1.0.17"
+truth = "1.4.4"
+
+[libraries]
+androidx-constraintlayout = { module = "androidx.constraintlayout:constraintlayout", version.ref = "constraintlayout" }
+androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+auto-service-annotations = { module = "com.google.auto.service:auto-service-annotations", version.ref = "autoServiceAnnotations" }
+auto-service-ksp = { module = "dev.zacsweers.autoservice:auto-service-ksp", version.ref = "autoServiceKsp" }
+com-google-guava-guava-testlib = { module = "com.google.guava:guava-testlib", version.ref = "googleGuavaTestlib" }
+com-google-testing-compile-compile-testing9 = { module = "com.google.testing.compile:compile-testing", version.ref = "comGoogleTestingCompileCompileTesting7" }
+com-squareup-kotlinpoet = { module = "com.squareup:kotlinpoet", version.ref = "squareupKotlinpoet" }
+davinci = { module = "io.github.leobert-lan:davinci", version.ref = "davinci" }
+davinci-anno = { module = "io.github.leobert-lan:davinci-anno", version.ref = "davinciAnno" }
+davinci-anno-ksp = { module = "io.github.leobert-lan:davinci-anno-ksp", version.ref = "davinciAnno" }
+davinci-style-viewer = { module = "io.github.leobert-lan:davinci-style-viewer", version.ref = "davinciStyleViewer" }
+google-guava = { module = "com.google.guava:guava", version.ref = "guavaVersion" }
+io-github-leobert-lan-clz-diagram-reporter = { module = "io.github.leobert-lan:class-diagram-reporter", version.ref = "ioGithubLeobertLanClassDiagramReporter8" }
+io-github-leobert-lan-reporter-review = { module = "io.github.leobert-lan:reporter-review", version.ref = "ioGithubLeobertLanClassDiagramReporter8" }
+jetbrains-kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlin" }
+jetbrains-kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinxCoroutinesAndroidVersion" }
+jetbrains-kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinxCoroutinesCoreVersion" }
+junit = { group = "junit", name = "junit", version.ref = "junit" }
+androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
+androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
+androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+kotlin-compiler-embeddable = { module = "org.jetbrains.kotlin:kotlin-compiler-embeddable", version.ref = "kotlin" }
+kotlin-compile-testing = { module = "com.github.tschuchortdev:kotlin-compile-testing", version.ref = "kotlinCompileTesting" }
+listenablefuture = { module = "com.google.guava:listenablefuture", version.ref = "listenablefuture" }
+material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+mockito-mockito-core = { module = "org.mockito:mockito-core", version.ref = "mockitoCoreVersion" }
+report-anno-compiler = { module = "io.github.leobert-lan:report-anno-compiler", version.ref = "reportAnnoCompiler" }
+robolectric-robolectric = { module = "org.robolectric:robolectric", version.ref = "robolectricVersion" }
+symbol-processing = { module = "com.google.devtools.ksp:symbol-processing", version.ref = "symbolProcessingApi" }
+symbol-processing-api = { module = "com.google.devtools.ksp:symbol-processing-api", version.ref = "symbolProcessingApi" }
+truth = { module = "com.google.truth:truth", version.ref = "truth" }
+
+[plugins]
+android-application = { id = "com.android.application", version.ref = "agp" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+
