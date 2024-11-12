@@ -52,27 +52,28 @@ class DaVinCi private constructor(
             return this
         }
 
-        internal suspend fun <T, R> T.daVinCiExecute(runnable: T.() -> R, listen: suspend R.() -> Unit) {
+//        internal suspend fun <T, R> T.daVinCiExecute(runnable: T.() -> R, listen: suspend R.() -> Unit) {
+//            if (DaVinCiConfig.executeSynchronized) {
+//                runnable(this@daVinCiExecute).listen()
+//            } else {
+//                flow {
+//                    this.emit(runnable(this@daVinCiExecute))
+//                }.flowOn(dispatcher)
+//                    .onEach(listen)
+//                    .collect()
+//            }
+//        }
+
+        internal fun <T, R> T.daVinCiExecute(scope: CoroutineScope, runnable: T.() -> R, listen: R.() -> Unit) {
             if (DaVinCiConfig.executeSynchronized) {
                 runnable(this@daVinCiExecute).listen()
             } else {
-
                 flow {
                     this.emit(runnable(this@daVinCiExecute))
                 }.flowOn(dispatcher)
-                    .onEach(listen)
-                    .collect()
-            }
-        }
-
-        internal fun <T, R> T.daVinCiExecute(scope: CoroutineScope, runnable: T.() -> R, listen: suspend R.() -> Unit) {
-            if (DaVinCiConfig.executeSynchronized) {
-                runnable(this@daVinCiExecute)
-            } else {
-                flow {
-                    this.emit(runnable(this@daVinCiExecute))
-                }.flowOn(dispatcher)
-                    .onEach(listen)
+                    .onEach {
+                        it.listen()
+                    }
                     .launchIn(scope)
             }
         }
