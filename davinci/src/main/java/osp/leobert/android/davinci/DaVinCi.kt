@@ -5,7 +5,11 @@ import android.util.Log
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.asCoroutineDispatcher
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import osp.leobert.android.davinci.lookup.IApplierTagLookup
 import osp.leobert.android.davinci.lookup.IColorLookup
@@ -13,7 +17,7 @@ import osp.leobert.android.davinci.lookup.IDimensionLookup
 import osp.leobert.android.davinci.lookup.IResourceLookup
 import osp.leobert.android.davinci.pool.DPools
 import osp.leobert.android.reporter.review.TODO
-import java.util.*
+import java.util.StringTokenizer
 import java.util.concurrent.Executors
 
 @Suppress("unused")
@@ -49,19 +53,28 @@ class DaVinCi private constructor(
         }
 
         internal suspend fun <T, R> T.daVinCiExecute(runnable: T.() -> R, listen: suspend R.() -> Unit) {
-            flow {
-                this.emit(runnable(this@daVinCiExecute))
-            }.flowOn(dispatcher)
-                .onEach(listen)
-                .collect()
+            if (DaVinCiConfig.executeSynchronized) {
+                runnable(this@daVinCiExecute).listen()
+            } else {
+
+                flow {
+                    this.emit(runnable(this@daVinCiExecute))
+                }.flowOn(dispatcher)
+                    .onEach(listen)
+                    .collect()
+            }
         }
 
         internal fun <T, R> T.daVinCiExecute(scope: CoroutineScope, runnable: T.() -> R, listen: suspend R.() -> Unit) {
-            flow {
-                this.emit(runnable(this@daVinCiExecute))
-            }.flowOn(dispatcher)
-                .onEach(listen)
-                .launchIn(scope)
+            if (DaVinCiConfig.executeSynchronized) {
+                runnable(this@daVinCiExecute)
+            } else {
+                flow {
+                    this.emit(runnable(this@daVinCiExecute))
+                }.flowOn(dispatcher)
+                    .onEach(listen)
+                    .launchIn(scope)
+            }
         }
 
         /*
@@ -73,7 +86,10 @@ class DaVinCi private constructor(
 
                 timeCost("load _Arrays and so on") {
                     //如果是加载类等耗时，即使分离到子线程也无法避免
-                    Log.v(DaVinCiExpression.sLogTag, "" + arrayOf(State.ENABLE_F, State.ENABLE_T).joinToString(",").split(",").sorted().size)
+                    Log.v(
+                        DaVinCiExpression.sLogTag,
+                        "" + arrayOf(State.ENABLE_F, State.ENABLE_T).joinToString(",").split(",").sorted().size
+                    )
                 }
 
                 val tmp = timeCost("fast-load create shape") {
